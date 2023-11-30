@@ -1,9 +1,7 @@
 lista features
 
-- aggiungi sacchetto
-- scansione carta fedeltà
-- aggiunta prodotti
-- aggiunta carte fedeltà
+- scansione barcode
+- visualizzazione totale
 - inserimento manuale codice prodotto
 - inserimento multiplo stesso prodotto
 - vincita random premio
@@ -12,3 +10,7 @@ lista features
 - pagamento con buoni regalo a scalare
 - generazione buoni regalo
 - prodotti con sconto carta fedeltà
+- inserimento prezzo manuale
+- scansione carta fedeltà
+- aggiunta prodotti a catalogo
+- aggiunta carte fedeltà a database

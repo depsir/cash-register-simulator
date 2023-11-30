@@ -2,7 +2,6 @@ import {useApplicationState} from "~/hooks/applicationState";
 
 const CartList = () => {
     const {state} = useApplicationState()
-    console.log(state)
     return (
         <div>
             <ul>
