@@ -9,6 +9,7 @@ import useApplicationState from "~/hooks/useApplicationState";
 import TextBox from "~/components/TextBox";
 import MultiElementTextBox from "~/components/MultiElementTextBox";
 import useNumpad from "~/hooks/useNumpad";
+import BarcodeReader from 'react-barcode-reader'
 
 const Dashboard = () => {
     const {applicationState, setApplicationState} = useApplicationState()
@@ -42,6 +43,11 @@ const Dashboard = () => {
                 </div>
                 <div className={"flex-grow basis-0 "}>
                     {(!applicationState || applicationState == "init") && <>
+                        <BarcodeReader
+                            onError={(err) => console.error(err)}
+                            onScan={addProduct}
+                        />
+
                         <Button onClick={() => setApplicationState("manual-barcode")}>manual</Button>
                         <Button onClick={() => addProduct("1")}>sacchetto</Button>
                         <Button onClick={() => setApplicationState("checkout")}>checkout</Button>
