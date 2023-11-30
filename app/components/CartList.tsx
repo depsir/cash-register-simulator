@@ -12,7 +12,6 @@ const CartList = () => {
 
     const compute = (price:number, quantity:number) => {
         return (((price*100) * (quantity*100))/10000).toFixed(2)
-
     }
     return (
         <div>

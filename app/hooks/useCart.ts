@@ -18,8 +18,15 @@ const useCart = () => {
         }
         setCart(newCart)
     }
+    const compute = (price:number, quantity:number) => {
+        return (((price*100) * (quantity*100))/10000)
+    }
 
-    return {cart, addProduct}
+    const total = cart.reduce((acc: number, item: any) => {
+        return acc + compute(item.price, item.quantity)
+    }, 0)
+
+    return {cart, addProduct, total}
 
 }
 
