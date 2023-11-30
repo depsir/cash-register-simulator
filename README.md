@@ -1,33 +1,38 @@
-# Netlify Remix Template
+# Welcome to Remix!
 
-Welcome to the Netlify Remix Template project.
-
-To use the template, run
-
-```bash
-npx create-remix@latest --template netlify/remix-template
-```
-
-
-This project includes:
-
-- Netlify Functions template for Remix sites
-- Netlify Edge Functions template for Remix sites
-
-From the `create-remix` command, you may pass `--netlify-edge` or `--no-netlify-edge` to generate a template that uses Netlify Edge or Serverless functions explicitly. Without passing this option, the create workflow will ask you which you would prefer.
+- [Remix Docs](https://remix.run/docs)
 
 ## Development
 
-There is no need to run `npm install` as this is a template. The Remix CLI will install the dependencies for you. Make changes to files as you see fit. If there are transformations for files for either the Netlify Functions or Netlify Edge Functions template, make the appropriate changes to the `remix.init/index.js` file.
+From your terminal:
 
-If you're new to Remix stacks and the remix.init concept, see the official [Remix Stacks](https://remix.run/stacks) documentation.
-
-### Testing your changes
-
-Run
-
-```bash
-npx create-remix@latest --template ./
+```sh
+npm run dev
 ```
 
-to test your changes to the template. Follow the steps the Remix CLI prompts you with to create a new project. Ensure to test for both the Netlify Functions template and the Netlify Edge Functions template.
+This starts your app in development mode, rebuilding assets on file changes.
+
+## Deployment
+
+First, build your app for production:
+
+```sh
+npm run build
+```
+
+Then run the app in production mode:
+
+```sh
+npm start
+```
+
+Now you'll need to pick a host to deploy it to.
+
+### DIY
+
+If you're familiar with deploying node applications, the built-in Remix app server is production-ready.
+
+Make sure to deploy the output of `remix build`
+
+- `build/`
+- `public/build/`
