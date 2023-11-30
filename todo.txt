@@ -1,9 +1,10 @@
 lista features
 
 - scansione barcode
+- inserimento barcode non prodotto
 - visualizzazione totale
-- inserimento manuale codice prodotto
-- inserimento multiplo stesso prodotto
+- visualizzazione totale riga
+- inserimento multiplo stesso prodotto scansionando una volta sola (pulsante 3x)
 - vincita random premio
 - inserimento sconto da codice a barre
 - calcolo resto

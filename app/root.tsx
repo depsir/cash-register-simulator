@@ -10,7 +10,7 @@ import type { LinksFunction } from "@remix-run/node"; // or cloudflare/deno
 
 import styles from "./styles/tailwind.css";
 import Dashboard from "~/Dashboard";
-import {ApplicationStateProvider} from "~/hooks/applicationState";
+import {ApplicationStateProvider} from "~/hooks/applicationStore";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: styles },

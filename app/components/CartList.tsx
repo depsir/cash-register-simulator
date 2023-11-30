@@ -1,11 +1,12 @@
-import {useApplicationState} from "~/hooks/applicationState";
+import {useApplicationStore} from "~/hooks/applicationStore";
+import useCart from "~/hooks/useCart";
 
 const CartList = () => {
-    const {state} = useApplicationState()
+    const {cart } = useCart()
     return (
         <div>
             <ul>
-                {state.cart.map((item: any) => <li>{item.name} - {item.price}</li>)}
+                {cart.map((item: any) => <li>{item.name} - {item.price} - {item.quantity}</li>)}
             </ul>
         </div>
     )

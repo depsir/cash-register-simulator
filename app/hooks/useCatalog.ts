@@ -1,11 +1,11 @@
 import {useEffect} from "react";
-import {useApplicationState} from "~/hooks/applicationState";
+import {useApplicationStore} from "~/hooks/applicationStore";
 
 const useCatalog = () => {
-    const {state, setCatalog} = useApplicationState();
+    const [catalog, setCatalog] = useApplicationStore("catalog");
 
     useEffect(() => {
-        if (!state.catalog || state.catalog.length === 0) {
+        if (!catalog || catalog.length === 0) {
             fetch("https://parseapi.back4app.com/classes/products", {
                 method: "GET",
                 headers: {
@@ -24,6 +24,7 @@ const useCatalog = () => {
         }
     }, []);
 
+    return {catalog};
 }
 
 export default useCatalog;
