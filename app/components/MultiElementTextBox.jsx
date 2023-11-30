@@ -3,7 +3,7 @@
 import TextBox from "./TextBox";
 import React from "react";
 
-const TwoElementsTextBox = ({children}) => {
+const MultiElementTextBox = ({children}) => {
     return (
         <TextBox>
             <div className={"flex justify-between"}>
@@ -13,4 +13,4 @@ const TwoElementsTextBox = ({children}) => {
     )
 }
 
-export default TwoElementsTextBox;
+export default MultiElementTextBox;

@@ -28,6 +28,9 @@ const NumberPad = ({onDigit, onEnter, onClear}: Props) => {
             <div className={"flex"}>
                 <Button onClick={()=> onClear()}>Clear</Button>
                 <Button onClick={()=> onDigit("0")}>0</Button>
+                <Button onClick={()=> onDigit(".")}>.</Button>
+            </div>
+            <div className={"flex"}>
                 <Button onClick={()=> onEnter()}>Enter</Button>
             </div>
         </div>

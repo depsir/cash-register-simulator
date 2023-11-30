@@ -26,7 +26,11 @@ const useCart = () => {
         return acc + compute(item.price, item.quantity)
     }, 0)
 
-    return {cart, addProduct, total}
+    const emptyCart = () => {
+        setCart([])
+    }
+
+    return {cart, addProduct, total, emptyCart}
 
 }
 

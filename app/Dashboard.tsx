@@ -7,23 +7,22 @@ import useCatalog from "~/hooks/useCatalog";
 import useCart from "~/hooks/useCart";
 import useApplicationState from "~/hooks/useApplicationState";
 import TextBox from "~/components/TextBox";
-import TwoElementsTextBox from "~/components/TwoElementsTextBox";
+import MultiElementTextBox from "~/components/MultiElementTextBox";
+import useNumpad from "~/hooks/useNumpad";
 
 const Dashboard = () => {
     const {applicationState, setApplicationState} = useApplicationState()
-    const {addProduct, total} = useCart()
+    const {addProduct, total, emptyCart} = useCart()
 
-    const [pin, setPin] = React.useState<string>("")
-    const onDigit = (digit: string) => {
-        setPin(pin + digit)
+    const {value: manualBarcode, onDigit: onManualBarcodeDigit, onClear: onManualBarcodeClear, onEnter: onManualBarcodeEnterInternal} = useNumpad("init")
+    const {value: cash, onDigit: onCashDigit, onClear: onCashClear, onEnter: onCashEnterInternal} = useNumpad("checkout")
+    const onManualBarcodeEnter = () => {
+        addProduct(manualBarcode)
+        onManualBarcodeEnterInternal()
     }
-    const onEnter = () => {
-        addProduct(pin)
-        setPin("")
-        setApplicationState("init")
-    }
-    const onClear = () => {
-        setPin("")
+    const onCashEnter = () => {
+        onCashEnterInternal()
+        emptyCart()
         setApplicationState("init")
     }
     return (
@@ -35,20 +34,32 @@ const Dashboard = () => {
                         <CartList/>
                     </div>
                     <div className={"mt-2"}>
-                        <TwoElementsTextBox>
+                        <MultiElementTextBox>
                             <div>Totale</div>
-                            <div>{total}</div>
-                        </TwoElementsTextBox>
+                            <div>{total.toFixed(2)}</div>
+                        </MultiElementTextBox>
                     </div>
                 </div>
                 <div className={"flex-grow basis-0 "}>
                     {(!applicationState || applicationState == "init") && <>
                         <Button onClick={() => setApplicationState("manual-barcode")}>manual</Button>
                         <Button onClick={() => addProduct("1")}>sacchetto</Button>
+                        <Button onClick={() => setApplicationState("checkout")}>checkout</Button>
                     </>}
                     {applicationState == "manual-barcode" && <>
-                        <TextBox>{pin}</TextBox>
-                        <NumberPad onEnter={onEnter} onDigit={onDigit} onClear={onClear}/>
+                        <TextBox>{manualBarcode}</TextBox>
+                        <NumberPad onEnter={onManualBarcodeEnter} onDigit={onManualBarcodeDigit} onClear={onManualBarcodeClear}/>
+                    </>}
+                    {applicationState == "checkout" && <>
+                        <Button onClick={() => setApplicationState("payment-cash")}>contanti</Button>
+                    </>}
+                    {applicationState == "payment-cash" && <>
+                        <MultiElementTextBox>
+                            <div>{cash}</div>
+                            <div>resto</div>
+                            <div>{(cash-total).toFixed(2)}</div>
+                        </MultiElementTextBox>
+                        <NumberPad onEnter={onCashEnter} onDigit={onCashDigit} onClear={onCashClear}/>
                     </>}
                 </div>
             </div>

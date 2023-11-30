@@ -2,15 +2,13 @@ lista features
 
 - scansione barcode
 - inserimento barcode non prodotto
-- visualizzazione totale
 - inserimento multiplo stesso prodotto scansionando una volta sola (pulsante 3x)
-- vincita random premio
-- inserimento sconto da codice a barre
-- calcolo resto
-- pagamento con buoni regalo a scalare
-- generazione buoni regalo
-- prodotti con sconto carta fedeltà
 - inserimento prezzo manuale
 - scansione carta fedeltà
 - aggiunta prodotti a catalogo
 - aggiunta carte fedeltà a database
+- vincita random premio
+- inserimento sconto da codice a barre
+- pagamento con buoni regalo a scalare
+- generazione buoni regalo
+- prodotti con sconto carta fedeltà
