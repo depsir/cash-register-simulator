@@ -1,9 +1,12 @@
 import {useEffect} from "react";
 import {useApplicationStore} from "~/hooks/applicationStore";
-type product = {
+type addProduct = {
     name: string;
-    price: number;
-    barcode: string;
+price: number;
+barcode: string;
+}
+type product = addProduct & {
+    objectId: string;
 }
 const useCatalog = () => {
     const [catalog, setCatalog] = useApplicationStore("catalog");
@@ -28,8 +31,7 @@ const useCatalog = () => {
         }
     }, []);
 
-    const addProduct = (product: product) => {
-        setCatalog([...catalog, product]);
+    const addProduct = (product: addProduct) => {
         fetch("https://parseapi.back4app.com/classes/products", {
             method: "POST",
             headers: {
@@ -41,6 +43,7 @@ const useCatalog = () => {
         })
             .then(response => response.json())
             .then(data => {
+                setCatalog([...catalog, product]);
                 console.log("Success:", data);
             })
             .catch((error) => {
@@ -48,8 +51,27 @@ const useCatalog = () => {
             });
         }
 
+        const deleteProduct = (productId: string) => {
+            fetch(`https://parseapi.back4app.com/classes/products/${productId}`, {
+                method: "DELETE",
+                headers: {
+                    "X-Parse-Application-Id": "LDZJihElZqMmwIGNwGQwTQMxm2SJUsyHVvw6bOuh",
+                    "X-Parse-REST-API-Key": "RTKD5XQ8HBJRtGHLD3MBL7TyekcdomBc7s4Tu503",
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // remove product from catalog
+                    const newCatalog = catalog.filter((product: product) => product.objectId !== productId);
+                    setCatalog(newCatalog);
+                    console.log("Success:", data);
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+        }
 
-    return {catalog, addProduct};
+    return {catalog, addProduct, deleteProduct};
 }
 
 export default useCatalog;

@@ -16,7 +16,7 @@ import SimpleNumberPad from "~/components/SimpleNumberPad";
 const CartPage = () => {
     const {applicationState, setApplicationState} = useApplicationState()
     // subpage state
-    const {catalog, addProduct} = useCatalog()
+    const {catalog, addProduct, deleteProduct} = useCatalog()
     const [subpage, setSubpage] = React.useState("products")
 
     // display a grid of products.
@@ -38,6 +38,10 @@ const CartPage = () => {
         console.log("save", product)
         addProduct({barcode: product.barcode, name: product.name, price: parseFloat(product.price)})
     }
+
+    const onDelete = (id: string) => {
+        deleteProduct(id)
+    }
     return (
         <>
             <div className={"flex-grow basis-0 "}>
@@ -57,12 +61,12 @@ const CartPage = () => {
                     <div className={"flex-grow"}>
                     <div className={" grid grid-cols-[200px_1fr_100px_100px] gap-2"}>
                         {catalog.map((product: any) => {
-                            return <>
+                            return <React.Fragment key={product.objectId}>
                                 <div>{product.barcode}</div>
                                 <div>{product.name}</div>
                                 <div>{product.price}</div>
-                                <div><Button >X</Button></div>
-                            </>
+                                <div><Button onClick={() => onDelete(product.objectId)}>X</Button></div>
+                            </React.Fragment>
                         })}
 
                     </div>
