@@ -10,6 +10,7 @@ import TextBox from "~/components/TextBox";
 import MultiElementTextBox from "~/components/MultiElementTextBox";
 import useNumpad from "~/hooks/useNumpad";
 import BarcodeReader from 'react-barcode-reader'
+import Keyboard from "~/components/Keyboard";
 
 const Dashboard = () => {
     const {applicationState, setApplicationState} = useApplicationState()

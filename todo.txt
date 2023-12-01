@@ -1,12 +1,12 @@
 lista features
 
-- scansione barcode
+- lista full height e scroll
 - inserimento barcode non prodotto
-- inserimento multiplo stesso prodotto scansionando una volta sola (pulsante 3x)
 - inserimento prezzo manuale
 - scansione carta fedeltà
 - aggiunta prodotti a catalogo
 - aggiunta carte fedeltà a database
+- inserimento multiplo stesso prodotto scansionando una volta sola (pulsante 3x)
 - vincita random premio
 - inserimento sconto da codice a barre
 - pagamento con buoni regalo a scalare
