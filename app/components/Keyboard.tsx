@@ -6,11 +6,9 @@ import Button, {Variant} from './Button';
 
 type Props = {
     onDigit: (digit: string) => void
-    onEnter: () => void
-    onClear: () => void
 }
 
-const Keyboard = ({onDigit, onEnter, onClear}: Props) => {
+const Keyboard = ({onDigit, }: Props) => {
     return (
         <div className={"flex-col"}>
             <div className={"flex"}>
@@ -51,14 +49,7 @@ const Keyboard = ({onDigit, onEnter, onClear}: Props) => {
                 <div className={"ml-2"}></div>
                 <Button onClick={()=> onDigit(" ")}> </Button>
                 </div>
-            <div className={"flex"}>
-                <Button onClick={()=> onClear()}>Clear</Button>
-                <Button onClick={()=> onDigit("0")}>0</Button>
-                <Button onClick={()=> onDigit(".")}>.</Button>
-            </div>
-            <div className={"flex"}>
-                <Button onClick={()=> onEnter()}>Enter</Button>
-            </div>
+
         </div>
     )
 }

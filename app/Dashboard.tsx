@@ -11,6 +11,8 @@ import MultiElementTextBox from "~/components/MultiElementTextBox";
 import useNumpad from "~/hooks/useNumpad";
 import BarcodeReader from 'react-barcode-reader'
 import Keyboard from "~/components/Keyboard";
+import CartPage from "~/pages/CartPage";
+import AdminPage from "~/pages/AdminPage";
 
 const Dashboard = () => {
     const {applicationState, setApplicationState} = useApplicationState()
@@ -29,46 +31,10 @@ const Dashboard = () => {
     }
     return (
         <div className={"bg-gray-100 h-screen p-2"}>
-        <h1>App</h1>
-            <div className={"flex flex-grow justify-around"}>
-                <div className={"flex-grow basis-0 m-2 flex-col"}>
-                    <div className={"bg-white border-2 p-2 drop-shadow"}>
-                        <CartList/>
-                    </div>
-                    <div className={"mt-2"}>
-                        <MultiElementTextBox>
-                            <div>Totale</div>
-                            <div>{total.toFixed(2)}</div>
-                        </MultiElementTextBox>
-                    </div>
-                </div>
-                <div className={"flex-grow basis-0 "}>
-                    {(!applicationState || applicationState == "init") && <>
-                        <BarcodeReader
-                            onError={(err) => console.error(err)}
-                            onScan={addProduct}
-                        />
+            <div className={"flex flex-grow justify-around h-full"}>
+                {(!applicationState || applicationState == "init") && <CartPage/> }
+                {(applicationState == "admin") && <AdminPage/> }
 
-                        <Button onClick={() => setApplicationState("manual-barcode")}>manual</Button>
-                        <Button onClick={() => addProduct("1")}>sacchetto</Button>
-                        <Button onClick={() => setApplicationState("checkout")}>checkout</Button>
-                    </>}
-                    {applicationState == "manual-barcode" && <>
-                        <TextBox>{manualBarcode}</TextBox>
-                        <NumberPad onEnter={onManualBarcodeEnter} onDigit={onManualBarcodeDigit} onClear={onManualBarcodeClear}/>
-                    </>}
-                    {applicationState == "checkout" && <>
-                        <Button onClick={() => setApplicationState("payment-cash")}>contanti</Button>
-                    </>}
-                    {applicationState == "payment-cash" && <>
-                        <MultiElementTextBox>
-                            <div>{cash}</div>
-                            <div>resto</div>
-                            <div>{(cash-total).toFixed(2)}</div>
-                        </MultiElementTextBox>
-                        <NumberPad onEnter={onCashEnter} onDigit={onCashDigit} onClear={onCashClear}/>
-                    </>}
-                </div>
             </div>
         </div>
     )

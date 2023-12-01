@@ -1,6 +1,6 @@
 import {useApplicationStore} from "~/hooks/applicationStore";
 
-type ApplicationState = "init" | "manual-barcode" | "checkout" | "payment-cash";
+type ApplicationState = "init" | "admin";
 const useApplicationState = () => {
     const [applicationState, set] = useApplicationStore("state");
 

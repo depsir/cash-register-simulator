@@ -1,6 +1,10 @@
 import {useEffect} from "react";
 import {useApplicationStore} from "~/hooks/applicationStore";
-
+type product = {
+    name: string;
+    price: number;
+    barcode: string;
+}
 const useCatalog = () => {
     const [catalog, setCatalog] = useApplicationStore("catalog");
 
@@ -24,7 +28,28 @@ const useCatalog = () => {
         }
     }, []);
 
-    return {catalog};
+    const addProduct = (product: product) => {
+        setCatalog([...catalog, product]);
+        fetch("https://parseapi.back4app.com/classes/products", {
+            method: "POST",
+            headers: {
+                "X-Parse-Application-Id": "LDZJihElZqMmwIGNwGQwTQMxm2SJUsyHVvw6bOuh",
+                "X-Parse-REST-API-Key": "RTKD5XQ8HBJRtGHLD3MBL7TyekcdomBc7s4Tu503",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(product)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Success:", data);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+        }
+
+
+    return {catalog, addProduct};
 }
 
 export default useCatalog;
