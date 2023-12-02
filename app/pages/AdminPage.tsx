@@ -35,8 +35,8 @@ const CartPage = () => {
         setProduct({...product, barcode: barcode})
     }
     const onSave = () => {
-        console.log("save", product)
         addProduct({barcode: product.barcode, name: product.name, price: parseFloat(product.price)})
+        setProduct({barcode: "", name: "", price: ""})
     }
 
     const onDelete = (id: string) => {
