@@ -11,6 +11,7 @@ import TextBox from "~/components/TextBox";
 import useNumpad from "~/hooks/useNumpad";
 import BarcodeReader from 'react-barcode-reader'
 import Keyboard from "~/components/Keyboard";
+import SimpleNumberPad from "~/components/SimpleNumberPad";
 
 const CartPage = () => {
     const {applicationState, setApplicationState} = useApplicationState()
@@ -68,7 +69,9 @@ const CartPage = () => {
                 </>}
                 {subpage == "manual-barcode" && <>
                     <TextBox>{manualBarcode}</TextBox>
-                    <NumberPad onEnter={onManualBarcodeEnter} onDigit={onManualBarcodeDigit} onClear={onManualBarcodeClear}/>
+                    <SimpleNumberPad onDigit={onManualBarcodeDigit}/>
+                    <Button onClick={() => onManualBarcodeEnter()}>enter</Button>
+                    <Button onClick={() => onManualBarcodeClear()}>clear</Button>
                 </>}
                 {subpage == "checkout" && <>
                     <Button onClick={() => setSubpage("payment-cash")}>contanti</Button>

@@ -1,9 +1,11 @@
-import {useApplicationStore} from "~/hooks/applicationStore";
+import {useApplicationStore } from "~/hooks/applicationStore";
 import useCatalog from "~/hooks/useCatalog";
+import {useMessages} from "~/hooks/useMessages";
 
 const useCart = () => {
     const [cart, setCart] = useApplicationStore('cart')
     const {catalog} = useCatalog()
+    const {addMessage} = useMessages()
 
     const addProduct = (barcode: string) => {
         const productIndex = cart.findIndex((item: any) => item.barcode === barcode)
@@ -13,6 +15,10 @@ const useCart = () => {
 
         } else {
             const product = catalog.find((item: any) => item.barcode === barcode)
+            if (product === undefined) {
+                addMessage({type: 'error', message: 'Product not found'})
+                return console.log('Product not found')
+            }
 
             newCart.push({...product, quantity: 1})
         }

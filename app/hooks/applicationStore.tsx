@@ -3,17 +3,25 @@
 
 import React, { createContext, useContext, useState } from 'react'
 import useCatalog from "~/hooks/useCatalog";
+
+export type Message = {
+  message: string,
+    type: "success" | "error" | "info"
+}
 type State = {
     cart: any[],
     catalog: any[],
+  messages: Message[],
     state?: string
 }
 const initialState: State = {
   cart: [],
   catalog: [],
+  messages: []
 
 }
 const ApplicationStateContext = createContext( {} as any)
+
 
 export function useApplicationStore(partName: keyof State) {
   let {state, setState} = useContext(ApplicationStateContext);

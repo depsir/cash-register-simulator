@@ -13,6 +13,7 @@ import BarcodeReader from 'react-barcode-reader'
 import Keyboard from "~/components/Keyboard";
 import CartPage from "~/pages/CartPage";
 import AdminPage from "~/pages/AdminPage";
+import PopupMessage from "~/components/PopupMessage";
 
 const Dashboard = () => {
     const {applicationState, setApplicationState} = useApplicationState()
@@ -32,6 +33,7 @@ const Dashboard = () => {
     return (
         <div className={"bg-gray-100 h-screen p-2"}>
             <div className={"flex flex-grow justify-around h-full"}>
+                <PopupMessage/>
                 {(!applicationState || applicationState == "init") && <CartPage/> }
                 {(applicationState == "admin") && <AdminPage/> }
 
