@@ -56,23 +56,23 @@ const AdminPage = () => {
                     />
 
                     <div><Button onClick={() => setSubpage("")}>back</Button></div>
-                    <div className={"flex-grow"}>
-                    <div className={" grid grid-cols-[15ex_1fr_6ex_3em] gap-2"}>
-                        {catalog.map((product: any) => {
-                            return <React.Fragment key={product.objectId}>
-                                <div>{product.barcode}</div>
-                                <div>{product.name}</div>
-                                <div>{product.price}</div>
-                                <div><Button onClick={() => onDelete(product.objectId)}>X</Button></div>
-                            </React.Fragment>
-                        })}
+                    <div className={"flex-grow flex-shrink overflow-auto min-h-0"}>
+                        <div className={"grid grid-cols-[15ex_1fr_6ex_3em] gap-2"}>
+                            {catalog.map((product: any) => {
+                                return <React.Fragment key={product.objectId}>
+                                    <div>{product.barcode}</div>
+                                    <div>{product.name}</div>
+                                    <div>{product.price}</div>
+                                    <div><Button onClick={() => onDelete(product.objectId)}>X</Button></div>
+                                </React.Fragment>
+                            })}
 
-                    </div>
+                        </div>
                     </div>
                     <div className={" grid grid-cols-[15ex_1fr_6ex_3em] gap-2"}>
-                        <div className={"bg-white h-10"}>{product.barcode}</div>
-                        <div className={"bg-white h-10"}>{product.name}</div>
-                        <div className={"bg-white h-10"}>{product.price}</div>
+                        <div className={"bg-white h-[3ex] leading-[3ex]"}>{product.barcode}</div>
+                        <div className={"bg-white h-[3ex] leading-[3ex]"}>{product.name}</div>
+                        <div className={"bg-white h-[3ex] leading-[3ex]"}>{product.price}</div>
                         <div><Button onClick={onSave}>Add</Button></div>
                     </div>
                     <div className={"flex"}>
