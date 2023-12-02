@@ -13,14 +13,11 @@ import BarcodeReader from 'react-barcode-reader'
 import Keyboard from "~/components/Keyboard";
 import SimpleNumberPad from "~/components/SimpleNumberPad";
 
-const CartPage = () => {
-    const {applicationState, setApplicationState} = useApplicationState()
-    // subpage state
+const AdminPage = () => {
+    const {setApplicationState} = useApplicationState()
     const {catalog, addProduct, deleteProduct} = useCatalog()
-    const [subpage, setSubpage] = React.useState("products")
+    const [subpage, setSubpage] = React.useState("")
 
-    // display a grid of products.
-    // the last row always visible allows to insert a new item.
 
     const [product, setProduct] = React.useState({barcode: "", name: "", price: ""})
 
@@ -89,4 +86,4 @@ const CartPage = () => {
 
 }
 
-export default CartPage
+export default AdminPage
