@@ -4,11 +4,13 @@ import React from "react";
 
 export enum Variant {
     BASE,
-    SQUARE
+    SQUARE,
+    FULL
 }
 
 const variantMap = {
-    [Variant.BASE]: "flex-grow basis-0",
+    [Variant.BASE]: "",
+    [Variant.FULL]: "flex-grow basis-0",
     [Variant.SQUARE]: "w-16 h-16"
 }
 

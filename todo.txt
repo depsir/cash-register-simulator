@@ -1,10 +1,9 @@
 lista features
 
 - lista full height e scroll
-- inserimento barcode non prodotto
+- pagina admin per settare modalità di scan
 - inserimento prezzo manuale
 - scansione carta fedeltà
-- aggiunta prodotti a catalogo
 - aggiunta carte fedeltà a database
 - inserimento multiplo stesso prodotto scansionando una volta sola (pulsante 3x)
 - vincita random premio

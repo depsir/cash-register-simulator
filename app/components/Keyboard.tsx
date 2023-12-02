@@ -47,7 +47,7 @@ const Keyboard = ({onDigit, }: Props) => {
             </div>
             <div className={"flex"}>
                 <div className={"ml-2"}></div>
-                <Button onClick={()=> onDigit(" ")}> </Button>
+                <Button variant={Variant.FULL} onClick={()=> onDigit(" ")}> </Button>
                 </div>
 
         </div>
