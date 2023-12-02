@@ -17,6 +17,7 @@ const AdminPage = () => {
     const {setApplicationState} = useApplicationState()
     const {catalog, addProduct, deleteProduct} = useCatalog()
     const [subpage, setSubpage] = React.useState("")
+    const [cart, setCart] = useApplicationStore('cart')
 
 
     const [product, setProduct] = React.useState({barcode: "", name: "", price: ""})
@@ -39,13 +40,13 @@ const AdminPage = () => {
     const onDelete = (id: string) => {
         deleteProduct(id)
     }
+
     return (
         <>
             <div className={"flex-grow basis-0 "}>
                 {!subpage && <>
                     <Button onClick={() => setApplicationState("init")}>back</Button>
                     <Button onClick={() => setSubpage("products")}>products</Button>
-
                 </>}
 
                 {subpage == "products" && <div className={"flex flex-col h-full"}>

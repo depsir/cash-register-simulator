@@ -1,6 +1,5 @@
 lista features
 
-- lista full height e scroll
 - pagina admin per settare modalità di scan
 - inserimento prezzo manuale
 - scansione carta fedeltà

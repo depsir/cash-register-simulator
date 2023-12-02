@@ -2,20 +2,18 @@ import React from "react";
 import CartList from "~/components/CartList";
 import MultiElementTextBox from "~/components/MultiElementTextBox";
 import NumberPad from "~/components/NumberPad";
-import {useApplicationStore} from "~/hooks/applicationStore";
 import Button from "~/components/Button";
-import useCatalog from "~/hooks/useCatalog";
 import useCart from "~/hooks/useCart";
 import useApplicationState from "~/hooks/useApplicationState";
 import TextBox from "~/components/TextBox";
 import useNumpad from "~/hooks/useNumpad";
 import BarcodeReader from 'react-barcode-reader'
-import Keyboard from "~/components/Keyboard";
 import SimpleNumberPad from "~/components/SimpleNumberPad";
 
 const CartPage = () => {
-    const {applicationState, setApplicationState} = useApplicationState()
-    const {addProduct, total, emptyCart} = useCart()
+    const {setApplicationState} = useApplicationState()
+    const {addProduct, total, emptyCart, cart} = useCart()
+    const cartListRef = React.useRef(null)
 
     const [subpage, setSubpage] = React.useState("")
 
@@ -42,10 +40,17 @@ const CartPage = () => {
         setSubpage("")
     }
 
+    React.useEffect(() => {
+        if (cartListRef.current) {
+            // @ts-ignore
+            cartListRef.current.scrollTop = cartListRef.current.scrollHeight
+        }
+    }, [cart])
+
     return (
         <>
             <div className={"flex-grow flex basis-0 m-2 flex-col"}>
-                <div className={"bg-white flex-grow border-2 p-2 drop-shadow"}>
+                <div ref={cartListRef} className={"bg-white flex-grow border-2 p-2 drop-shadow overflow-auto"}>
                     <CartList/>
                 </div>
                 <div className={"mt-2"}>

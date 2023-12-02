@@ -1,6 +1,7 @@
 import {useApplicationStore} from "~/hooks/applicationStore";
 import useCart from "~/hooks/useCart";
 import {compute, formatNumber} from "~/utils/utils";
+import React, {useEffect} from "react";
 
 const CartList = () => {
     const {cart } = useCart()
