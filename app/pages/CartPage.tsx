@@ -12,13 +12,23 @@ import SimpleNumberPad from "~/components/SimpleNumberPad";
 
 const CartPage = () => {
     const {setApplicationState} = useApplicationState()
-    const {addProduct, total, emptyCart, cart} = useCart()
+    const {addProduct, total, emptyCart, cart, addManualPrice} = useCart()
     const cartListRef = React.useRef(null)
 
     const [subpage, setSubpage] = React.useState("")
 
     const {value: manualBarcode, onDigit: onManualBarcodeDigit, onClear: onManualBarcodeClearInternal, onEnter: onManualBarcodeEnterInternal} = useNumpad()
+    const {value: manualPrice, onDigit: onManualPriceDigit, onClear: onManualPriceClearInternal, onEnter: onManualPriceEnterInternal} = useNumpad()
     const {value: cash, onDigit: onCashDigit, onClear: onCashClearInternal, onEnter: onCashEnterInternal} = useNumpad()
+    const onManualPriceEnter = () => {
+        addManualPrice(parseFloat(manualPrice))
+        onManualPriceEnterInternal()
+        setSubpage("")
+    }
+    const onManualPriceClear = () => {
+        onManualPriceClearInternal()
+        setSubpage("")
+    }
     const onManualBarcodeEnter = () => {
         addProduct(manualBarcode)
         onManualBarcodeEnterInternal()
@@ -67,7 +77,8 @@ const CartPage = () => {
                         onScan={addProduct}
                     />
 
-                    <Button onClick={() => setSubpage("manual-barcode")}>manual</Button>
+                    <Button onClick={() => setSubpage("manual-barcode")}>barcode manuale</Button>
+                    <Button onClick={() => setSubpage("manual-price")}>prezzo manuale</Button>
                     <Button onClick={() => addProduct("1")}>sacchetto</Button>
                     <Button onClick={() => setSubpage("checkout")}>checkout</Button>
                     <Button onClick={() => setApplicationState("admin")}>admin</Button>
@@ -77,6 +88,12 @@ const CartPage = () => {
                     <SimpleNumberPad onDigit={onManualBarcodeDigit}/>
                     <Button onClick={() => onManualBarcodeEnter()}>enter</Button>
                     <Button onClick={() => onManualBarcodeClear()}>clear</Button>
+                </>}
+                {subpage == "manual-price" && <>
+                    <TextBox>{manualPrice}</TextBox>
+                    <SimpleNumberPad onDigit={onManualPriceDigit}/>
+                    <Button onClick={() => onManualPriceEnter()}>enter</Button>
+                    <Button onClick={() => onManualPriceClear()}>clear</Button>
                 </>}
                 {subpage == "checkout" && <>
                     <Button onClick={() => setSubpage("payment-cash")}>contanti</Button>

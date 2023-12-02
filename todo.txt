@@ -1,7 +1,6 @@
 lista features
 
 - pagina admin per settare modalità di scan
-- inserimento prezzo manuale
 - scansione carta fedeltà
 - aggiunta carte fedeltà a database
 - inserimento multiplo stesso prodotto scansionando una volta sola (pulsante 3x)

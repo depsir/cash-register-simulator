@@ -11,7 +11,7 @@ const Dashboard = () => {
 
     return (
         <div className={"bg-gray-100 h-screen p-2 text-5xl"}>
-            <div className={"flex flex-grow justify-around h-full"}>
+            <div className={"flex flex-grow justify-around h-full uppercase"}>
                 <PopupMessage/>
                 {(!applicationState || applicationState == "init") && <CartPage/> }
                 {(applicationState == "admin") && <AdminPage/> }

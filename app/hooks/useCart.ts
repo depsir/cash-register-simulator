@@ -36,8 +36,14 @@ const useCart = () => {
         setCart([])
     }
 
-    return {cart, addProduct, total, emptyCart}
+    const addManualPrice = (price: number) => {
+        const newCart = [...cart]
+        const product = {barcode: 'manual', name: 'prezzo manuale', price: price}
+        newCart.push({...product, quantity: 1})
+        setCart(newCart)
+    }
 
+    return {cart, addProduct, total, emptyCart, addManualPrice}
 }
 
 export default useCart
