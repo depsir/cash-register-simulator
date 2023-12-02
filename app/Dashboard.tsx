@@ -10,7 +10,7 @@ const Dashboard = () => {
     const {applicationState} = useApplicationState()
 
     return (
-        <div className={"bg-gray-100 h-screen p-2"}>
+        <div className={"bg-gray-100 h-screen p-2 text-5xl"}>
             <div className={"flex flex-grow justify-around h-full"}>
                 <PopupMessage/>
                 {(!applicationState || applicationState == "init") && <CartPage/> }

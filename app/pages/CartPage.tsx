@@ -44,8 +44,8 @@ const CartPage = () => {
 
     return (
         <>
-            <div className={"flex-grow basis-0 m-2 flex-col"}>
-                <div className={"bg-white border-2 p-2 drop-shadow"}>
+            <div className={"flex-grow flex basis-0 m-2 flex-col"}>
+                <div className={"bg-white flex-grow border-2 p-2 drop-shadow"}>
                     <CartList/>
                 </div>
                 <div className={"mt-2"}>

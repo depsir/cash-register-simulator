@@ -56,7 +56,7 @@ const AdminPage = () => {
 
                     <div><Button onClick={() => setSubpage("")}>back</Button></div>
                     <div className={"flex-grow"}>
-                    <div className={" grid grid-cols-[200px_1fr_100px_100px] gap-2"}>
+                    <div className={" grid grid-cols-[15ex_1fr_6ex_3em] gap-2"}>
                         {catalog.map((product: any) => {
                             return <React.Fragment key={product.objectId}>
                                 <div>{product.barcode}</div>
@@ -68,7 +68,7 @@ const AdminPage = () => {
 
                     </div>
                     </div>
-                    <div className={"grid grid-cols-[200px_1fr_100px_100px] gap-2"}>
+                    <div className={" grid grid-cols-[15ex_1fr_6ex_3em] gap-2"}>
                         <div className={"bg-white h-10"}>{product.barcode}</div>
                         <div className={"bg-white h-10"}>{product.name}</div>
                         <div className={"bg-white h-10"}>{product.price}</div>

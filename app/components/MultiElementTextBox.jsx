@@ -1,5 +1,3 @@
-//compponetn
-
 import TextBox from "./TextBox";
 import React from "react";
 
