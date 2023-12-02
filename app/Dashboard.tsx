@@ -1,7 +1,5 @@
 import React from 'react'
-import useCart from "~/hooks/useCart";
 import useApplicationState from "~/hooks/useApplicationState";
-import useNumpad from "~/hooks/useNumpad";
 import CartPage from "~/pages/CartPage";
 import AdminPage from "~/pages/AdminPage";
 import PopupMessage from "~/components/PopupMessage";
@@ -10,7 +8,7 @@ const Dashboard = () => {
     const {applicationState} = useApplicationState()
 
     return (
-        <div className={"bg-gray-100 h-screen p-2 md:text-5xl"}>
+        <div className={"bg-gray-100 h-screen p-2 lg:text-5xl"}>
             <div className={"flex flex-grow justify-around h-full uppercase"}>
                 <PopupMessage/>
                 {(!applicationState || applicationState == "init") && <CartPage/> }

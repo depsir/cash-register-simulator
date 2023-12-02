@@ -1,5 +1,5 @@
 const TextBox = ({children}) => (
-    <div className={"h-[4ex] border-2 p-4 bg-white"}>
+    <div className={"h-[4ex] border-2 p-[0.5ex] bg-white"}>
         {children}
     </div>
 );
