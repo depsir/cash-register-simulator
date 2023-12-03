@@ -1,7 +1,6 @@
 import React from "react";
 import CartList from "~/components/CartList";
 import MultiElementTextBox from "~/components/MultiElementTextBox";
-import NumberPad from "~/components/NumberPad";
 import Button from "~/components/Button";
 import useCart from "~/hooks/useCart";
 import useApplicationState from "~/hooks/useApplicationState";
@@ -97,6 +96,7 @@ const CartPage = () => {
                 </>}
                 {subpage == "checkout" && <>
                     <Button onClick={() => setSubpage("payment-cash")}>contanti</Button>
+                    <Button onClick={() => setSubpage("")}>indietro</Button>
                 </>}
                 {subpage == "payment-cash" && <>
                     <MultiElementTextBox>
@@ -104,7 +104,11 @@ const CartPage = () => {
                         <div>resto</div>
                         <div>{(cash-total).toFixed(2)}</div>
                     </MultiElementTextBox>
-                    <NumberPad onEnter={onCashEnter} onDigit={onCashDigit} onClear={onCashClear}/>
+                    <SimpleNumberPad onDigit={onCashDigit}/>
+                    <Button onClick={onCashEnter}>ok</Button>
+                    <Button onClick={onCashClear}>indietro</Button>
+
+
                 </>}
             </div>
            </>
