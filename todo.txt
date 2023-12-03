@@ -1,5 +1,11 @@
 lista features
 
+- pagina di test per barcode (o pagina ricerca prodotto?)
+- pulsante per spegnere rpi/uscire da kiosk mode
+- ridurre tastiera nella lista prodotti
+- quando fai back da inserimento prodotto deve resettare il form
+- annulla su checkout
+- sbianca tutto senza checkout
 - pagina admin per settare modalità di scan
 - scansione carta fedeltà
 - aggiunta carte fedeltà a database
