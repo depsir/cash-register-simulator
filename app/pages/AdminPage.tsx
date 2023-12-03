@@ -13,6 +13,7 @@ const AdminPage = () => {
     const [subpage, setSubpage] = React.useState("")
     const [cart, setCart] = useApplicationStore('cart')
 
+    const [testBarcode, setTestBarcode] = React.useState("scansiona un barcode. appare qui")
 
     const [product, setProduct] = React.useState({barcode: "", name: "", price: ""})
 
@@ -31,6 +32,7 @@ const AdminPage = () => {
         setProduct({barcode: "", name: "", price: ""})
     }
 
+
     const onDelete = (id: string) => {
         deleteProduct(id)
     }
@@ -39,14 +41,29 @@ const AdminPage = () => {
         setProduct({barcode: "", name: "", price: ""})
         setSubpage("");
     };
+
+    const emptyCart = () => {
+        setCart([])
+        setApplicationState("init")
+    }
     return (
         <>
             <div className={"flex-grow basis-0 "}>
                 {!subpage && <>
-                    <Button onClick={() => setSubpage("products")}>products</Button>
+                    <Button onClick={() => setSubpage("products")}>catalogo</Button>
+                    <Button onClick={() => setSubpage("test-barcode")}>prova barcode</Button>
+                    <Button onClick={emptyCart}>svuota carrello</Button>
                     <Button onClick={() => setApplicationState("init")}>back</Button>
                 </>}
 
+                {subpage == "test-barcode" && <div className={"flex flex-col h-full"}>
+                    <BarcodeReader
+                        onError={(err) => console.error(err)}
+                        onScan={(barcode: string) => setTestBarcode(barcode)}
+                    />
+                    <div>{testBarcode}</div>
+                    <div><Button onClick={() => {setTestBarcode("");setSubpage("")}}>back</Button></div>
+                </div>}
                 {subpage == "products" && <div className={"flex flex-col h-full"}>
                     <BarcodeReader
                         onError={(err) => console.error(err)}

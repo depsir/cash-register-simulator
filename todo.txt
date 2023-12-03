@@ -1,9 +1,7 @@
 lista features
 
-- pagina di test per barcode (o pagina ricerca prodotto?)
 - pulsante per spegnere rpi/uscire da kiosk mode
 - ridurre tastiera nella lista prodotti
-- sbianca tutto senza checkout
 - pagina admin per settare modalità di scan
 - scansione carta fedeltà
 - aggiunta carte fedeltà a database
@@ -13,3 +11,4 @@ lista features
 - pagamento con buoni regalo a scalare
 - generazione buoni regalo
 - prodotti con sconto carta fedeltà
+- ricerca prodotto in lista prodotti
