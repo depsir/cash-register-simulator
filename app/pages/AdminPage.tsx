@@ -35,12 +35,16 @@ const AdminPage = () => {
         deleteProduct(id)
     }
 
+    const exitFromProductPage = () => {
+        setProduct({barcode: "", name: "", price: ""})
+        setSubpage("");
+    };
     return (
         <>
             <div className={"flex-grow basis-0 "}>
                 {!subpage && <>
-                    <Button onClick={() => setApplicationState("init")}>back</Button>
                     <Button onClick={() => setSubpage("products")}>products</Button>
+                    <Button onClick={() => setApplicationState("init")}>back</Button>
                 </>}
 
                 {subpage == "products" && <div className={"flex flex-col h-full"}>
@@ -49,7 +53,7 @@ const AdminPage = () => {
                         onScan={onBarcode}
                     />
 
-                    <div><Button onClick={() => setSubpage("")}>back</Button></div>
+                    <div><Button onClick={exitFromProductPage}>back</Button></div>
                     <div className={"flex-grow flex-shrink overflow-auto min-h-0"}>
                         <div className={"grid grid-cols-[15ex_1fr_6ex_3em] gap-2"}>
                             {catalog.map((product: any) => {
