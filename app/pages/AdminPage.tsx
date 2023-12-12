@@ -51,9 +51,22 @@ const AdminPage = () => {
             .then((response) => {
                 // alert the result code and the result message
                 alert(response.status + " " + response.statusText);
-
-            }
-        );
+            })
+            .catch((err) => {
+                // alert the error if any error occurred
+                alert(err);
+            })
+    }
+    const shutdown = () => {
+        fetch("http://localhost:8080/cgi-bin/shutdown.sh")
+            .then((response) => {
+                // alert the result code and the result message
+                alert(response.status + " " + response.statusText);
+            })
+            .catch((err) => {
+                // alert the error if any error occurred
+                alert(err);
+            })
     }
     return (
         <>
@@ -63,6 +76,7 @@ const AdminPage = () => {
                     <Button onClick={() => setSubpage("test-barcode")}>prova barcode</Button>
                     <Button onClick={emptyCart}>svuota carrello</Button>
                     <Button onClick={exit}>exit</Button>
+                    <Button onClick={shutdown}>spegni</Button>
                     <Button onClick={() => setApplicationState("init")}>back</Button>
                 </>}
 
