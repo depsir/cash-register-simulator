@@ -46,6 +46,15 @@ const AdminPage = () => {
         setCart([])
         setApplicationState("init")
     }
+    const exit = () => {
+        fetch("http://localhost:8080/stop-kiosk.sh")
+            .then((response) => {
+                // alert the result code and the result message
+                alert(response.status + " " + response.statusText);
+
+            }
+        );
+    }
     return (
         <>
             <div className={"flex-grow basis-0 "}>
@@ -53,6 +62,7 @@ const AdminPage = () => {
                     <Button onClick={() => setSubpage("products")}>catalogo</Button>
                     <Button onClick={() => setSubpage("test-barcode")}>prova barcode</Button>
                     <Button onClick={emptyCart}>svuota carrello</Button>
+                    <Button onClick={exit}>exit</Button>
                     <Button onClick={() => setApplicationState("init")}>back</Button>
                 </>}
 
