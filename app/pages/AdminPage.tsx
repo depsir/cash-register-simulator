@@ -47,7 +47,7 @@ const AdminPage = () => {
         setApplicationState("init")
     }
     const exit = () => {
-        fetch("http://localhost:8080/stop-kiosk.sh")
+        fetch("http://localhost:8080/cgi-bin/stop-kiosk.sh")
             .then((response) => {
                 // alert the result code and the result message
                 alert(response.status + " " + response.statusText);
