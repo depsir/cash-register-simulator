@@ -1,8 +1,4 @@
-
-// a context provider to store application state
-
 import React, { createContext, useContext, useState } from 'react'
-import useCatalog from "~/hooks/useCatalog";
 
 export type Message = {
   message: string,
@@ -12,12 +8,13 @@ type State = {
     cart: any[],
     catalog: any[],
   messages: Message[],
-    state?: string
+    customers: any[],
 }
 const initialState: State = {
   cart: [],
   catalog: [],
-  messages: []
+  messages: [],
+    customers: [],
 
 }
 const ApplicationStateContext = createContext( {} as any)
