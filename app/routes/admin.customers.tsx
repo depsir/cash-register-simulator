@@ -1,10 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState } from 'react';
 import BarcodeReader from 'react-barcode-reader';
 import useCustomers from "~/hooks/useCustomers";
 import Button from "~/components/Button";
 import {useNavigate} from "@remix-run/react";
 import Keyboard from "~/components/Keyboard";
-import SimpleNumberPad from "~/components/SimpleNumberPad";
 import usesCustomerForm from "~/hooks/usesCustomerForm";
 
 interface Customer {
@@ -13,14 +12,12 @@ interface Customer {
 }
 
 const CustomerManagement: React.FC = () => {
-    const [newName, setNewName] = useState("");
     const [error, setError] = useState("");
     const {customers, deleteCustomer, addCustomer} = useCustomers()
     const navigate = useNavigate();
-    const {customer, onKeyboardDigit, onClear, onSave, onBarcode} = usesCustomerForm(addCustomer);
+    const {customer, onKeyboardDigit, onSave, onBarcode} = usesCustomerForm(addCustomer);
 
     const exitFromProductPage = () => {
-        // onClear(); // Use the onClear function here
         navigate("/admin")
     };
 
