@@ -19,6 +19,7 @@ const Admin_index = () => {
             <div className={"flex-grow basis-0 "}>
                 <Button onClick={() => navigate("catalog")}>catalogo</Button>
                 <Button onClick={() => navigate("test-barcode")}>prova barcode</Button>
+                <Button onClick={() => navigate("customers")}>clienti</Button>
                 <Button onClick={emptyCartAction}>svuota carrello</Button>
                 <Button onClick={exit}>exit</Button>
                 <Button onClick={shutdown}>spegni</Button>

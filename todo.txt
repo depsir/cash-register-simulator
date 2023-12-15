@@ -1,10 +1,10 @@
 lista features
 
-- pulsante per spegnere rpi/uscire da kiosk mode
+- backspace nella tastiera
 - ridurre tastiera nella lista prodotti
 - pagina admin per settare modalità di scan
+- generazione codice a barre
 - scansione carta fedeltà
-- aggiunta carte fedeltà a database
 - inserimento multiplo stesso prodotto scansionando una volta sola (pulsante 3x)
 - vincita random premio
 - inserimento sconto da codice a barre
