@@ -1,5 +1,4 @@
 import React from "react";
-import {useApplicationStore} from "~/hooks/applicationStore";
 import Button from "~/components/Button";
 import useCatalog from "~/hooks/useCatalog";
 import BarcodeReader from 'react-barcode-reader'
@@ -10,11 +9,10 @@ import useCart from "~/hooks/useCart";
 import useLocalServerIntegration from "~/hooks/useLocalServerIntegration";
 import {useNavigate} from "@remix-run/react";
 
-const Admin = () => {
+const Admin_index = () => {
     const {catalog, addProduct, deleteProduct} = useCatalog();
     const [subpage, setSubpage] = React.useState("");
     const {emptyCart} = useCart()
-    const [testBarcode, setTestBarcode] = React.useState("scan a barcode. it appears here");
     const navigate = useNavigate();
 
     const { exit, shutdown } = useLocalServerIntegration();
@@ -36,21 +34,12 @@ const Admin = () => {
             <div className={"flex-grow basis-0 "}>
                 {!subpage && <>
                     <Button onClick={() => setSubpage("products")}>catalogo</Button>
-                    <Button onClick={() => setSubpage("test-barcode")}>prova barcode</Button>
+                    <Button onClick={() => navigate("test-barcode")}>prova barcode</Button>
                     <Button onClick={emptyCartAction}>svuota carrello</Button>
                     <Button onClick={exit}>exit</Button>
                     <Button onClick={shutdown}>spegni</Button>
                     <Button onClick={() => navigate("/")}>back</Button>
                 </>}
-
-                {subpage == "test-barcode" && <div className={"flex flex-col h-full"}>
-                    <BarcodeReader
-                        onError={(err) => console.error(err)}
-                        onScan={(barcode: string) => setTestBarcode(barcode)}
-                    />
-                    <div>{testBarcode}</div>
-                    <div><Button onClick={() => {setTestBarcode("");setSubpage("")}}>back</Button></div>
-                </div>}
                 {subpage == "products" && <div className={"flex flex-col h-full"}>
                     <BarcodeReader
                         onError={(err) => console.error(err)}
@@ -89,4 +78,4 @@ const Admin = () => {
 
 }
 
-export default Admin
+export default Admin_index
