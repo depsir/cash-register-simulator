@@ -2,23 +2,21 @@ import React from "react";
 import {useApplicationStore} from "~/hooks/applicationStore";
 import Button from "~/components/Button";
 import useCatalog from "~/hooks/useCatalog";
-import useApplicationState from "~/hooks/useApplicationState";
 import BarcodeReader from 'react-barcode-reader'
 import Keyboard from "~/components/Keyboard";
 import SimpleNumberPad from "~/components/SimpleNumberPad";
-
-// Assuming that you have useProductForm in the hooks directory
 import useProductForm from "~/hooks/useProductForm";
 import useCart from "~/hooks/useCart";
 import useLocalServerIntegration from "~/hooks/useLocalServerIntegration";
+import {useNavigate} from "@remix-run/react";
 
-const AdminPage = () => {
-    const {setApplicationState} = useApplicationState();
+const Admin = () => {
     const {catalog, addProduct, deleteProduct} = useCatalog();
     const [subpage, setSubpage] = React.useState("");
     const [cart, setCart] = useApplicationStore('cart');
     const {emptyCart} = useCart()
     const [testBarcode, setTestBarcode] = React.useState("scan a barcode. it appears here");
+    const navigate = useNavigate();
 
     const { exit, shutdown } = useLocalServerIntegration();
     const {product, onBarcode, onKeyboardDigit, onNumberPadDigit, onSave, onClear} = useProductForm(addProduct);
@@ -32,7 +30,7 @@ const AdminPage = () => {
 
     const emptyCartAction = () => {
         emptyCart()
-        setApplicationState("init")
+        navigate("/")
     }
     return (
         <>
@@ -43,7 +41,7 @@ const AdminPage = () => {
                     <Button onClick={emptyCartAction}>svuota carrello</Button>
                     <Button onClick={exit}>exit</Button>
                     <Button onClick={shutdown}>spegni</Button>
-                    <Button onClick={() => setApplicationState("init")}>back</Button>
+                    <Button onClick={() => navigate("/")}>back</Button>
                 </>}
 
                 {subpage == "test-barcode" && <div className={"flex flex-col h-full"}>
@@ -92,4 +90,4 @@ const AdminPage = () => {
 
 }
 
-export default AdminPage
+export default Admin

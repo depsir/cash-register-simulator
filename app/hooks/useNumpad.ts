@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import useApplicationState from "~/hooks/useApplicationState";
 
 const useNumpad = () => {
     const [value, setValue] = React.useState<string>("")

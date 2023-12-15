@@ -3,14 +3,13 @@ import CartList from "~/components/CartList";
 import MultiElementTextBox from "~/components/MultiElementTextBox";
 import Button from "~/components/Button";
 import useCart from "~/hooks/useCart";
-import useApplicationState from "~/hooks/useApplicationState";
 import TextBox from "~/components/TextBox";
 import useNumpad from "~/hooks/useNumpad";
 import BarcodeReader from 'react-barcode-reader'
 import SimpleNumberPad from "~/components/SimpleNumberPad";
+import { useNavigate } from '@remix-run/react'
 
-const CartPage = () => {
-    const {setApplicationState} = useApplicationState()
+const _index = () => {
     const {addProduct, total, emptyCart, cart, addManualPrice} = useCart()
     const cartListRef = React.useRef(null)
 
@@ -19,6 +18,8 @@ const CartPage = () => {
     const {value: manualBarcode, onDigit: onManualBarcodeDigit, onClear: onManualBarcodeClearInternal, onEnter: onManualBarcodeEnterInternal} = useNumpad()
     const {value: manualPrice, onDigit: onManualPriceDigit, onClear: onManualPriceClearInternal, onEnter: onManualPriceEnterInternal} = useNumpad()
     const {value: cash, onDigit: onCashDigit, onClear: onCashClearInternal, onEnter: onCashEnterInternal} = useNumpad()
+    const navigate = useNavigate();
+
     const onManualPriceEnter = () => {
         addManualPrice(parseFloat(manualPrice))
         onManualPriceEnterInternal()
@@ -49,12 +50,6 @@ const CartPage = () => {
         setSubpage("")
     }
 
-    React.useEffect(() => {
-        if (cartListRef.current) {
-            // @ts-ignore
-            cartListRef.current.scrollTop = cartListRef.current.scrollHeight
-        }
-    }, [cart])
 
     return (
         <>
@@ -80,7 +75,7 @@ const CartPage = () => {
                     <Button onClick={() => setSubpage("manual-price")}>prezzo manuale</Button>
                     <Button onClick={() => addProduct("1")}>sacchetto</Button>
                     <Button onClick={() => setSubpage("checkout")}>checkout</Button>
-                    <Button onClick={() => setApplicationState("admin")}>admin</Button>
+                    <Button onClick={() => navigate("/admin")}>admin</Button>
                 </>}
                 {subpage == "manual-barcode" && <>
                     <TextBox>{manualBarcode}</TextBox>
@@ -117,4 +112,4 @@ const CartPage = () => {
 
 }
 
-export default CartPage
+export default _index
