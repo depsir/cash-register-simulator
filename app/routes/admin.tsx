@@ -13,7 +13,6 @@ import {useNavigate} from "@remix-run/react";
 const Admin = () => {
     const {catalog, addProduct, deleteProduct} = useCatalog();
     const [subpage, setSubpage] = React.useState("");
-    const [cart, setCart] = useApplicationStore('cart');
     const {emptyCart} = useCart()
     const [testBarcode, setTestBarcode] = React.useState("scan a barcode. it appears here");
     const navigate = useNavigate();
