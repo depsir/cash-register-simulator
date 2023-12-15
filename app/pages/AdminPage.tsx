@@ -7,43 +7,29 @@ import BarcodeReader from 'react-barcode-reader'
 import Keyboard from "~/components/Keyboard";
 import SimpleNumberPad from "~/components/SimpleNumberPad";
 
+// Assuming that you have useProductForm in the hooks directory
+import useProductForm from "~/hooks/useProductForm";
+import useCart from "~/hooks/useCart";
+
 const AdminPage = () => {
-    const {setApplicationState} = useApplicationState()
-    const {catalog, addProduct, deleteProduct} = useCatalog()
-    const [subpage, setSubpage] = React.useState("")
-    const [cart, setCart] = useApplicationStore('cart')
+    const {setApplicationState} = useApplicationState();
+    const {catalog, addProduct, deleteProduct} = useCatalog();
+    const [subpage, setSubpage] = React.useState("");
+    const [cart, setCart] = useApplicationStore('cart');
+    const {emptyCart} = useCart()
+    const [testBarcode, setTestBarcode] = React.useState("scan a barcode. it appears here");
 
-    const [testBarcode, setTestBarcode] = React.useState("scansiona un barcode. appare qui")
-
-    const [product, setProduct] = React.useState({barcode: "", name: "", price: ""})
-
-    const onKeyboardDigit = (digit: string) => {
-        setProduct({...product, name: product.name + digit})
-    }
-
-    const onNumberPadDigit = (digit: string) => {
-        setProduct({...product, price: product.price + digit})
-    }
-    const onBarcode = (barcode: string) => {
-        setProduct({...product, barcode: barcode})
-    }
-    const onSave = () => {
-        addProduct({barcode: product.barcode, name: product.name, price: parseFloat(product.price)})
-        setProduct({barcode: "", name: "", price: ""})
-    }
-
-
+    const {product, onBarcode, onKeyboardDigit, onNumberPadDigit, onSave, onClear} = useProductForm(addProduct);
     const onDelete = (id: string) => {
         deleteProduct(id)
     }
-
     const exitFromProductPage = () => {
-        setProduct({barcode: "", name: "", price: ""})
+        onClear(); // Use the onClear function here
         setSubpage("");
     };
 
-    const emptyCart = () => {
-        setCart([])
+    const emptyCartAction = () => {
+        emptyCart()
         setApplicationState("init")
     }
     const exit = () => {
@@ -74,7 +60,7 @@ const AdminPage = () => {
                 {!subpage && <>
                     <Button onClick={() => setSubpage("products")}>catalogo</Button>
                     <Button onClick={() => setSubpage("test-barcode")}>prova barcode</Button>
-                    <Button onClick={emptyCart}>svuota carrello</Button>
+                    <Button onClick={emptyCartAction}>svuota carrello</Button>
                     <Button onClick={exit}>exit</Button>
                     <Button onClick={shutdown}>spegni</Button>
                     <Button onClick={() => setApplicationState("init")}>back</Button>
