@@ -10,6 +10,7 @@ import SimpleNumberPad from "~/components/SimpleNumberPad";
 // Assuming that you have useProductForm in the hooks directory
 import useProductForm from "~/hooks/useProductForm";
 import useCart from "~/hooks/useCart";
+import useLocalServerIntegration from "~/hooks/useLocalServerIntegration";
 
 const AdminPage = () => {
     const {setApplicationState} = useApplicationState();
@@ -19,6 +20,7 @@ const AdminPage = () => {
     const {emptyCart} = useCart()
     const [testBarcode, setTestBarcode] = React.useState("scan a barcode. it appears here");
 
+    const { exit, shutdown } = useLocalServerIntegration();
     const {product, onBarcode, onKeyboardDigit, onNumberPadDigit, onSave, onClear} = useProductForm(addProduct);
     const onDelete = (id: string) => {
         deleteProduct(id)
@@ -31,28 +33,6 @@ const AdminPage = () => {
     const emptyCartAction = () => {
         emptyCart()
         setApplicationState("init")
-    }
-    const exit = () => {
-        fetch("http://localhost:8080/cgi-bin/stop-kiosk.sh")
-            .then((response) => {
-                // alert the result code and the result message
-                alert(response.status + " " + response.statusText);
-            })
-            .catch((err) => {
-                // alert the error if any error occurred
-                alert(err);
-            })
-    }
-    const shutdown = () => {
-        fetch("http://localhost:8080/cgi-bin/shutdown.sh")
-            .then((response) => {
-                // alert the result code and the result message
-                alert(response.status + " " + response.statusText);
-            })
-            .catch((err) => {
-                // alert the error if any error occurred
-                alert(err);
-            })
     }
     return (
         <>
