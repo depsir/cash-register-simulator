@@ -9,7 +9,7 @@ import {
 import type { LinksFunction } from "@remix-run/node"; // or cloudflare/deno
 
 import styles from "./styles/tailwind.css";
-import Dashboard from "~/Dashboard";
+import App from "~/App";
 import {ApplicationStateProvider} from "~/hooks/applicationStore";
 
 export const links: LinksFunction = () => [
@@ -27,7 +27,7 @@ export default function App() {
       </head>
       <body>
       <ApplicationStateProvider>
-        <Dashboard />
+        <App />
       </ApplicationStateProvider>
 
         <ScrollRestoration />

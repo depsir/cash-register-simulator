@@ -4,7 +4,7 @@ import CartPage from "~/pages/CartPage";
 import AdminPage from "~/pages/AdminPage";
 import PopupMessage from "~/components/PopupMessage";
 
-const Dashboard = () => {
+const App = () => {
     const {applicationState} = useApplicationState()
 
     return (
@@ -21,4 +21,4 @@ const Dashboard = () => {
 
 }
 
-export default Dashboard
+export default App
