@@ -14,16 +14,40 @@ const variantMap = {
     [Variant.SQUARE]: "w-[2em] h-[2em]"
 }
 
+const iconMap = {
+    "search": "\ue8b6",
+    "back": "\ue5c4",
+    "power": "\ue8ac",
+    "logout": "\ue9ba",
+    "person": "\ue7fd",
+    "empty-cart": "\uf4f7",
+    "checkout": "\ueb88",
+    "barcode-scanner": "\ue70c",
+    "inventory": "\ue179",
+    "settings": "\ue8b8",
+    "delete": "\ue872",
+    "add": "\ue145",
+    "barcode": "\ue145",
+    "euro": "\uea15",
+    "shopping-bag": "\uf1cc",
+    "payment-cash": "\uef63",
+    "close": "\ue5cd",
+    "check": "\ue5ca",
+}
+
 type Props = {
     variant?: Variant,
     onClick?: () => void
+    icon?: keyof typeof iconMap
 }
 
-const Button: React.FC<React.PropsWithChildren<Props>> = ({children, onClick, variant=Variant.BASE}) => {
+const Button: React.FC<React.PropsWithChildren<Props>> = ({children, onClick, variant=Variant.BASE, icon}) => {
   return (
-    <div onClick={onClick} className={"cursor-pointer p-[1ex] border-2 text-center m-2 uppercase drop-shadow bg-gray-300 " + variantMap[variant]}>{children}
-
-    </div>
+      <div onClick={onClick}
+           className={"cursor-pointer p-[1ex] border-2 text-center m-2 uppercase drop-shadow bg-gray-300 flex justify-center gap-2" + variantMap[variant]}>
+          {icon && <span className={"material-symbols-outlined"}>{iconMap[icon]}</span>}
+          {children}
+      </div>
   );
 };
 

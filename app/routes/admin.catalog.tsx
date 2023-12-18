@@ -4,9 +4,9 @@ import {useFetcher, useLoaderData, useNavigate} from "@remix-run/react";
 import Button from "~/components/Button";
 import Keyboard from "~/components/Keyboard";
 import SimpleNumberPad from "~/components/SimpleNumberPad";
-import BarcodeReader from 'react-barcode-reader'
 import {ActionFunction, json, LoaderFunction} from "@remix-run/node";
 import {loadCatalog} from "~/loaders/catalogLoader";
+import BarcodeReader from "~/components/BarcodeReader";
 
 interface ProductsProps {
     subpage: string,
@@ -105,10 +105,9 @@ const Products : React.FC<ProductsProps> = () => {
     return (
          <div className={"flex flex-col h-full w-full"}>
             <BarcodeReader
-                onError={(err) => console.error(err)}
                 onScan={onBarcode}
             />
-            <div><Button onClick={exitFromProductPage}>back</Button></div>
+            <div><Button onClick={exitFromProductPage} icon={"back"}>indietro</Button></div>
             <div className={"flex-grow flex-shrink overflow-auto min-h-0"}>
                 <div className={"grid grid-cols-[15ex_1fr_6ex_3em] gap-2"}>
                     {catalog.map((product: any) => {
@@ -116,7 +115,7 @@ const Products : React.FC<ProductsProps> = () => {
                             <div>{product.barcode}</div>
                             <div>{product.name}</div>
                             <div>{product.price}</div>
-                            <div><Button onClick={() => onDelete(product.objectId)}>X</Button></div>
+                            <div><Button onClick={() => onDelete(product.objectId)} icon={"delete"}></Button></div>
                         </React.Fragment>
                     })}
                 </div>
@@ -125,7 +124,7 @@ const Products : React.FC<ProductsProps> = () => {
                 <div className={"bg-white h-[3ex] leading-[3ex]"}>{product.barcode}</div>
                 <div className={"bg-white h-[3ex] leading-[3ex]"}>{product.name}</div>
                 <div className={"bg-white h-[3ex] leading-[3ex]"}>{product.price}</div>
-                <div><Button onClick={onSave}>Add</Button></div>
+                <div><Button onClick={onSave} icon={"add"}></Button></div>
             </div>
             <div className={"flex"}>
                 <Keyboard onDigit={onKeyboardDigit}></Keyboard>

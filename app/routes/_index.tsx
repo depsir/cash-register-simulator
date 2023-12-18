@@ -5,11 +5,11 @@ import Button from "~/components/Button";
 import useCart from "~/hooks/useCart";
 import TextBox from "~/components/TextBox";
 import useNumpad from "~/hooks/useNumpad";
-import BarcodeReader from 'react-barcode-reader'
 import SimpleNumberPad from "~/components/SimpleNumberPad";
 import {useLoaderData, useNavigate} from '@remix-run/react'
 import {LoaderFunction} from "@remix-run/node";
 import {loadCatalog} from "~/loaders/catalogLoader";
+import BarcodeReader from "~/components/BarcodeReader";
 export let loader: LoaderFunction = async () => {
     return loadCatalog()
 }
@@ -74,31 +74,30 @@ const _index = () => {
             <div className={"flex-grow basis-0 "}>
                 {(!subpage) && <>
                     <BarcodeReader
-                        onError={(err) => console.error(err)}
                         onScan={addProduct}
                     />
 
-                    <Button onClick={() => setSubpage("manual-barcode")}>barcode manuale</Button>
-                    <Button onClick={() => setSubpage("manual-price")}>prezzo manuale</Button>
-                    <Button onClick={() => addProduct("1")}>sacchetto</Button>
-                    <Button onClick={() => setSubpage("checkout")}>checkout</Button>
-                    <Button onClick={() => navigate("/admin")}>admin</Button>
+                    <Button onClick={() => setSubpage("manual-barcode")} icon={"barcode-scanner"}>barcode manuale</Button>
+                    <Button onClick={() => setSubpage("manual-price")} icon={"euro"}>prezzo manuale</Button>
+                    <Button onClick={() => addProduct("1")} icon={"shopping-bag"}>sacchetto</Button>
+                    <Button onClick={() => setSubpage("checkout")} icon={"checkout"}>checkout</Button>
+                    <Button onClick={() => navigate("/admin")} icon={"settings"}>admin</Button>
                 </>}
                 {subpage == "manual-barcode" && <>
                     <TextBox>{manualBarcode}</TextBox>
                     <SimpleNumberPad onDigit={onManualBarcodeDigit}/>
-                    <Button onClick={() => onManualBarcodeEnter()}>enter</Button>
-                    <Button onClick={() => onManualBarcodeClear()}>clear</Button>
+                    <Button onClick={() => onManualBarcodeEnter()} icon={"check"}>enter</Button>
+                    <Button onClick={() => onManualBarcodeClear()} icon={"close"}>clear</Button>
                 </>}
                 {subpage == "manual-price" && <>
                     <TextBox>{manualPrice}</TextBox>
                     <SimpleNumberPad onDigit={onManualPriceDigit}/>
-                    <Button onClick={() => onManualPriceEnter()}>enter</Button>
-                    <Button onClick={() => onManualPriceClear()}>clear</Button>
+                    <Button onClick={() => onManualPriceEnter()} icon={"check"}>enter</Button>
+                    <Button onClick={() => onManualPriceClear()} icon={"close"}>clear</Button>
                 </>}
                 {subpage == "checkout" && <>
-                    <Button onClick={() => setSubpage("payment-cash")}>contanti</Button>
-                    <Button onClick={() => setSubpage("")}>indietro</Button>
+                    <Button onClick={() => setSubpage("payment-cash")} icon={"payment-cash"}>contanti</Button>
+                    <Button onClick={() => setSubpage("")} icon={"back"}>indietro</Button>
                 </>}
                 {subpage == "payment-cash" && <>
                     <MultiElementTextBox>
@@ -107,8 +106,8 @@ const _index = () => {
                         <div>{(cash-total).toFixed(2)}</div>
                     </MultiElementTextBox>
                     <SimpleNumberPad onDigit={onCashDigit}/>
-                    <Button onClick={onCashEnter}>ok</Button>
-                    <Button onClick={onCashClear}>indietro</Button>
+                    <Button onClick={onCashEnter} icon={"check"}>ok</Button>
+                    <Button onClick={onCashClear} icon={"close"}>indietro</Button>
 
 
                 </>}
