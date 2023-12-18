@@ -1,11 +1,12 @@
 import React from 'react';
 import useProductForm from "~/hooks/useProductForm";
-import useCatalog from "~/hooks/useCatalog";
-import {useNavigate} from "@remix-run/react";
+import {useFetcher, useLoaderData, useNavigate} from "@remix-run/react";
 import Button from "~/components/Button";
 import Keyboard from "~/components/Keyboard";
 import SimpleNumberPad from "~/components/SimpleNumberPad";
 import BarcodeReader from 'react-barcode-reader'
+import {ActionFunction, json, LoaderFunction} from "@remix-run/node";
+import {loadCatalog} from "~/loaders/catalogLoader";
 
 interface ProductsProps {
     subpage: string,
@@ -19,13 +20,82 @@ interface ProductsProps {
     onNumberPadDigit: (digit: string) => void,
 }
 
+export let loader: LoaderFunction = async () => {
+   return loadCatalog()
+}
+export let action: ActionFunction = async ({ request }) => {
+    const formData = new URLSearchParams(await request.text());
+    const actionType = formData.get("actionType");
+
+    switch (actionType) {
+        case "add": {
+            const newProduct = {
+                barcode: formData.get("barcode"),
+                name: formData.get("name"),
+                price: parseFloat(formData.get("price") || "0"),
+            };
+            await fetch("https://parseapi.back4app.com/classes/products", {
+                method: "POST",
+                headers: {
+                    "X-Parse-Application-Id": "LDZJihElZqMmwIGNwGQwTQMxm2SJUsyHVvw6bOuh",
+                    "X-Parse-REST-API-Key": "RTKD5XQ8HBJRtGHLD3MBL7TyekcdomBc7s4Tu503",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(newProduct)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Success:", data);
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+            break;
+        }
+        case "delete": {
+            const productIdToDelete = formData.get("productId");
+            await fetch(`https://parseapi.back4app.com/classes/products/${productIdToDelete}`, {
+                method: "DELETE",
+                headers: {
+                    "X-Parse-Application-Id": "LDZJihElZqMmwIGNwGQwTQMxm2SJUsyHVvw6bOuh",
+                    "X-Parse-REST-API-Key": "RTKD5XQ8HBJRtGHLD3MBL7TyekcdomBc7s4Tu503",
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Success:", data);
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+            break;
+        }
+        default:
+            break;
+    }
+
+    return json({ ok: true });
+};
+
+
 const Products : React.FC<ProductsProps> = () => {
-    const {catalog, addProduct, deleteProduct} = useCatalog();
+    let catalog = useLoaderData();
+    let fetcher = useFetcher();
+
 
     const navigate = useNavigate();
-    const {product, onBarcode, onKeyboardDigit, onNumberPadDigit, onSave, onClear} = useProductForm(addProduct);
+    const {product, onBarcode, onKeyboardDigit, onNumberPadDigit, onClear} = useProductForm();
     const onDelete = (id: string) => {
-        deleteProduct(id)
+        fetcher.submit(
+            { actionType: 'delete', productId: id }, { method: 'post' }
+       )
+    }
+
+    const onSave = () => {
+        fetcher.submit(
+            { actionType: 'add', barcode: product.barcode, name: product.name, price: product.price }, { method: 'post' }
+       )
+        onClear();
     }
     const exitFromProductPage = () => {
         onClear(); // Use the onClear function here

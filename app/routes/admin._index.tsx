@@ -5,7 +5,7 @@ import useLocalServerIntegration from "~/hooks/useLocalServerIntegration";
 import {useNavigate} from "@remix-run/react";
 
 const Admin_index = () => {
-    const {emptyCart} = useCart()
+    const {emptyCart} = useCart([])
     const navigate = useNavigate();
 
     const { exit, shutdown } = useLocalServerIntegration();

@@ -1,10 +1,8 @@
 import {useApplicationStore } from "~/hooks/applicationStore";
-import useCatalog from "~/hooks/useCatalog";
 import {useMessages} from "~/hooks/useMessages";
 
-const useCart = () => {
+const useCart = (catalog: any) => {
     const [cart, setCart] = useApplicationStore('cart')
-    const {catalog} = useCatalog()
     const {addMessage} = useMessages()
 
     const addProduct = (barcode: string) => {

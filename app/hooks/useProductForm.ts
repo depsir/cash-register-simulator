@@ -1,7 +1,7 @@
 // Filename: useProductForm.tsx
 import { useState } from 'react';
 
-const useProductForm = (addProduct: any) => {
+const useProductForm = () => {
     const [product, setProduct] = useState({ barcode: "", name: "", price: ""});
 
     const onBarcode = (barcode: string) => {
@@ -16,16 +16,12 @@ const useProductForm = (addProduct: any) => {
         setProduct({...product, price: product.price + digit});
     }
 
-    const onSave = () => {
-        addProduct({ barcode: product.barcode, name: product.name, price: parseFloat(product.price)});
-        setProduct({ barcode: "", name: "", price: ""});
-    }
 
     const onClear = () => {
         setProduct({barcode: "", name: "", price: ""});
     }
 
-    return { product, onBarcode, onKeyboardDigit, onNumberPadDigit, onSave, onClear };
+    return { product, onBarcode, onKeyboardDigit, onNumberPadDigit, onClear };
 }
 
 export default useProductForm;

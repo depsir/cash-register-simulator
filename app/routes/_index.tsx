@@ -7,10 +7,17 @@ import TextBox from "~/components/TextBox";
 import useNumpad from "~/hooks/useNumpad";
 import BarcodeReader from 'react-barcode-reader'
 import SimpleNumberPad from "~/components/SimpleNumberPad";
-import { useNavigate } from '@remix-run/react'
+import {useLoaderData, useNavigate} from '@remix-run/react'
+import {LoaderFunction} from "@remix-run/node";
+import {loadCatalog} from "~/loaders/catalogLoader";
+export let loader: LoaderFunction = async () => {
+    return loadCatalog()
+}
 
 const _index = () => {
-    const {addProduct, total, emptyCart, cart, addManualPrice} = useCart()
+    let catalog = useLoaderData();
+
+    const {addProduct, total, emptyCart, addManualPrice} = useCart(catalog)
     const cartListRef = React.useRef(null)
 
     const [subpage, setSubpage] = React.useState("")
