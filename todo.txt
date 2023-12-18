@@ -1,8 +1,6 @@
 lista features
 
-- scansione carta fedeltà e accumulo punti al checkout
 - annulla ultima entry del carrello
-- visualizzazione punti accumulati
 - pagamento con codice a barre (buoni regalo a scalare, carta prepagata)
 - backspace nella tastiera
 - ridurre tastiera nella lista prodotti

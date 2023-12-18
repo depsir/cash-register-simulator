@@ -9,12 +9,14 @@ type State = {
     catalog: any[],
   messages: Message[],
     customers: any[],
+  customerCard: any
 }
 const initialState: State = {
   cart: [],
   catalog: [],
   messages: [],
     customers: [],
+  customerCard: {}
 
 }
 const ApplicationStateContext = createContext( {} as any)

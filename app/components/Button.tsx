@@ -33,6 +33,7 @@ const iconMap = {
     "payment-cash": "\uef63",
     "close": "\ue5cd",
     "check": "\ue5ca",
+    "membership-card": "\ue8f7",
 }
 
 type Props = {

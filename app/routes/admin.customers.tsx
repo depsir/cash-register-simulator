@@ -11,6 +11,7 @@ interface Customer {
     objectId: string;
     name: string;
     cardNumber: string;
+    points: number;
 }
 
 export const loader = async () => {
@@ -102,12 +103,14 @@ const CustomerManagement: React.FC = () => {
             </div>
             {error && <div>{error}</div>}
             <div className={"flex-grow flex-shrink overflow-auto min-h-0"}>
-                <div className={"grid grid-cols-[15ex_1fr_3em] gap-2"}>
+                <div className={"grid grid-cols-[15ex_1fr_3em_3em] gap-2"}>
                     {customers.map(customer => (
                         <React.Fragment key={customer.objectId}>
                             <div>{customer.cardNumber}</div>
                             <div>{customer.name}</div>
-                            <div><Button onClick={() => deleteCustomer(customer.objectId)} icon={"delete"}></Button></div>
+                            <div>{customer.points}</div>
+                            <div><Button onClick={() => deleteCustomer(customer.objectId)} icon={"delete"}></Button>
+                            </div>
                         </React.Fragment>
                     ))}
                 </div>
