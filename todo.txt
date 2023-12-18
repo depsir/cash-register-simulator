@@ -1,17 +1,22 @@
 lista features
 
+- scansione carta fedeltà e accumulo punti al checkout
+- visualizzazione punti accumulati
+- pagamento con codice a barre (buoni regalo a scalare, carta prepagata)
 - backspace nella tastiera
 - ridurre tastiera nella lista prodotti
-- nascondere tastiera da pc e usare degli input
-- usare dei form veri e propri con remix
 - pagina admin per settare modalità di scan
-- generazione codice a barre
-- scansione carta fedeltà
 - inserimento multiplo stesso prodotto scansionando una volta sola (pulsante 3x)
 - vincita random premio
 - inserimento sconto da codice a barre
-- pagamento con buoni regalo a scalare
 - generazione buoni regalo
 - prodotti con sconto carta fedeltà
 - ricerca prodotto in lista prodotti
 - multilingua
+
+todo backoffice
+- nascondere tastiera da pc e usare degli input
+
+todo tecnico
+- usare dei form veri e propri con remix
+- generazione codice a barre
