@@ -1,7 +1,10 @@
 lista features
 
 - backspace nella tastiera
+- aggiungere icone per pulsanti
 - ridurre tastiera nella lista prodotti
+- nascondere tastiera da pc e usare degli input
+- usare dei form veri e propri con remix
 - pagina admin per settare modalità di scan
 - generazione codice a barre
 - scansione carta fedeltà
