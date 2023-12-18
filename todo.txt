@@ -1,6 +1,7 @@
 lista features
 
 - scansione carta fedeltà e accumulo punti al checkout
+- annulla ultima entry del carrello
 - visualizzazione punti accumulati
 - pagamento con codice a barre (buoni regalo a scalare, carta prepagata)
 - backspace nella tastiera
@@ -20,3 +21,4 @@ todo backoffice
 todo tecnico
 - usare dei form veri e propri con remix
 - generazione codice a barre
+- gestire prezzo manuale nullo
