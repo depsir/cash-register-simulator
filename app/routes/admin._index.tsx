@@ -23,7 +23,7 @@ const Admin_index = () => {
                 <Button onClick={emptyCartAction} icon={"empty-cart"}>svuota carrello</Button>
                 <Button onClick={exit} icon={"logout"}>exit</Button>
                 <Button onClick={shutdown} icon={"power"}>spegni</Button>
-                <Button onClick={() => navigate("/")} icon={"back"}>back</Button>
+                <Button onClick={() => navigate("/")} icon={"back"}>indietro</Button>
             </div>
         </>
     )
