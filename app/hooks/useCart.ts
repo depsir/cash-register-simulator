@@ -36,7 +36,8 @@ const useCart = (catalog: any) => {
 
     const addManualPrice = (price: number) => {
         const newCart = [...cart]
-        const product = {barcode: 'manual', name: 'prezzo manuale', price: price}
+        const timestamp = new Date().getTime()
+        const product = {barcode: 'manual'+timestamp, name: 'prezzo manuale', price: price}
         newCart.push({...product, quantity: 1})
         setCart(newCart)
     }
