@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const useProductForm = (addCustomer: any) => {
+const useProductForm = () => {
     const [customer, setCustomer] = useState({ cardNumber: "", name: ""});
 
     const onBarcode = (barcode: string) => {
@@ -11,17 +11,11 @@ const useProductForm = (addCustomer: any) => {
         setCustomer({...customer, name: customer.name + digit});
     }
 
-
-    const onSave = () => {
-        addCustomer({ cardNumber: customer.cardNumber, name: customer.name });
-        setCustomer({ cardNumber: "", name: ""});
-    }
-
     const onClear = () => {
         setCustomer({cardNumber: "", name: ""});
     }
 
-    return { customer, onBarcode, onKeyboardDigit, onSave, onClear };
+    return { customer, onBarcode, onKeyboardDigit, onClear };
 }
 
 export default useProductForm;

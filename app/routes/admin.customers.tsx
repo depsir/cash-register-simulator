@@ -1,25 +1,97 @@
 import React, {useState } from 'react';
-import useCustomers from "~/hooks/useCustomers";
 import Button from "~/components/Button";
-import {useNavigate} from "@remix-run/react";
+import {useFetcher, useLoaderData, useNavigate} from "@remix-run/react";
 import Keyboard from "~/components/Keyboard";
 import usesCustomerForm from "~/hooks/usesCustomerForm";
 import BarcodeReader from "~/components/BarcodeReader";
+import {loadCustomers} from "~/loaders/customerLoader";
+import {ActionFunction, json} from "@remix-run/node";
 
 interface Customer {
-    id: string;
+    objectId: string;
     name: string;
+    cardNumber: string;
 }
+
+export const loader = async () => {
+    return await loadCustomers()
+}
+
+export let action: ActionFunction = async ({ request }) => {
+    const formData = new URLSearchParams(await request.text());
+    const actionType = formData.get("actionType");
+
+    switch (actionType) {
+        case "add": {
+            const newCustomer = {
+                cardNumber: formData.get("cardNumber"),
+                name: formData.get("name"),
+            };
+            await fetch("https://parseapi.back4app.com/classes/customers", {
+                method: "POST",
+                headers: {
+                    "X-Parse-Application-Id": "LDZJihElZqMmwIGNwGQwTQMxm2SJUsyHVvw6bOuh",
+                    "X-Parse-REST-API-Key": "RTKD5XQ8HBJRtGHLD3MBL7TyekcdomBc7s4Tu503",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(newCustomer)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Success:", data);
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+            break;
+        }
+        case "delete": {
+            const customerToDelete = formData.get("customerId");
+            await fetch(`https://parseapi.back4app.com/classes/customers/${customerToDelete}`, {
+                method: "DELETE",
+                headers: {
+                    "X-Parse-Application-Id": "LDZJihElZqMmwIGNwGQwTQMxm2SJUsyHVvw6bOuh",
+                    "X-Parse-REST-API-Key": "RTKD5XQ8HBJRtGHLD3MBL7TyekcdomBc7s4Tu503",
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Success:", data);
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+            break;
+        }
+        default:
+            break;
+    }
+
+    return json({ ok: true });
+};
+
 
 const CustomerManagement: React.FC = () => {
     const [error, setError] = useState("");
-    const {customers, deleteCustomer, addCustomer} = useCustomers()
+    const customers: Customer[] = useLoaderData()
     const navigate = useNavigate();
-    const {customer, onKeyboardDigit, onSave, onBarcode} = usesCustomerForm(addCustomer);
-
+    const {customer, onKeyboardDigit, onClear, onBarcode} = usesCustomerForm();
+    const fetcher = useFetcher();
     const exitFromProductPage = () => {
         navigate("/admin")
     };
+
+    const deleteCustomer = (customerId: string) => {
+        fetcher.submit(
+            { actionType: 'delete', customerId: customerId }, { method: 'post' }
+       )
+    }
+    const onSave = () => {
+        fetcher.submit(
+            { actionType: 'add', cardNumber: customer.cardNumber, name: customer.name }, { method: 'post' }
+       )
+        onClear()
+    }
 
     return (
         <div className={"flex flex-col h-full w-full"}>
