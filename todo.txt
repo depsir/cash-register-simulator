@@ -1,8 +1,6 @@
 lista features
 
-- annulla ultima entry del carrello
 - pagamento con codice a barre (buoni regalo a scalare, carta prepagata)
-- backspace nella tastiera
 - ridurre tastiera nella lista prodotti
 - pagina admin per settare modalità di scan
 - inserimento multiplo stesso prodotto scansionando una volta sola (pulsante 3x)

@@ -18,7 +18,7 @@ export let loader: LoaderFunction = async () => {
 const _index = () => {
     let catalog = useLoaderData();
 
-    const {addProduct, total, emptyCart, addManualPrice} = useCart(catalog)
+    const {addProduct, total, emptyCart, addManualPrice, removeProduct} = useCart(catalog)
     const {customerCard, fetchCustomerCard, updatePoints, clearCustomerCard} = useCustomerCard();
 
     const [subpage, setSubpage] = React.useState("")
@@ -65,6 +65,7 @@ const _index = () => {
                     />
 
                     <Button onClick={() => setSubpage("manual-barcode")} icon={"barcode-scanner"}>barcode manuale</Button>
+                    <Button onClick={() => setSubpage("remove-product")} icon={"remove-product"}>rimuovi prodotto</Button>
                     <Button onClick={() => setSubpage("manual-price")} icon={"euro"}>prezzo manuale</Button>
                     <Button onClick={() => addProduct("1")} icon={"shopping-bag"}>sacchetto</Button>
                     <Button onClick={() => setSubpage("checkout")} icon={"checkout"}>checkout</Button>
@@ -76,6 +77,9 @@ const _index = () => {
                 </>}
                 {subpage == "manual-price" && <>
                     <ManualNumber onEnter={(number) => addManualPrice(parseFloat(number))} onClear={() => setSubpage("")} />
+                </>}
+                {subpage == "remove-product" && <>
+                    <ManualNumber onEnter={removeProduct} onClear={() => setSubpage("")} allowBarcode={true}/>
                 </>}
                 {subpage == "checkout" && <>
                     <Button onClick={() => setSubpage("payment-cash")} icon={"payment-cash"}>contanti</Button>

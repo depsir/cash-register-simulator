@@ -34,6 +34,18 @@ const useCart = (catalog: any) => {
         setCart([])
     }
 
+    const removeProduct = (barcode: string) => {
+        const productIndex = cart.findIndex((item: any) => item.barcode === barcode)
+        const newCart = [...cart]
+        if (productIndex !== -1) {
+            newCart[productIndex].quantity--
+            if (newCart[productIndex].quantity === 0) {
+                newCart.splice(productIndex, 1)
+            }
+            setCart(newCart)
+        }
+    }
+
     const addManualPrice = (price: number) => {
         const newCart = [...cart]
         const timestamp = new Date().getTime()
@@ -42,7 +54,7 @@ const useCart = (catalog: any) => {
         setCart(newCart)
     }
 
-    return {cart, addProduct, total, emptyCart, addManualPrice}
+    return {cart, addProduct, total, emptyCart, addManualPrice, removeProduct}
 }
 
 export default useCart

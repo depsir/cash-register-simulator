@@ -33,6 +33,7 @@ const iconMap = {
     "check": "\ue5ca",
     "membership-card": "\ue8f7",
     "backspace": "\ue14a",
+    "remove-product": "\ue928",
 }
 
 type Props = {
