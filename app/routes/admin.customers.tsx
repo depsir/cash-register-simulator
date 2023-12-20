@@ -112,6 +112,11 @@ const CustomerManagement: React.FC = () => {
             {error && <div>{error}</div>}
             <div className={"flex-grow flex-shrink overflow-auto min-h-0"}>
                 <div className={"grid grid-cols-[15ex_1fr_3em_3em] gap-2"}>
+                    <div className={"mb-2 pb-2 border-b-4"}>carta</div>
+                    <div className={"mb-2 pb-2 border-b-4"}>nome</div>
+                    <div className={"mb-2 pb-2 border-b-4"}>punti</div>
+                    <div className={"mb-2 pb-2 border-b-4"}></div>
+
                     {customers.map(customer => (
                         <React.Fragment key={customer.objectId}>
                             <div>{customer.cardNumber}</div>
@@ -129,7 +134,7 @@ const CustomerManagement: React.FC = () => {
             </div>
 
             {keyboardVisible && <div>
-                <div className={"grid grid-cols-[15ex_1fr_3em] gap-2"}>
+            <div className={"grid grid-cols-[15ex_1fr_3em] gap-2"}>
                     <div className={"bg-white h-[3ex] leading-[3ex]"}>{customer.cardNumber}</div>
                     <div className={"bg-white h-[3ex] leading-[3ex]"}>{customer.name}</div>
                     <div><Button onClick={onSave} icon={"person-add"}></Button></div>

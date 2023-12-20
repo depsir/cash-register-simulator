@@ -117,6 +117,10 @@ const Products : React.FC<ProductsProps> = () => {
             <div><Button onClick={exitFromProductPage} icon={"back"}>indietro</Button></div>
             <div className={"flex-grow flex-shrink overflow-auto min-h-0"}>
                 <div className={"grid grid-cols-[15ex_1fr_6ex_3em] gap-2"}>
+                        <div className={"mb-2 pb-2 border-b-4"}>barcode</div>
+                        <div className={"mb-2 pb-2 border-b-4"}>nome</div>
+                        <div className={"mb-2 pb-2 border-b-4"}>prezzo</div>
+                        <div className={"mb-2 pb-2 border-b-4"}></div>
                     {catalog.map((product: any) => {
                         return <React.Fragment key={product.objectId}>
                             <div>{product.barcode}</div>
