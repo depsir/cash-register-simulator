@@ -37,6 +37,7 @@ const iconMap = {
     "keyboard-hide": "\ue31a",
     "keyboard-show": "\uf7db",
     "add-product": "\ue854",
+    "person-add": "\ue7fe",
 }
 
 type Props = {

@@ -1,7 +1,6 @@
 lista features
 
 - pagamento con codice a barre (buoni regalo a scalare, carta prepagata)
-- ridurre tastiera nella lista prodotti
 - pagina admin per settare modalità di scan
 - inserimento multiplo stesso prodotto scansionando una volta sola (pulsante 3x)
 - vincita random premio

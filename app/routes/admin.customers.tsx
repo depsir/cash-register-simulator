@@ -1,5 +1,5 @@
-import React, {useState } from 'react';
-import Button from "~/components/Button";
+import React, {useState} from 'react';
+import Button, {Variant} from "~/components/Button";
 import {useFetcher, useLoaderData, useNavigate} from "@remix-run/react";
 import Keyboard from "~/components/Keyboard";
 import usesCustomerForm from "~/hooks/usesCustomerForm";
@@ -18,7 +18,7 @@ export const loader = async () => {
     return await loadCustomers()
 }
 
-export let action: ActionFunction = async ({ request }) => {
+export let action: ActionFunction = async ({request}) => {
     const formData = new URLSearchParams(await request.text());
     const actionType = formData.get("actionType");
 
@@ -68,13 +68,21 @@ export let action: ActionFunction = async ({ request }) => {
             break;
     }
 
-    return json({ ok: true });
+    return json({ok: true});
 };
 
 
 const CustomerManagement: React.FC = () => {
     const [error, setError] = useState("");
     const customers: Customer[] = useLoaderData()
+    const [keyboardVisible, setKeyboardVisible] = useState(false);
+    const toggleKeyboard = () => {
+        if (keyboardVisible) {
+            onClear()
+        }
+        setKeyboardVisible(!keyboardVisible);
+    };
+
     const navigate = useNavigate();
     const {customer, onKeyboardDigit, onClear, onBarcode, onKeyboardBackspace} = usesCustomerForm();
     const fetcher = useFetcher();
@@ -84,13 +92,13 @@ const CustomerManagement: React.FC = () => {
 
     const deleteCustomer = (customerId: string) => {
         fetcher.submit(
-            { actionType: 'delete', customerId: customerId }, { method: 'post' }
-       )
+            {actionType: 'delete', customerId: customerId}, {method: 'post'}
+        )
     }
     const onSave = () => {
         fetcher.submit(
-            { actionType: 'add', cardNumber: customer.cardNumber, name: customer.name }, { method: 'post' }
-       )
+            {actionType: 'add', cardNumber: customer.cardNumber, name: customer.name}, {method: 'post'}
+        )
         onClear()
     }
 
@@ -114,16 +122,22 @@ const CustomerManagement: React.FC = () => {
                         </React.Fragment>
                     ))}
                 </div>
+            </div>
+            <div className={"absolute bottom-2 right-2"}>
+                <Button variant={Variant.SQUARE} onClick={toggleKeyboard}
+                        icon={keyboardVisible ? "keyboard-hide" : "person-add"}></Button>
+            </div>
+
+            {keyboardVisible && <div>
                 <div className={"grid grid-cols-[15ex_1fr_3em] gap-2"}>
                     <div className={"bg-white h-[3ex] leading-[3ex]"}>{customer.cardNumber}</div>
                     <div className={"bg-white h-[3ex] leading-[3ex]"}>{customer.name}</div>
-                    <div><Button onClick={onSave} icon={"add"}></Button></div>
+                    <div><Button onClick={onSave} icon={"person-add"}></Button></div>
                 </div>
                 <div className={"flex"}>
                     <Keyboard onDigit={onKeyboardDigit} onBackspace={onKeyboardBackspace}></Keyboard>
                 </div>
-
-            </div>
+            </div>}
         </div>
     );
 }
