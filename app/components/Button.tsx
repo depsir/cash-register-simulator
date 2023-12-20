@@ -9,7 +9,7 @@ export enum Variant {
 const variantMap = {
     [Variant.BASE]: "",
     [Variant.FULL]: "flex-grow basis-0",
-    [Variant.SQUARE]: "w-[2em] h-[2em]"
+    [Variant.SQUARE]: "w-[3em] h-[3em] lg:w-[2em] lg:h-[2em]"
 }
 
 const iconMap = {
@@ -34,6 +34,9 @@ const iconMap = {
     "membership-card": "\ue8f7",
     "backspace": "\ue14a",
     "remove-product": "\ue928",
+    "keyboard-hide": "\ue31a",
+    "keyboard-show": "\uf7db",
+    "add-product": "\ue854",
 }
 
 type Props = {

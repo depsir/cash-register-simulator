@@ -1,7 +1,7 @@
 import React from 'react';
 import useProductForm from "~/hooks/useProductForm";
 import {useFetcher, useLoaderData, useNavigate} from "@remix-run/react";
-import Button from "~/components/Button";
+import Button, {Variant} from "~/components/Button";
 import Keyboard from "~/components/Keyboard";
 import NumberPad from "~/components/NumberPad";
 import {ActionFunction, json, LoaderFunction} from "@remix-run/node";
@@ -82,6 +82,8 @@ const Products : React.FC<ProductsProps> = () => {
     const catalog: Catalog = useLoaderData();
     const fetcher = useFetcher();
 
+    const [keyboardVisible, setKeyboardVisible] = React.useState(false);
+
 
     const navigate = useNavigate();
     const {product, onBarcode, onKeyboardDigit, onNumberPadDigit, onClear, onNumberPadBackspace, onKeyboardBackspace} = useProductForm();
@@ -98,9 +100,14 @@ const Products : React.FC<ProductsProps> = () => {
         onClear();
     }
     const exitFromProductPage = () => {
-        onClear(); // Use the onClear function here
+        onClear();
         navigate("/admin")
     };
+
+    const toggleKeyboard = () => {
+        setKeyboardVisible(keyboardVisible => !keyboardVisible)
+        onClear();
+    }
 
     return (
          <div className={"flex flex-col h-full w-full"}>
@@ -120,16 +127,22 @@ const Products : React.FC<ProductsProps> = () => {
                     })}
                 </div>
             </div>
-            <div className={" grid grid-cols-[15ex_1fr_6ex_3em] gap-2"}>
-                <div className={"bg-white h-[3ex] leading-[3ex]"}>{product.barcode}</div>
-                <div className={"bg-white h-[3ex] leading-[3ex]"}>{product.name}</div>
-                <div className={"bg-white h-[3ex] leading-[3ex]"}>{product.price}</div>
-                <div><Button onClick={onSave} icon={"add"}></Button></div>
-            </div>
-            <div className={"flex"}>
-                <Keyboard onDigit={onKeyboardDigit} onBackspace={onKeyboardBackspace}></Keyboard>
-                <NumberPad onDigit={onNumberPadDigit} onBackspace={onNumberPadBackspace}/>
-            </div>
+             <div className={"absolute bottom-2 right-2"}>
+                 <Button  variant={Variant.SQUARE} onClick={toggleKeyboard} icon={keyboardVisible ? "keyboard-hide" : "add-product"}></Button>
+             </div>
+             {keyboardVisible && <div>
+                 <div className={" grid grid-cols-[15ex_1fr_6ex_3em] gap-2"}>
+                     <div className={"bg-white h-[3ex] leading-[3ex]"}>{product.barcode}</div>
+                     <div className={"bg-white h-[3ex] leading-[3ex]"}>{product.name}</div>
+                     <div className={"bg-white h-[3ex] leading-[3ex]"}>{product.price}</div>
+                     <div><Button onClick={onSave} icon={"add-product"}></Button></div>
+                 </div>
+                 <div className={"flex"}>
+                     <Keyboard onDigit={onKeyboardDigit} onBackspace={onKeyboardBackspace}></Keyboard>
+                     <NumberPad onDigit={onNumberPadDigit} onBackspace={onNumberPadBackspace}/>
+                 </div>
+             </div>
+             }
         </div>
     );
 }
