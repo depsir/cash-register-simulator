@@ -3,7 +3,7 @@ import useProductForm from "~/hooks/useProductForm";
 import {useFetcher, useLoaderData, useNavigate} from "@remix-run/react";
 import Button from "~/components/Button";
 import Keyboard from "~/components/Keyboard";
-import SimpleNumberPad from "~/components/SimpleNumberPad";
+import NumberPad from "~/components/NumberPad";
 import {ActionFunction, json, LoaderFunction} from "@remix-run/node";
 import {loadCatalog} from "~/loaders/catalogLoader";
 import BarcodeReader from "~/components/BarcodeReader";
@@ -84,7 +84,7 @@ const Products : React.FC<ProductsProps> = () => {
 
 
     const navigate = useNavigate();
-    const {product, onBarcode, onKeyboardDigit, onNumberPadDigit, onClear} = useProductForm();
+    const {product, onBarcode, onKeyboardDigit, onNumberPadDigit, onClear, onNumberPadBackspace} = useProductForm();
     const onDelete = (id: string) => {
         fetcher.submit(
             { actionType: 'delete', productId: id }, { method: 'post' }
@@ -128,7 +128,7 @@ const Products : React.FC<ProductsProps> = () => {
             </div>
             <div className={"flex"}>
                 <Keyboard onDigit={onKeyboardDigit}></Keyboard>
-                <SimpleNumberPad onDigit={onNumberPadDigit}></SimpleNumberPad>
+                <NumberPad onDigit={onNumberPadDigit} onBackspace={onNumberPadBackspace}/>
             </div>
         </div>
     );

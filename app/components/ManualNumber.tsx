@@ -1,20 +1,22 @@
 import useNumpad from "~/hooks/useNumpad";
 import TextBox from "~/components/TextBox";
-import SimpleNumberPad from "~/components/SimpleNumberPad";
+import NumberPad from "~/components/NumberPad";
 import Button from "~/components/Button";
 import React from "react";
+import BarcodeReader from "~/components/BarcodeReader";
 
 interface ManualPriceProps {
-    onEnter: (value: number) => void;
+    onEnter: (value: string) => void;
     onClear: () => void;
+    allowBarcode?: boolean;
 }
 
-const ManualPrice: React.FC<ManualPriceProps> = ({onEnter, onClear}) => {
-    const {value: manualPrice, onDigit: onManualPriceDigit, onClear: onManualPriceClearInternal} = useNumpad()
+const ManualNumber: React.FC<ManualPriceProps> = ({onEnter, onClear, allowBarcode}) => {
+    const {value: manualPrice, onDigit: onManualPriceDigit, onClear: onManualPriceClearInternal, onBackspace} = useNumpad()
 
     const onManualPriceEnter = () => {
         if (manualPrice) {
-            onEnter(parseFloat(manualPrice))
+            onEnter(manualPrice)
         }
         onManualPriceClearInternal()
         onClear()
@@ -27,12 +29,13 @@ const ManualPrice: React.FC<ManualPriceProps> = ({onEnter, onClear}) => {
 
     return (
         <>
+            {allowBarcode && <BarcodeReader onScan={onEnter} />}
             <TextBox>{manualPrice}</TextBox>
-            <SimpleNumberPad onDigit={onManualPriceDigit}/>
+            <NumberPad onDigit={onManualPriceDigit} onBackspace={onBackspace}/>
             <Button onClick={onManualPriceEnter} icon={"check"}>enter</Button>
             <Button onClick={onManualPriceClear} icon={"close"}>clear</Button>
         </>
     );
 };
 
-export default ManualPrice;
+export default ManualNumber;

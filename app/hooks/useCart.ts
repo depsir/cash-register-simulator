@@ -14,7 +14,7 @@ const useCart = (catalog: any) => {
         } else {
             const product = catalog.find((item: any) => item.barcode === barcode)
             if (product === undefined) {
-                addMessage({type: 'error', message: 'Product not found'})
+                addMessage({type: 'error', message: 'Prodotto non trovato'})
                 return console.log('Product not found')
             }
 

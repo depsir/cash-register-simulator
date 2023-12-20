@@ -7,10 +7,8 @@ import {useLoaderData, useNavigate} from '@remix-run/react'
 import {LoaderFunction} from "@remix-run/node";
 import {loadCatalog} from "~/loaders/catalogLoader";
 import BarcodeReader from "~/components/BarcodeReader";
-import {ManualBarcode} from "~/components/ManualBarcode";
-import ManualPrice from "~/components/ManualPrice";
+import ManualNumber from "~/components/ManualNumber";
 import PaymentCash from "~/components/PaymentCash";
-import ScanCustomerCard from "~/components/ScanCustomerCard";
 import useCustomerCard from "~/hooks/useCustomerCard";
 
 export let loader: LoaderFunction = async () => {
@@ -42,7 +40,7 @@ const _index = () => {
     }
 
     return (
-        <div className={"grid grid-cols-[1fr_600px] gap-2 w-full"}>
+        <div className={"grid lg:grid-cols-[1fr_600px] grid-cols-[1fr_1fr] gap-2 w-full"}>
             <div className={"flex flex-grow flex-col"}>
                 <div className={"bg-white flex-grow border-2 p-2 drop-shadow overflow-auto"}>
                     <CartList/>
@@ -74,10 +72,10 @@ const _index = () => {
                     <Button onClick={() => navigate("/admin")} icon={"settings"}>admin</Button>
                 </>}
                 {subpage == "manual-barcode" && <>
-                   <ManualBarcode onEnter={addProduct} onClear={() => setSubpage("")}/>
+                   <ManualNumber onEnter={addProduct} onClear={() => setSubpage("")}/>
                 </>}
                 {subpage == "manual-price" && <>
-                    <ManualPrice onEnter={addManualPrice} onClear={() => setSubpage("")} />
+                    <ManualNumber onEnter={(number) => addManualPrice(parseFloat(number))} onClear={() => setSubpage("")} />
                 </>}
                 {subpage == "checkout" && <>
                     <Button onClick={() => setSubpage("payment-cash")} icon={"payment-cash"}>contanti</Button>
@@ -87,7 +85,7 @@ const _index = () => {
                     <PaymentCash onEnter={onCheckout} onClear={() => setSubpage("")}/>
                 </>}
                 {subpage == "customer-card" && <>
-                    <ScanCustomerCard onEnter={onCustomerCard} onClear={() => setSubpage("")}/>
+                    <ManualNumber onEnter={onCustomerCard} onClear={() => setSubpage("")} allowBarcode={true}/>
                 </>}
             </div>
            </div>

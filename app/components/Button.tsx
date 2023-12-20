@@ -34,6 +34,7 @@ const iconMap = {
     "close": "\ue5cd",
     "check": "\ue5ca",
     "membership-card": "\ue8f7",
+    "backspace": "\ue14a",
 }
 
 type Props = {

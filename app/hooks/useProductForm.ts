@@ -1,8 +1,10 @@
 // Filename: useProductForm.tsx
 import { useState } from 'react';
+import useNumpad from "~/hooks/useNumpad";
 
 const useProductForm = () => {
-    const [product, setProduct] = useState({ barcode: "", name: "", price: ""});
+    const [product, setProduct] = useState({ barcode: "", name: ""});
+    const { onDigit, onClear: onNumpadClear, onBackspace, value } = useNumpad()
 
     const onBarcode = (barcode: string) => {
         setProduct({...product, barcode: barcode});
@@ -13,15 +15,17 @@ const useProductForm = () => {
     }
 
     const onNumberPadDigit = (digit: string) => {
-        setProduct({...product, price: product.price + digit});
+        onDigit(digit)
     }
 
 
     const onClear = () => {
-        setProduct({barcode: "", name: "", price: ""});
+        setProduct({barcode: "", name: ""});
+        onNumpadClear()
     }
 
-    return { product, onBarcode, onKeyboardDigit, onNumberPadDigit, onClear };
+
+    return { product: {...product, price: value}, onBarcode, onKeyboardDigit, onNumberPadDigit, onClear, onNumberPadBackspace: onBackspace}
 }
 
 export default useProductForm;

@@ -3,11 +3,9 @@ import Button, {Variant} from "~/components/Button";
 
 type Props = {
     onDigit: (digit: string) => void
-    onEnter: () => void
-    onClear: () => void
-
+    onBackspace: () => void
 }
-const NumberPad = ({onDigit, onEnter, onClear}: Props) => {
+const NumberPad = ({onDigit, onBackspace}: Props) => {
     return (
         <div className={"flex-col"}>
             <div className={"flex"}>
@@ -26,12 +24,9 @@ const NumberPad = ({onDigit, onEnter, onClear}: Props) => {
                 <Button variant={Variant.FULL} onClick={()=> onDigit("9")}>9</Button>
             </div>
             <div className={"flex"}>
-                <Button variant={Variant.FULL} onClick={()=> onClear()}>Clear</Button>
                 <Button variant={Variant.FULL} onClick={()=> onDigit("0")}>0</Button>
                 <Button variant={Variant.FULL} onClick={()=> onDigit(".")}>.</Button>
-            </div>
-            <div className={"flex"}>
-                <Button variant={Variant.FULL} onClick={()=> onEnter()}>Enter</Button>
+                <Button variant={Variant.FULL} onClick={()=> onBackspace()} icon={"backspace"}></Button>
             </div>
         </div>
     )

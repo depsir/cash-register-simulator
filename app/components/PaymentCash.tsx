@@ -1,6 +1,6 @@
 import useNumpad from "~/hooks/useNumpad";
 import MultiElementTextBox from "~/components/MultiElementTextBox";
-import SimpleNumberPad from "~/components/SimpleNumberPad";
+import NumberPad from "~/components/NumberPad";
 import Button from "~/components/Button";
 import React from "react";
 import useCart from "~/hooks/useCart";
@@ -14,7 +14,7 @@ const PaymentCash: React.FC<PaymentCashProps> = ({onEnter, onClear}) => {
 
     const {total} = useCart([])
 
-    const {value: cash, onDigit: onCashDigit, onClear: onCashClearInternal} = useNumpad()
+    const {value: cash, onDigit: onCashDigit, onClear: onCashClearInternal, onBackspace} = useNumpad()
 
     const onCashEnter = () => {
         onCashClearInternal()
@@ -35,7 +35,7 @@ const PaymentCash: React.FC<PaymentCashProps> = ({onEnter, onClear}) => {
                 <div>resto</div>
                 <div>{resto}</div>
             </MultiElementTextBox>
-            <SimpleNumberPad onDigit={onCashDigit}/>
+            <NumberPad onDigit={onCashDigit} onBackspace={onBackspace}/>
             <Button onClick={onCashEnter} icon={"check"}>ok</Button>
             <Button onClick={onCashClear} icon={"close"}>indietro</Button>
         </>

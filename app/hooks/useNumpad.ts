@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 
 const useNumpad = () => {
     const [value, setValue] = React.useState<string>("")
@@ -12,9 +12,13 @@ const useNumpad = () => {
         setValue("")
     }
 
+    const onBackspace = () => {
+        setValue(value.slice(0, -1))
+    }
 
 
-    return {value, onDigit, onEnter, onClear }
+
+    return {value, onDigit, onEnter, onClear, onBackspace}
 }
 
 export default useNumpad
