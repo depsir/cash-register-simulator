@@ -3,15 +3,18 @@ import Button from "~/components/Button";
 import useCart from "~/hooks/useCart";
 import useLocalServerIntegration from "~/hooks/useLocalServerIntegration";
 import {useNavigate} from "@remix-run/react";
+import useCustomerCard from "~/hooks/useCustomerCard";
 
 const Admin_index = () => {
     const {emptyCart} = useCart([])
+    const {clearCustomerCard} = useCustomerCard()
     const navigate = useNavigate();
 
     const { exit, shutdown } = useLocalServerIntegration();
 
     const emptyCartAction = () => {
         emptyCart()
+        clearCustomerCard()
         navigate("/")
     }
     return (

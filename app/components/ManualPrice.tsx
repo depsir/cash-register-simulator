@@ -13,7 +13,9 @@ const ManualPrice: React.FC<ManualPriceProps> = ({onEnter, onClear}) => {
     const {value: manualPrice, onDigit: onManualPriceDigit, onClear: onManualPriceClearInternal} = useNumpad()
 
     const onManualPriceEnter = () => {
-        onEnter(parseFloat(manualPrice))
+        if (manualPrice) {
+            onEnter(parseFloat(manualPrice))
+        }
         onManualPriceClearInternal()
         onClear()
     }

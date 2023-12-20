@@ -42,8 +42,8 @@ const _index = () => {
     }
 
     return (
-        <>
-            <div className={"flex-grow flex basis-0 m-2 flex-col"}>
+        <div className={"grid grid-cols-[1fr_600px] gap-2 w-full"}>
+            <div className={"flex flex-grow flex-col"}>
                 <div className={"bg-white flex-grow border-2 p-2 drop-shadow overflow-auto"}>
                     <CartList/>
                 </div>
@@ -60,7 +60,7 @@ const _index = () => {
                     </MultiElementTextBox>
                 </div>
             </div>
-            <div className={"flex-grow basis-0 "}>
+            <div className={"flex-grow"}>
                 {(!subpage) && <>
                     <BarcodeReader
                         onScan={addProduct}
@@ -90,7 +90,7 @@ const _index = () => {
                     <ScanCustomerCard onEnter={onCustomerCard} onClear={() => setSubpage("")}/>
                 </>}
             </div>
-           </>
+           </div>
     )
 
 

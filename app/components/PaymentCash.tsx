@@ -27,12 +27,13 @@ const PaymentCash: React.FC<PaymentCashProps> = ({onEnter, onClear}) => {
         onClear()
     }
 
+    const resto = cash ? Math.max(0, (parseFloat(cash) - total)).toFixed(2) : ""
     return (
         <>
             <MultiElementTextBox>
                 <div>{cash}</div>
                 <div>resto</div>
-                <div>{(parseFloat(cash) - total).toFixed(2)}</div>
+                <div>{resto}</div>
             </MultiElementTextBox>
             <SimpleNumberPad onDigit={onCashDigit}/>
             <Button onClick={onCashEnter} icon={"check"}>ok</Button>

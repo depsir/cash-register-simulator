@@ -19,6 +19,4 @@ todo backoffice
 todo tecnico
 - usare dei form veri e propri con remix
 - generazione codice a barre
-- gestire prezzo manuale nullo
-- svuota carello deve togliere carta fedeltà
 - funzionamento offline
