@@ -9,6 +9,7 @@ lista features
 - generazione buoni regalo
 - prodotti con sconto carta fedeltà
 - ricerca prodotto in lista prodotti
+- pagamento multiplo
 - multilingua
 
 todo backoffice

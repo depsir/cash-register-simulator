@@ -27,13 +27,16 @@ const ManualNumber: React.FC<ManualPriceProps> = ({onEnter, onClear, allowBarcod
         onClear()
     }
 
+    const title = "Inserisci numero"
+    const titleWithBarcode = "passa barcode o inserisci numero"
     return (
         <>
-            {allowBarcode && <BarcodeReader onScan={onEnter} />}
+            <div className={"p-2"}>{allowBarcode ? titleWithBarcode : title}</div>
+            {allowBarcode && <BarcodeReader onScan={onEnter}/>}
             <TextBox>{manualPrice}</TextBox>
             <NumberPad onDigit={onManualPriceDigit} onBackspace={onBackspace}/>
-            <Button onClick={onManualPriceEnter} icon={"check"}>enter</Button>
-            <Button onClick={onManualPriceClear} icon={"close"}>clear</Button>
+            <Button onClick={onManualPriceEnter} icon={"check"}>conferma</Button>
+            <Button onClick={onManualPriceClear} icon={"close"}>annulla</Button>
         </>
     );
 };
