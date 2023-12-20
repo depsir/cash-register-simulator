@@ -15,7 +15,11 @@ const useProductForm = () => {
         setCustomer({cardNumber: "", name: ""});
     }
 
-    return { customer, onBarcode, onKeyboardDigit, onClear };
+    const onKeyboardBackspace = () => {
+        setCustomer({...customer, name: customer.name.slice(0, -1)});
+    }
+
+    return { customer, onBarcode, onKeyboardDigit, onClear, onKeyboardBackspace };
 }
 
 export default useProductForm;

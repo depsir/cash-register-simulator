@@ -76,7 +76,7 @@ const CustomerManagement: React.FC = () => {
     const [error, setError] = useState("");
     const customers: Customer[] = useLoaderData()
     const navigate = useNavigate();
-    const {customer, onKeyboardDigit, onClear, onBarcode} = usesCustomerForm();
+    const {customer, onKeyboardDigit, onClear, onBarcode, onKeyboardBackspace} = usesCustomerForm();
     const fetcher = useFetcher();
     const exitFromProductPage = () => {
         navigate("/admin")
@@ -120,7 +120,7 @@ const CustomerManagement: React.FC = () => {
                     <div><Button onClick={onSave} icon={"add"}></Button></div>
                 </div>
                 <div className={"flex"}>
-                    <Keyboard onDigit={onKeyboardDigit}></Keyboard>
+                    <Keyboard onDigit={onKeyboardDigit} onBackspace={onKeyboardBackspace}></Keyboard>
                 </div>
 
             </div>

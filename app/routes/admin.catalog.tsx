@@ -5,7 +5,7 @@ import Button from "~/components/Button";
 import Keyboard from "~/components/Keyboard";
 import NumberPad from "~/components/NumberPad";
 import {ActionFunction, json, LoaderFunction} from "@remix-run/node";
-import {loadCatalog} from "~/loaders/catalogLoader";
+import {Catalog, loadCatalog} from "~/loaders/catalogLoader";
 import BarcodeReader from "~/components/BarcodeReader";
 
 interface ProductsProps {
@@ -79,12 +79,12 @@ export let action: ActionFunction = async ({ request }) => {
 
 
 const Products : React.FC<ProductsProps> = () => {
-    let catalog = useLoaderData();
-    let fetcher = useFetcher();
+    const catalog: Catalog = useLoaderData();
+    const fetcher = useFetcher();
 
 
     const navigate = useNavigate();
-    const {product, onBarcode, onKeyboardDigit, onNumberPadDigit, onClear, onNumberPadBackspace} = useProductForm();
+    const {product, onBarcode, onKeyboardDigit, onNumberPadDigit, onClear, onNumberPadBackspace, onKeyboardBackspace} = useProductForm();
     const onDelete = (id: string) => {
         fetcher.submit(
             { actionType: 'delete', productId: id }, { method: 'post' }
@@ -127,7 +127,7 @@ const Products : React.FC<ProductsProps> = () => {
                 <div><Button onClick={onSave} icon={"add"}></Button></div>
             </div>
             <div className={"flex"}>
-                <Keyboard onDigit={onKeyboardDigit}></Keyboard>
+                <Keyboard onDigit={onKeyboardDigit} onBackspace={onKeyboardBackspace}></Keyboard>
                 <NumberPad onDigit={onNumberPadDigit} onBackspace={onNumberPadBackspace}/>
             </div>
         </div>

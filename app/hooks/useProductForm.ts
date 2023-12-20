@@ -3,29 +3,33 @@ import { useState } from 'react';
 import useNumpad from "~/hooks/useNumpad";
 
 const useProductForm = () => {
-    const [product, setProduct] = useState({ barcode: "", name: ""});
+    const [barcode, setBarcode] = useState("");
+    const [name, setName] = useState("");
     const { onDigit, onClear: onNumpadClear, onBackspace, value } = useNumpad()
 
-    const onBarcode = (barcode: string) => {
-        setProduct({...product, barcode: barcode});
+    const onBarcode = (inputBarcode: string) => {
+        setBarcode(inputBarcode);
     }
 
     const onKeyboardDigit = (digit: string) => {
-        setProduct({...product, name: product.name + digit});
+        setName(name + digit);
     }
 
     const onNumberPadDigit = (digit: string) => {
         onDigit(digit)
     }
 
-
     const onClear = () => {
-        setProduct({barcode: "", name: ""});
+        setBarcode("");
+        setName("");
         onNumpadClear()
     }
 
+    const onKeyboardBackspace = () => {
+        setName(name.slice(0, -1));
+    }
 
-    return { product: {...product, price: value}, onBarcode, onKeyboardDigit, onNumberPadDigit, onClear, onNumberPadBackspace: onBackspace}
+    return { product: {barcode, name, price: value}, onBarcode, onKeyboardDigit, onNumberPadDigit, onClear, onNumberPadBackspace: onBackspace, onKeyboardBackspace}
 }
 
 export default useProductForm;

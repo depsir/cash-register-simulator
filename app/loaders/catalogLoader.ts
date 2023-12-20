@@ -1,5 +1,13 @@
 import {json} from "@remix-run/node";
 
+export type Product = {
+    barcode: string;
+    name: string;
+    price: number;
+}
+
+export type Catalog = Product[]
+
 export const loadCatalog = async () => {
     return fetch("https://parseapi.back4app.com/classes/products", {
         method: "GET",
