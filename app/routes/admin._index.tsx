@@ -20,13 +20,13 @@ const Admin_index = () => {
     return (
         <>
             <div className={"flex-grow basis-0 "}>
+                <Button onClick={() => navigate("/")} icon={"back"}>indietro</Button>
                 <Button onClick={() => navigate("catalog")} icon={"inventory"}>catalogo</Button>
                 <Button onClick={() => navigate("test-barcode")} icon={"barcode-scanner"}>prova barcode</Button>
                 <Button onClick={() => navigate("customers")} icon={"person"}>clienti</Button>
                 <Button onClick={emptyCartAction} icon={"empty-cart"}>svuota carrello</Button>
                 <Button onClick={exit} icon={"logout"}>exit</Button>
                 <Button onClick={shutdown} icon={"power"}>spegni</Button>
-                <Button onClick={() => navigate("/")} icon={"back"}>indietro</Button>
             </div>
         </>
     )

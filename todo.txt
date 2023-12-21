@@ -17,3 +17,5 @@ todo backoffice
 todo tecnico
 - usare dei form veri e propri con remix
 - funzionamento offline
+- pulsante aggiunta si sovrappone a catalogo
+- ellipsis prodotti lunghi

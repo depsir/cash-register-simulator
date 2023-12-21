@@ -111,7 +111,7 @@ const CustomerManagement: React.FC = () => {
             </div>
             {error && <div>{error}</div>}
             <div className={"flex-grow flex-shrink overflow-auto min-h-0"}>
-                <div className={"grid grid-cols-[15ex_1fr_3em_3em] gap-2"}>
+                <div className={"grid grid-cols-[20ex_1fr_3em_3em] gap-2"}>
                     <div className={"mb-2 pb-2 border-b-4"}>carta</div>
                     <div className={"mb-2 pb-2 border-b-4"}>nome</div>
                     <div className={"mb-2 pb-2 border-b-4"}>punti</div>

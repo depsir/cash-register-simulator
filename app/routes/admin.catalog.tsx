@@ -7,6 +7,7 @@ import NumberPad from "~/components/NumberPad";
 import {ActionFunction, json, LoaderFunction} from "@remix-run/node";
 import {Catalog, loadCatalog} from "~/loaders/catalogLoader";
 import BarcodeReader from "~/components/BarcodeReader";
+import {formatNumber} from "~/utils/utils";
 
 interface ProductsProps {
     subpage: string,
@@ -116,7 +117,7 @@ const Products : React.FC<ProductsProps> = () => {
             />
             <div><Button onClick={exitFromProductPage} icon={"back"}>indietro</Button></div>
             <div className={"flex-grow flex-shrink overflow-auto min-h-0"}>
-                <div className={"grid grid-cols-[15ex_1fr_6ex_3em] gap-2"}>
+                <div className={"grid grid-cols-[16ex_1fr_6ex_3em] gap-2"}>
                         <div className={"mb-2 pb-2 border-b-4"}>barcode</div>
                         <div className={"mb-2 pb-2 border-b-4"}>nome</div>
                         <div className={"mb-2 pb-2 border-b-4"}>prezzo</div>
@@ -125,7 +126,7 @@ const Products : React.FC<ProductsProps> = () => {
                         return <React.Fragment key={product.objectId}>
                             <div>{product.barcode}</div>
                             <div>{product.name}</div>
-                            <div>{product.price}</div>
+                            <div className={"text-right"}>{formatNumber(product.price)}</div>
                             <div><Button onClick={() => onDelete(product.objectId)} icon={"delete"}></Button></div>
                         </React.Fragment>
                     })}

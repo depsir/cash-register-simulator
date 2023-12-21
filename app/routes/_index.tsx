@@ -28,7 +28,12 @@ const _index = () => {
     const earnedPoints = Math.floor(total)
 
     const onCustomerCard = async (cardNumber: string) => {
+        if (/^[0-9]+$/.test(cardNumber)) {
+            cardNumber = `CRS'CUSTOMER'${String(cardNumber).padStart(3, '0')}`;
+        }
+        console.log("cardNumber", cardNumber)
         await fetchCustomerCard(cardNumber)
+        setSubpage("")
     }
 
     const onCheckout = async () => {
