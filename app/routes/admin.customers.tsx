@@ -6,6 +6,7 @@ import usesCustomerForm from "~/hooks/usesCustomerForm";
 import BarcodeReader from "~/components/BarcodeReader";
 import {loadCustomers} from "~/loaders/customerLoader";
 import {ActionFunction, json} from "@remix-run/node";
+import ConfirmPopup from '~/components/ConfirmPopup';
 
 interface Customer {
     objectId: string;
@@ -90,10 +91,17 @@ const CustomerManagement: React.FC = () => {
         navigate("/admin")
     };
 
-    const deleteCustomer = (customerId: string) => {
+    const [confirmDelete, setConfirmDelete] = React.useState<string | null>(null);
+
+    const onDeleteRequest = (id: string) => {
+        setConfirmDelete(id);
+    }
+
+    const onDelete = (customerId: string) => {
         fetcher.submit(
             {actionType: 'delete', customerId: customerId}, {method: 'post'}
         )
+        setConfirmDelete(null)
     }
     const onSave = () => {
         fetcher.submit(
@@ -122,7 +130,7 @@ const CustomerManagement: React.FC = () => {
                             <div>{customer.cardNumber}</div>
                             <div>{customer.name}</div>
                             <div>{customer.points}</div>
-                            <div><Button onClick={() => deleteCustomer(customer.objectId)} icon={"delete"}></Button>
+                            <div><Button onClick={() => onDeleteRequest(customer.objectId)} icon={"delete"}></Button>
                             </div>
                         </React.Fragment>
                     ))}
@@ -143,6 +151,15 @@ const CustomerManagement: React.FC = () => {
                     <Keyboard onDigit={onKeyboardDigit} onBackspace={onKeyboardBackspace}></Keyboard>
                 </div>
             </div>}
+            {confirmDelete && (
+                <ConfirmPopup
+                    message="Sei sicuro di voler eliminare questo cliente?"
+                    onConfirm={() => {
+                        onDelete(confirmDelete);
+                    }}
+                    onCancel={() => setConfirmDelete(null)}
+                />
+            )}
         </div>
     );
 }

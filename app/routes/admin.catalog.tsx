@@ -1,13 +1,14 @@
 import React from 'react';
 import useProductForm from "~/hooks/useProductForm";
-import {useFetcher, useLoaderData, useNavigate} from "@remix-run/react";
-import Button, {Variant} from "~/components/Button";
+import { useFetcher, useLoaderData, useNavigate } from "@remix-run/react";
+import Button, { Variant } from "~/components/Button";
 import Keyboard from "~/components/Keyboard";
 import NumberPad from "~/components/NumberPad";
-import {ActionFunction, json, LoaderFunction} from "@remix-run/node";
-import {Catalog, loadCatalog} from "~/loaders/catalogLoader";
+import { ActionFunction, json, LoaderFunction } from "@remix-run/node";
+import { Catalog, loadCatalog } from "~/loaders/catalogLoader";
 import BarcodeReader from "~/components/BarcodeReader";
-import {formatNumber} from "~/utils/utils";
+import { formatNumber } from "~/utils/utils";
+import ConfirmPopup from '~/components/ConfirmPopup';
 
 interface ProductsProps {
     subpage: string,
@@ -22,7 +23,7 @@ interface ProductsProps {
 }
 
 export let loader: LoaderFunction = async () => {
-   return loadCatalog()
+    return loadCatalog()
 }
 export let action: ActionFunction = async ({ request }) => {
     const formData = new URLSearchParams(await request.text());
@@ -79,25 +80,31 @@ export let action: ActionFunction = async ({ request }) => {
 };
 
 
-const Products : React.FC<ProductsProps> = () => {
+const Products: React.FC<ProductsProps> = () => {
     const catalog: Catalog = useLoaderData();
     const fetcher = useFetcher();
 
     const [keyboardVisible, setKeyboardVisible] = React.useState(false);
+    const [confirmDelete, setConfirmDelete] = React.useState<string | null>(null);
+
+    const onDeleteRequest = (id: string) => {
+        setConfirmDelete(id);
+    }
 
 
     const navigate = useNavigate();
-    const {product, onBarcode, onKeyboardDigit, onNumberPadDigit, onClear, onNumberPadBackspace, onKeyboardBackspace} = useProductForm();
+    const { product, onBarcode, onKeyboardDigit, onNumberPadDigit, onClear, onNumberPadBackspace, onKeyboardBackspace } = useProductForm();
     const onDelete = (id: string) => {
         fetcher.submit(
             { actionType: 'delete', productId: id }, { method: 'post' }
-       )
+        )
+        setConfirmDelete(null)
     }
 
     const onSave = () => {
         fetcher.submit(
             { actionType: 'add', barcode: product.barcode, name: product.name, price: product.price }, { method: 'post' }
-       )
+        )
         onClear();
     }
     const exitFromProductPage = () => {
@@ -111,43 +118,52 @@ const Products : React.FC<ProductsProps> = () => {
     }
 
     return (
-         <div className={"flex flex-col h-full w-full"}>
+        <div className={"flex flex-col h-full w-full"}>
             <BarcodeReader
                 onScan={onBarcode}
             />
             <div><Button onClick={exitFromProductPage} icon={"back"}>indietro</Button></div>
             <div className={"flex-grow flex-shrink overflow-auto min-h-0"}>
                 <div className={"grid grid-cols-[16ex_1fr_6ex_3em] gap-2"}>
-                        <div className={"mb-2 pb-2 border-b-4"}>barcode</div>
-                        <div className={"mb-2 pb-2 border-b-4"}>nome</div>
-                        <div className={"mb-2 pb-2 border-b-4"}>prezzo</div>
-                        <div className={"mb-2 pb-2 border-b-4"}></div>
+                    <div className={"mb-2 pb-2 border-b-4"}>barcode</div>
+                    <div className={"mb-2 pb-2 border-b-4"}>nome</div>
+                    <div className={"mb-2 pb-2 border-b-4"}>prezzo</div>
+                    <div className={"mb-2 pb-2 border-b-4"}></div>
                     {catalog.map((product: any) => {
                         return <React.Fragment key={product.objectId}>
                             <div>{product.barcode}</div>
                             <div>{product.name}</div>
                             <div className={"text-right"}>{formatNumber(product.price)}</div>
-                            <div><Button onClick={() => onDelete(product.objectId)} icon={"delete"}></Button></div>
+                            <div><Button onClick={() => onDeleteRequest(product.objectId)} icon={"delete"}></Button></div>
                         </React.Fragment>
                     })}
                 </div>
             </div>
-             <div className={"absolute bottom-2 right-2"}>
-                 <Button  variant={Variant.SQUARE} onClick={toggleKeyboard} icon={keyboardVisible ? "keyboard-hide" : "add-product"}></Button>
-             </div>
-             {keyboardVisible && <div>
-                 <div className={" grid grid-cols-[15ex_1fr_6ex_3em] gap-2"}>
-                     <div className={"bg-white h-[3ex] leading-[3ex]"}>{product.barcode}</div>
-                     <div className={"bg-white h-[3ex] leading-[3ex]"}>{product.name}</div>
-                     <div className={"bg-white h-[3ex] leading-[3ex]"}>{product.price}</div>
-                     <div><Button onClick={onSave} icon={"add-product"}></Button></div>
-                 </div>
-                 <div className={"flex"}>
-                     <Keyboard onDigit={onKeyboardDigit} onBackspace={onKeyboardBackspace}></Keyboard>
-                     <NumberPad onDigit={onNumberPadDigit} onBackspace={onNumberPadBackspace}/>
-                 </div>
-             </div>
-             }
+            <div className={"absolute bottom-2 right-2"}>
+                <Button variant={Variant.SQUARE} onClick={toggleKeyboard} icon={keyboardVisible ? "keyboard-hide" : "add-product"}></Button>
+            </div>
+            {keyboardVisible && <div>
+                <div className={" grid grid-cols-[15ex_1fr_6ex_3em] gap-2"}>
+                    <div className={"bg-white h-[3ex] leading-[3ex]"}>{product.barcode}</div>
+                    <div className={"bg-white h-[3ex] leading-[3ex]"}>{product.name}</div>
+                    <div className={"bg-white h-[3ex] leading-[3ex]"}>{product.price}</div>
+                    <div><Button onClick={onSave} icon={"add-product"}></Button></div>
+                </div>
+                <div className={"flex"}>
+                    <Keyboard onDigit={onKeyboardDigit} onBackspace={onKeyboardBackspace}></Keyboard>
+                    <NumberPad onDigit={onNumberPadDigit} onBackspace={onNumberPadBackspace} />
+                </div>
+            </div>
+            }
+            {confirmDelete && (
+                <ConfirmPopup
+                    message="Sei sicuro di voler eliminare questo prodotto?"
+                    onConfirm={() => {
+                        onDelete(confirmDelete);
+                    }}
+                    onCancel={() => setConfirmDelete(null)}
+                />
+            )}
         </div>
     );
 }
