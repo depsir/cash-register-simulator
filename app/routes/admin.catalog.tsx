@@ -189,7 +189,6 @@ const Products: React.FC<ProductsProps> = () => {
     }
     , [product.name, product.barcode, mode])
 
-    // add effect on add mode if barcode already present show error
     useEffect(() => {
         if (mode === "add") {
             const product2 = catalog.find((product1: any) => product1.barcode === product.barcode)

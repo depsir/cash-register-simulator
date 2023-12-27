@@ -39,6 +39,7 @@ const iconMap = {
     "add-product": "\ue854",
     "person-add": "\ue7fe",
     "edit": "\ue3c9",
+    "coffee": "\uefef",
 }
 
 type Props = {
