@@ -9,6 +9,8 @@ import { Catalog, loadCatalog } from "~/loaders/catalogLoader";
 import BarcodeReader from "~/components/BarcodeReader";
 import { formatNumber } from "~/utils/utils";
 import ConfirmPopup from '~/components/ConfirmPopup';
+import PopupMessage from '~/components/PopupMessage';
+import { useMessages } from '~/hooks/useMessages';
 
 interface ProductsProps {
     subpage: string,
@@ -113,6 +115,7 @@ const Products: React.FC<ProductsProps> = () => {
     const [keyboardVisible, setKeyboardVisible] = React.useState(false);
     const [confirmDelete, setConfirmDelete] = React.useState<string | null>(null);
     const [mode, setMode] = React.useState<"add" | "edit" | "init" | "search">("init");
+    const {addMessage} = useMessages();
 
     const onDeleteRequest = (id: string) => {
         setConfirmDelete(id);
@@ -185,6 +188,17 @@ const Products: React.FC<ProductsProps> = () => {
         }
     }
     , [product.name, product.barcode, mode])
+
+    // add effect on add mode if barcode already present show error
+    useEffect(() => {
+        if (mode === "add") {
+            const product2 = catalog.find((product1: any) => product1.barcode === product.barcode)
+            if (product2) {
+                addMessage({message: "barcode già presente", type: "error"})
+                onBarcode("")
+            }
+        }
+    }, [product.barcode, mode])
 
     return (
         <div className={"flex flex-col h-full w-full"}>
