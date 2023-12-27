@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import useProductForm from "~/hooks/useProductForm";
 import { useFetcher, useLoaderData, useNavigate } from "@remix-run/react";
 import Button, { Variant } from "~/components/Button";
@@ -107,15 +107,16 @@ export let action: ActionFunction = async ({ request }) => {
 
 const Products: React.FC<ProductsProps> = () => {
     const catalog: Catalog = useLoaderData();
+    const [filteredCatalog, setFilteredCatalog] = React.useState(catalog)
     const fetcher = useFetcher();
 
     const [keyboardVisible, setKeyboardVisible] = React.useState(false);
     const [confirmDelete, setConfirmDelete] = React.useState<string | null>(null);
+    const [mode, setMode] = React.useState<"add" | "edit" | "init" | "search">("init");
 
     const onDeleteRequest = (id: string) => {
         setConfirmDelete(id);
     }
-
 
     const navigate = useNavigate();
     const { product, onBarcode, onKeyboardDigit, onNumberPadDigit, onClear, onNumberPadBackspace, onKeyboardBackspace, onId } = useProductForm();
@@ -137,14 +138,29 @@ const Products: React.FC<ProductsProps> = () => {
         navigate("/admin")
     };
 
-    const toggleKeyboard = () => {
-        setKeyboardVisible(keyboardVisible => !keyboardVisible)
-        onClear();
+    const onAddMode = () => {
+        setMode("add")
+        setKeyboardVisible(true)
     }
 
-    const onEditRequest = (id: string) => {
+    const onSearchMode = () => {
+        setMode("search")
+        setKeyboardVisible(true)
+    }
+
+    const onInitMode = () => {
+        setMode("init")
+        setKeyboardVisible(false)
+    }
+
+    useEffect(() => {
+            onClear()
+    }, [mode])
+
+    const onEditMode = (id: string) => {
         const product = catalog.find((product: any) => product.objectId === id)
         if (product) {
+            setMode("edit")
             onBarcode(product.barcode)
             setKeyboardVisible(true)
             onKeyboardDigit(product.name)
@@ -152,13 +168,34 @@ const Products: React.FC<ProductsProps> = () => {
             onId(product.objectId)
         }
     }
+    
+    useEffect(() => {
+        if (mode === "search") {
+            const filteredCatalog2 = catalog.filter((product1: any) => {
+                const barcodeMatch = !product.barcode || product1.barcode.includes(product.barcode)
+                const nameMatch = !product.name || product1.name.toLowerCase().includes(product.name.toLowerCase())
+                return barcodeMatch && nameMatch
+            })
+            setFilteredCatalog(filteredCatalog2)
+        }
+        else {
+            // todo: investigate if i want to keep the filtered catalog when i exit from search mode
+            // mainly to hide keyboard to have more space
+            setFilteredCatalog(catalog)
+        }
+    }
+    , [product.name, product.barcode, mode])
 
     return (
         <div className={"flex flex-col h-full w-full"}>
             <BarcodeReader
                 onScan={onBarcode}
             />
-            <div><Button onClick={exitFromProductPage} icon={"back"}>indietro</Button></div>
+            <div className='flex'>
+                <Button onClick={exitFromProductPage} icon={"back"}>indietro</Button>
+                <Button variant={Variant.SQUARE} onClick={onAddMode} icon={"add-product"}></Button>
+                <Button variant={Variant.SQUARE} onClick={onSearchMode} icon={"search"}></Button>
+            </div>
             <div className={"flex-grow flex-shrink overflow-auto min-h-0"}>
                 <div className={"grid grid-cols-[16ex_1fr_6ex_3em_3em] gap-2"}>
                     <div className={"mb-2 pb-2 border-b-4"}>barcode</div>
@@ -166,26 +203,27 @@ const Products: React.FC<ProductsProps> = () => {
                     <div className={"mb-2 pb-2 border-b-4"}>prezzo</div>
                     <div className={"mb-2 pb-2 border-b-4"}></div>
                     <div className={"mb-2 pb-2 border-b-4"}></div>
-                    {catalog.map((product: any) => {
+                    {filteredCatalog.map((product: any) => {
                         return <React.Fragment key={product.objectId}>
                             <div>{product.barcode}</div>
                             <div>{product.name}</div>
                             <div className={"text-right"}>{formatNumber(product.price)}</div>
-                            <div><Button onClick={() => onEditRequest(product.objectId)} icon={"edit"}></Button></div>
+                            <div><Button onClick={() => onEditMode(product.objectId)} icon={"edit"}></Button></div>
                             <div><Button onClick={() => onDeleteRequest(product.objectId)} icon={"delete"}></Button></div>
                         </React.Fragment>
                     })}
                 </div>
             </div>
-            <div className={"absolute bottom-2 right-2"}>
-                <Button variant={Variant.SQUARE} onClick={toggleKeyboard} icon={keyboardVisible ? "keyboard-hide" : "add-product"}></Button>
-            </div>
+            {keyboardVisible &&<div className={"absolute bottom-2 right-2"}>
+                <Button variant={Variant.SQUARE} onClick={onInitMode} icon={"keyboard-hide"}></Button>
+            </div>}
             {keyboardVisible && <div>
                 <div className={" grid grid-cols-[15ex_1fr_6ex_3em] gap-2"}>
                     <div className={"bg-white h-[3ex] leading-[3ex]"}>{product.barcode}</div>
                     <div className={"bg-white h-[3ex] leading-[3ex]"}>{product.name}</div>
                     <div className={"bg-white h-[3ex] leading-[3ex]"}>{product.price}</div>
-                    <div><Button onClick={onSave} icon={"add-product"}></Button></div>
+                    <div>
+                        {(mode == 'add' || mode == 'edit')&& <Button onClick={onSave} icon={"add-product"}></Button>}</div>
                 </div>
                 <div className={"flex"}>
                     <Keyboard onDigit={onKeyboardDigit} onBackspace={onKeyboardBackspace}></Keyboard>
