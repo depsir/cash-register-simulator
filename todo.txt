@@ -10,6 +10,8 @@ lista features
 - ricerca prodotto in lista prodotti
 - pagamento multiplo
 - multilingua
+- modalità solo (consegna)
+- fogli tematici
 
 todo backoffice
 - nascondere tastiera da pc e usare degli input
@@ -20,3 +22,5 @@ todo tecnico
 - pulsante aggiunta si sovrappone a catalogo
 - ellipsis prodotti lunghi
 - prevenire inserimento doppio barcode
+- scroll to bottom su inserimento prodotto
+- tastiera con simboli
