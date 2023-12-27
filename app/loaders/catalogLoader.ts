@@ -4,6 +4,7 @@ export type Product = {
     barcode: string;
     name: string;
     price: number;
+    objectId: string;
 }
 
 export type Catalog = Product[]

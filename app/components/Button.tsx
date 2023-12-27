@@ -38,6 +38,7 @@ const iconMap = {
     "keyboard-show": "\uf7db",
     "add-product": "\ue854",
     "person-add": "\ue7fe",
+    "edit": "\ue3c9",
 }
 
 type Props = {

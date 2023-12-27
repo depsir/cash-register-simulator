@@ -5,6 +5,7 @@ import useNumpad from "~/hooks/useNumpad";
 const useProductForm = () => {
     const [barcode, setBarcode] = useState("");
     const [name, setName] = useState("");
+    const [id, setId] = useState("");
     const { onDigit, onClear: onNumpadClear, onBackspace, value } = useNumpad()
 
     const onBarcode = (inputBarcode: string) => {
@@ -22,6 +23,7 @@ const useProductForm = () => {
     const onClear = () => {
         setBarcode("");
         setName("");
+        setId("");
         onNumpadClear()
     }
 
@@ -29,7 +31,11 @@ const useProductForm = () => {
         setName(name.slice(0, -1));
     }
 
-    return { product: {barcode, name, price: value}, onBarcode, onKeyboardDigit, onNumberPadDigit, onClear, onNumberPadBackspace: onBackspace, onKeyboardBackspace}
+    const onId = (inputId: string) => {
+        setId(inputId);
+    }
+
+    return { product: {barcode, name, price: value, id}, onBarcode, onKeyboardDigit, onNumberPadDigit, onClear, onNumberPadBackspace: onBackspace, onKeyboardBackspace, onId}
 }
 
 export default useProductForm;

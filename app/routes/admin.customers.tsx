@@ -110,6 +110,26 @@ const CustomerManagement: React.FC = () => {
         onClear()
     }
 
+    const updateProduct = async (id: string, barcode: string, name: string, price: number) => {
+            const updatedProduct = {name, barcode, price}
+            return fetch("https://parseapi.back4app.com/classes/products/"+id, {
+                method: "PUT",
+                headers: {
+                    "X-Parse-Application-Id": "LDZJihElZqMmwIGNwGQwTQMxm2SJUsyHVvw6bOuh",
+                    "X-Parse-REST-API-Key": "RTKD5XQ8HBJRtGHLD3MBL7TyekcdomBc7s4Tu503",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(updatedProduct)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Success:", data);
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+        }
+
     return (
         <div className={"flex flex-col h-full w-full"}>
             <div><Button onClick={exitFromProductPage} icon={"back"}>indietro</Button></div>

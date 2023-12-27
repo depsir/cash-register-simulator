@@ -19,3 +19,4 @@ todo tecnico
 - funzionamento offline
 - pulsante aggiunta si sovrappone a catalogo
 - ellipsis prodotti lunghi
+- prevenire inserimento doppio barcode

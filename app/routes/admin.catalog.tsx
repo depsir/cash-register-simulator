@@ -54,6 +54,31 @@ export let action: ActionFunction = async ({ request }) => {
                 });
             break;
         }
+        case "update": {
+            const productToUpdate = {
+                barcode: formData.get("barcode"),
+                name: formData.get("name"),
+                price: parseFloat(formData.get("price") || "0"),
+                id: formData.get("id")
+            };
+            await fetch(`https://parseapi.back4app.com/classes/products/${formData.get("id")}`, {
+                method: "PUT",
+                headers: {
+                    "X-Parse-Application-Id": "LDZJihElZqMmwIGNwGQwTQMxm2SJUsyHVvw6bOuh",
+                    "X-Parse-REST-API-Key": "RTKD5XQ8HBJRtGHLD3MBL7TyekcdomBc7s4Tu503",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(productToUpdate)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Success:", data);
+                })
+                .catch((error) => {
+                    console.error("Error:", error);
+                });
+            break;
+        }
         case "delete": {
             const productIdToDelete = formData.get("productId");
             await fetch(`https://parseapi.back4app.com/classes/products/${productIdToDelete}`, {
@@ -93,7 +118,7 @@ const Products: React.FC<ProductsProps> = () => {
 
 
     const navigate = useNavigate();
-    const { product, onBarcode, onKeyboardDigit, onNumberPadDigit, onClear, onNumberPadBackspace, onKeyboardBackspace } = useProductForm();
+    const { product, onBarcode, onKeyboardDigit, onNumberPadDigit, onClear, onNumberPadBackspace, onKeyboardBackspace, onId } = useProductForm();
     const onDelete = (id: string) => {
         fetcher.submit(
             { actionType: 'delete', productId: id }, { method: 'post' }
@@ -103,7 +128,7 @@ const Products: React.FC<ProductsProps> = () => {
 
     const onSave = () => {
         fetcher.submit(
-            { actionType: 'add', barcode: product.barcode, name: product.name, price: product.price }, { method: 'post' }
+            { actionType: product.id ? 'update' : 'add', barcode: product.barcode, name: product.name, price: product.price, id: product.id }, { method: 'post' }
         )
         onClear();
     }
@@ -117,6 +142,17 @@ const Products: React.FC<ProductsProps> = () => {
         onClear();
     }
 
+    const onEditRequest = (id: string) => {
+        const product = catalog.find((product: any) => product.objectId === id)
+        if (product) {
+            onBarcode(product.barcode)
+            setKeyboardVisible(true)
+            onKeyboardDigit(product.name)
+            onNumberPadDigit(product.price.toString())
+            onId(product.objectId)
+        }
+    }
+
     return (
         <div className={"flex flex-col h-full w-full"}>
             <BarcodeReader
@@ -124,16 +160,18 @@ const Products: React.FC<ProductsProps> = () => {
             />
             <div><Button onClick={exitFromProductPage} icon={"back"}>indietro</Button></div>
             <div className={"flex-grow flex-shrink overflow-auto min-h-0"}>
-                <div className={"grid grid-cols-[16ex_1fr_6ex_3em] gap-2"}>
+                <div className={"grid grid-cols-[16ex_1fr_6ex_3em_3em] gap-2"}>
                     <div className={"mb-2 pb-2 border-b-4"}>barcode</div>
                     <div className={"mb-2 pb-2 border-b-4"}>nome</div>
                     <div className={"mb-2 pb-2 border-b-4"}>prezzo</div>
+                    <div className={"mb-2 pb-2 border-b-4"}></div>
                     <div className={"mb-2 pb-2 border-b-4"}></div>
                     {catalog.map((product: any) => {
                         return <React.Fragment key={product.objectId}>
                             <div>{product.barcode}</div>
                             <div>{product.name}</div>
                             <div className={"text-right"}>{formatNumber(product.price)}</div>
+                            <div><Button onClick={() => onEditRequest(product.objectId)} icon={"edit"}></Button></div>
                             <div><Button onClick={() => onDeleteRequest(product.objectId)} icon={"delete"}></Button></div>
                         </React.Fragment>
                     })}
