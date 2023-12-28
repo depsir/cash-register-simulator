@@ -123,7 +123,7 @@ const Products: React.FC<ProductsProps> = () => {
     }
 
     const navigate = useNavigate();
-    const { product, onBarcode, onKeyboardDigit, onNumberPadDigit, onClear, onNumberPadBackspace, onKeyboardBackspace, onId } = useProductForm();
+    const { product, onBarcode, onName, onKeyboardDigit, onNumberPadDigit, onClear, onNumberPadBackspace, onKeyboardBackspace, onId, onPrice } = useProductForm();
     const onDelete = (id: string) => {
         fetcher.submit(
             { actionType: 'delete', productId: id }, { method: 'post' }
@@ -145,41 +145,39 @@ const Products: React.FC<ProductsProps> = () => {
     const onAddMode = () => {
         setMode("add")
         setKeyboardVisible(true)
+        onClear()
     }
 
     const onSearchMode = () => {
-        setMode("search")
-        setKeyboardVisible(true)
-        if (productFilter) {
+        onClear()
+        if (mode!=="search" && hasFilter) {
             onBarcode(productFilter.barcode)
             onKeyboardDigit(productFilter.name)
         }
+        setMode("search")
+        setKeyboardVisible(true)
     }
 
     const onInitMode = () => {
         setMode("init")
         setKeyboardVisible(false)
+        onClear()
     }
 
-    useEffect(() => {
-            onClear()
-    }, [mode])
-
     const onEditMode = (id: string) => {
-        const product = catalog.find((product: any) => product.objectId === id)
-        if (product) {
+        const productToEdit = catalog.find((product: any) => product.objectId === id)
+        if (productToEdit) {
             setMode("edit")
-            onBarcode(product.barcode)
+            onBarcode(productToEdit.barcode)
+            onName(productToEdit.name)
+            onPrice(productToEdit.price.toString())
+            onId(productToEdit.objectId)
             setKeyboardVisible(true)
-            onKeyboardDigit(product.name)
-            onNumberPadDigit(product.price.toString())
-            onId(product.objectId)
         }
     }
     
     useEffect(() => {
         if (mode === "search") {
-            // update productFilter
             setProductFilter({name: product.name, barcode: product.barcode})
         }
     }, [product.name, product.barcode, mode])
@@ -195,7 +193,7 @@ const Products: React.FC<ProductsProps> = () => {
         } else {
             setFilteredCatalog(catalog)
         }
-    }, [productFilter, productFilter?.name, productFilter?.barcode])
+    }, [productFilter, productFilter?.name, productFilter?.barcode, catalog])
 
 
     useEffect(() => {
@@ -210,6 +208,9 @@ const Products: React.FC<ProductsProps> = () => {
 
     function onFilterReset() {
        setProductFilter(undefined);
+       if(mode === "search") {
+           onClear()
+       }
     }
 
     return (

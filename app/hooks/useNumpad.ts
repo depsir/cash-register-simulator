@@ -16,9 +16,11 @@ const useNumpad = () => {
         setValue(value.slice(0, -1))
     }
 
+    const onNumber = (number: string) => {
+        setValue(number.toString())
+    }
 
-
-    return {value, onDigit, onEnter, onClear, onBackspace}
+    return {value, onDigit, onEnter, onClear, onBackspace, onNumber}
 }
 
 export default useNumpad

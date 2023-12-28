@@ -6,7 +6,7 @@ const useProductForm = () => {
     const [barcode, setBarcode] = useState("");
     const [name, setName] = useState("");
     const [id, setId] = useState("");
-    const { onDigit, onClear: onNumpadClear, onBackspace, value } = useNumpad()
+    const { onDigit, onClear: onNumpadClear, onBackspace, value, onNumber } = useNumpad()
 
     const onBarcode = (inputBarcode: string) => {
         setBarcode(inputBarcode);
@@ -18,6 +18,14 @@ const useProductForm = () => {
 
     const onNumberPadDigit = (digit: string) => {
         onDigit(digit)
+    }
+
+    const onName = (inputName: string) => {
+        setName(inputName);
+    }
+
+    const onPrice = (price: string) => {
+        onNumber(price)
     }
 
     const onClear = () => {
@@ -35,7 +43,7 @@ const useProductForm = () => {
         setId(inputId);
     }
 
-    return { product: {barcode, name, price: value, id}, onBarcode, onKeyboardDigit, onNumberPadDigit, onClear, onNumberPadBackspace: onBackspace, onKeyboardBackspace, onId}
+    return { product: {barcode, name, price: value, id}, onBarcode, onKeyboardDigit, onNumberPadDigit, onClear, onNumberPadBackspace: onBackspace, onKeyboardBackspace, onId, onName, onPrice}
 }
 
 export default useProductForm;
