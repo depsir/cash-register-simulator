@@ -40,6 +40,7 @@ const iconMap = {
     "person-add": "\ue7fe",
     "edit": "\ue3c9",
     "coffee": "\uefef",
+    "filter-off": "\ueb32",
 }
 
 type Props = {

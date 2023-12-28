@@ -116,7 +116,8 @@ const Products: React.FC<ProductsProps> = () => {
     const [confirmDelete, setConfirmDelete] = React.useState<string | null>(null);
     const [mode, setMode] = React.useState<"add" | "edit" | "init" | "search">("init");
     const {addMessage} = useMessages();
-
+    const [productFilter, setProductFilter] = React.useState<{name: string, barcode: string} | undefined>();
+    const hasFilter = productFilter && (productFilter.name || productFilter.barcode)
     const onDeleteRequest = (id: string) => {
         setConfirmDelete(id);
     }
@@ -149,6 +150,10 @@ const Products: React.FC<ProductsProps> = () => {
     const onSearchMode = () => {
         setMode("search")
         setKeyboardVisible(true)
+        if (productFilter) {
+            onBarcode(productFilter.barcode)
+            onKeyboardDigit(productFilter.name)
+        }
     }
 
     const onInitMode = () => {
@@ -174,20 +179,24 @@ const Products: React.FC<ProductsProps> = () => {
     
     useEffect(() => {
         if (mode === "search") {
+            // update productFilter
+            setProductFilter({name: product.name, barcode: product.barcode})
+        }
+    }, [product.name, product.barcode, mode])
+
+    useEffect(() => {
+        if (hasFilter) {
             const filteredCatalog2 = catalog.filter((product1: any) => {
-                const barcodeMatch = !product.barcode || product1.barcode.includes(product.barcode)
-                const nameMatch = !product.name || product1.name.toLowerCase().includes(product.name.toLowerCase())
+                const barcodeMatch = !productFilter.barcode || product1.barcode.includes(productFilter.barcode)
+                const nameMatch = !productFilter.name || product1.name.toLowerCase().includes(productFilter.name.toLowerCase())
                 return barcodeMatch && nameMatch
             })
             setFilteredCatalog(filteredCatalog2)
-        }
-        else {
-            // todo: investigate if i want to keep the filtered catalog when i exit from search mode
-            // mainly to hide keyboard to have more space
+        } else {
             setFilteredCatalog(catalog)
         }
-    }
-    , [product.name, product.barcode, mode])
+    }, [productFilter, productFilter?.name, productFilter?.barcode])
+
 
     useEffect(() => {
         if (mode === "add") {
@@ -199,6 +208,10 @@ const Products: React.FC<ProductsProps> = () => {
         }
     }, [product.barcode, mode])
 
+    function onFilterReset() {
+       setProductFilter(undefined);
+    }
+
     return (
         <div className={"flex flex-col h-full w-full"}>
             <BarcodeReader
@@ -208,6 +221,7 @@ const Products: React.FC<ProductsProps> = () => {
                 <Button onClick={exitFromProductPage} icon={"back"}>indietro</Button>
                 <Button variant={Variant.SQUARE} onClick={onAddMode} icon={"add-product"}></Button>
                 <Button variant={Variant.SQUARE} onClick={onSearchMode} icon={"search"}></Button>
+                {hasFilter && <Button variant={Variant.SQUARE} onClick={onFilterReset} icon={"filter-off"}></Button>}
             </div>
             <div className={"flex-grow flex-shrink overflow-auto min-h-0"}>
                 <div className={"grid grid-cols-[16ex_1fr_6ex_3em_3em] gap-2"}>
