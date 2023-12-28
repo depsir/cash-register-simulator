@@ -114,6 +114,8 @@ const _index = () => {
                         <Button onClick={() => addManualPrice(2, "bibita")}>bibita</Button>
                         <Button onClick={() => addManualPrice(3.5, "torta")}>torta</Button>
                         <Button onClick={() => addManualPrice(5, "panino")}>panino</Button>
+                        <Button onClick={() => addManualPrice(1.8, "latte")}>latte</Button>
+                        <Button onClick={() => addManualPrice(2.8, "biscotti")}>biscotti</Button>
                     </div>
                     <Button onClick={() => setSubpage("")} icon={"back"}>indietro</Button>
                 </>
