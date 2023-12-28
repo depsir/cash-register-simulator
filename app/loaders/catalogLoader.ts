@@ -10,7 +10,7 @@ export type Product = {
 export type Catalog = Product[]
 
 export const loadCatalog = async () => {
-    return fetch("https://parseapi.back4app.com/classes/products", {
+    return fetch("https://parseapi.back4app.com/classes/products?limit=10000", {
         method: "GET",
         headers: {
             "X-Parse-Application-Id": "LDZJihElZqMmwIGNwGQwTQMxm2SJUsyHVvw6bOuh",
