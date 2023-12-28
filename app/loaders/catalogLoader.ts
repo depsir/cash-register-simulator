@@ -17,10 +17,12 @@ export const loadCatalog = async () => {
             "X-Parse-REST-API-Key": "RTKD5XQ8HBJRtGHLD3MBL7TyekcdomBc7s4Tu503"
         }
     })
-        .then(response => response.json())
+        .then(response => {
+            return response.json()
+        })
         .then(data => {
             console.log("Success:", data);
-            return json(data.results)
+            return json(data.results.sort((a: Product, b: Product) => a.name.localeCompare(b.name)))
         })
         .catch((error) => {
             console.error("Error:", error);
