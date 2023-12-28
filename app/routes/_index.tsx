@@ -98,20 +98,21 @@ const _index = () => {
                     <ManualNumber onEnter={onCustomerCard} onClear={() => setSubpage("")} allowBarcode={true}/>
                 </>}
                 {subpage == "bar" && <>
-                <div className="flex flex-wrap">
-                <Button onClick={() => addManualPrice(1, "caffe")}>caffe</Button>
-                <Button onClick={() => addManualPrice(1.8, "cappuccino")} >cappuccino</Button>
-                <Button onClick={() => addManualPrice(1.5, "brioche")} >brioche</Button>
-                <Button onClick={() => addManualPrice(2.5, "the")}>the</Button>
-                <Button onClick={() => addManualPrice(2.5, "cioccolata")}>cioccolata</Button>
-                <Button onClick={() => addManualPrice(2, "ginseng")} >ginseng</Button>
-                <Button onClick={() => addManualPrice(2, "caffe speciale")} >caffe speciale</Button>
-                <Button onClick={() => addManualPrice(3, "succo")} >succo</Button>
-                <Button onClick={() => addManualPrice(1, "acqua")} >acqua</Button>
-                <Button onClick={() => addManualPrice(2, "bibita")}>bibita</Button>
-                <Button onClick={() => addManualPrice(3.5, "torta")} >torta</Button>
-                </div>
-                <Button onClick={() => setSubpage("")} icon={"back"}>indietro</Button>
+                    <div className="flex flex-wrap">
+                    <Button onClick={() => addManualPrice(1, "caffe")}>caffe</Button>
+                    <Button onClick={() => addManualPrice(1.8, "cappuccino")} >cappuccino</Button>
+                    <Button onClick={() => addManualPrice(1.5, "brioche")} >brioche</Button>
+                    <Button onClick={() => addManualPrice(2, "ginseng")} >ginseng</Button>
+                    <Button onClick={() => addManualPrice(2.5, "cioccolata")}>cioccolata</Button>
+                    <Button onClick={() => addManualPrice(2.5, "the")}>the</Button>
+                    <Button onClick={() => addManualPrice(2, "caffe speciale")} >caffe speciale</Button>
+                    <Button onClick={() => addManualPrice(3, "succo")} >succo</Button>
+                    <Button onClick={() => addManualPrice(1, "acqua")} >acqua</Button>
+                    <Button onClick={() => addManualPrice(2, "bibita")}>bibita</Button>
+                    <Button onClick={() => addManualPrice(3.5, "torta")} >torta</Button>
+                    <Button onClick={() => addManualPrice(5, "panino")} >panino</Button>
+                    </div>
+                    <Button onClick={() => setSubpage("")} icon={"back"}>indietro</Button>
                 </>
                 }
             </div>
