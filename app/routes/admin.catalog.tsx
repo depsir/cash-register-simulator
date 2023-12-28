@@ -152,7 +152,7 @@ const Products: React.FC<ProductsProps> = () => {
         onClear()
         if (mode!=="search" && hasFilter) {
             onBarcode(productFilter.barcode)
-            onKeyboardDigit(productFilter.name)
+            onName(productFilter.name)
         }
         setMode("search")
         setKeyboardVisible(true)
