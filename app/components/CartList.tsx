@@ -1,9 +1,17 @@
+import React, {useEffect, useRef} from "react";
 import useCart from "~/hooks/useCart";
 import {compute, formatNumber} from "~/utils/utils";
-import React from "react";
 
 const CartList = () => {
-    const {cart } = useCart([])
+    const {cart} = useCart([])
+    const containerRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        if (containerRef.current) {
+            containerRef.current.scrollTop = containerRef.current.scrollHeight
+        }
+    }, [cart])
+
     const line = (id: string, first: string, second: string | number) => {
         return <div key={id} className={"flex justify-between"}>
             <span>{first}</span>
@@ -12,7 +20,7 @@ const CartList = () => {
     }
 
     return (
-        <div>
+        <div ref={containerRef} className="h-full overflow-auto">
             {cart.map((item: any) => {
                 if (item.quantity>1) {
                     return [line(item.barcode + "-quantity", `${item.quantity} x ${formatNumber(item.price)}`, ""), line(item.barcode, item.name, formatNumber(compute(item.price , item.quantity)))]
@@ -21,7 +29,6 @@ const CartList = () => {
             })}
         </div>
     )
-
 }
 
 export default CartList
