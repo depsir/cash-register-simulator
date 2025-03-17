@@ -42,25 +42,25 @@ const store = () => {
     }
 
     return (
-        <div className={"grid lg:grid-cols-[1fr_600px] grid-cols-[1fr_1fr] gap-2 w-full"}>
-            <div className={"flex flex-grow flex-col"}>
-                <div className={"bg-white flex-grow border-2 p-2 drop-shadow overflow-auto"}>
+        <div className={"grid lg:grid-cols-[1fr_600px] grid-cols-[1fr_1fr] gap-2 w-full h-full"}>
+            <div className={"flex flex-col h-full"}>
+                <div className={"bg-white flex-1 p-2 drop-shadow overflow-auto"}>
                     <CartList/>
                 </div>
-                {customerCard.objectId && <div className={"mt-2"}>
-                    <MultiElementTextBox>
-                        <div>cliente: {customerCard.name}</div>
-                        <div>punti attuali {customerCard.points} - nuovi {earnedPoints} </div>
-                    </MultiElementTextBox>
-                </div>}
-                <div className={"mt-2"}>
+                <div className={"flex-none mt-2"}>
+                    {customerCard.objectId && <div className={"mb-2"}>
+                        <MultiElementTextBox>
+                            <div>cliente: {customerCard.name}</div>
+                            <div>punti attuali {customerCard.points} - nuovi {earnedPoints} </div>
+                        </MultiElementTextBox>
+                    </div>}
                     <MultiElementTextBox>
                         <div>Totale</div>
                         <div>{total.toFixed(2)}</div>
                     </MultiElementTextBox>
                 </div>
             </div>
-            <div className={"flex-grow"}>
+            <div className={"flex flex-col h-full overflow-auto"}>
                 {(!subpage) && <>
                     <BarcodeReader
                         onScan={addProduct}

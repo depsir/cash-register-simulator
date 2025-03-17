@@ -17,19 +17,19 @@ const bar = () => {
     }
 
     return (
-        <div className={"grid lg:grid-cols-[1fr_600px] grid-cols-[1fr_1fr] gap-2 w-full"}>
-            <div className={"flex flex-grow flex-col"}>
-                <div className={"bg-white flex-grow border-2 p-2 drop-shadow overflow-auto"}>
+        <div className={"grid lg:grid-cols-[1fr_600px] grid-cols-[1fr_1fr] gap-2 w-full h-full"}>
+            <div className={"flex flex-col h-full"}>
+                <div className={"bg-white flex-1 p-2 drop-shadow overflow-auto basis-0 "}>
                     <CartList/>
                 </div>
-                <div className={"mt-2"}>
+                <div className={"flex-none mt-2"}>
                     <MultiElementTextBox>
                         <div>Totale</div>
                         <div>{total.toFixed(2)}</div>
                     </MultiElementTextBox>
                 </div>
             </div>
-            <div className={"flex-grow"}>
+            <div className={"flex flex-col h-full overflow-auto"}>
                 {(!subpage) && <>
                     <div className="flex flex-wrap">
                         <Button onClick={() => addManualPrice(1, "caffe")}>caffe</Button>
