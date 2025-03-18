@@ -191,7 +191,12 @@ const Products: React.FC = () => {
     return (
         <div className={"flex flex-col h-full w-full"}>
             <BarcodeReader
-                onScan={onBarcode}
+                onScan={(barcode) => {
+                    console.log("barcode", barcode)
+                    if (barcode) {
+                        onBarcode(barcode);
+                    }
+                }}
             />
             <div className='flex'>
                 <Button onClick={exitFromProductPage} icon={"back"}>indietro</Button>
@@ -217,16 +222,26 @@ const Products: React.FC = () => {
                     })}
                 </div>
             </div>
-            {keyboardVisible &&<div className={"absolute bottom-2 right-2"}>
-                <Button variant={Variant.SQUARE} onClick={onInitMode} icon={"keyboard-hide"}></Button>
-            </div>}
+            <div className={"absolute bottom-2 right-2"}>
+                <Button variant={Variant.SQUARE} onClick={() => {
+                    onInitMode();
+                    if (document.activeElement instanceof HTMLElement) {
+                        document.activeElement.blur();
+                    }
+                }} icon={"keyboard-hide"}></Button>
+            </div>
             {keyboardVisible && <div>
                 <div className={" grid grid-cols-[15ex_1fr_6ex_3em] gap-2"}>
                     <div className={"bg-white h-[3ex] leading-[3ex]"}>{product.barcode}</div>
                     <div className={"bg-white h-[3ex] leading-[3ex]"}>{product.name}</div>
                     <div className={"bg-white h-[3ex] leading-[3ex]"}>{product.price}</div>
                     <div>
-                        {(mode == 'add' || mode == 'edit')&& <Button onClick={onSave} icon={"add-product"}></Button>}</div>
+                        {(mode == 'add' || mode == 'edit')&& <Button onClick={() => {
+                            onSave();
+                            if (document.activeElement instanceof HTMLElement) {
+                                document.activeElement.blur();
+                            }
+                        }} icon={"add-product"}></Button>}</div>
                 </div>
                 <div className={"flex"}>
                     <Keyboard onDigit={onKeyboardDigit} onBackspace={onKeyboardBackspace}></Keyboard>

@@ -9,7 +9,9 @@ const useProductForm = () => {
     const { onDigit, onClear: onNumpadClear, onBackspace, value, onNumber } = useNumpad()
 
     const onBarcode = (inputBarcode: string) => {
-        setBarcode(inputBarcode);
+        if (inputBarcode) {
+            setBarcode(inputBarcode);
+        }
     }
 
     const onKeyboardDigit = (digit: string) => {
@@ -42,6 +44,7 @@ const useProductForm = () => {
     const onId = (inputId: string) => {
         setId(inputId);
     }
+    console.log("product", {barcode, name, price: value, id})
 
     return { product: {barcode, name, price: value, id}, onBarcode, onKeyboardDigit, onNumberPadDigit, onClear, onNumberPadBackspace: onBackspace, onKeyboardBackspace, onId, onName, onPrice}
 }

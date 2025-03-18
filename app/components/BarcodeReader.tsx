@@ -8,10 +8,14 @@ type Props = {
 const BarcodeReader: React.FC<Props> = ({onScan, active = true}) => {
     const buffer = useRef("");
     const timeout = useRef<NodeJS.Timeout>();
+    const lastKeyTime = useRef<number>(0);
+    const isProcessing = useRef(false);
+    const scannerBuffer = useRef("");
 
     useEffect(() => {
         if (!active) {
             buffer.current = "";
+            scannerBuffer.current = "";
             if (timeout.current) {
                 clearTimeout(timeout.current);
             }
@@ -21,26 +25,37 @@ const BarcodeReader: React.FC<Props> = ({onScan, active = true}) => {
         const handleKeyPress = (event: KeyboardEvent) => {
             // Ignore Enter key
             if (event.key === "Enter") {
-                if (buffer.current) {
-                    onScan(buffer.current);
-                    buffer.current = "";
+                if (scannerBuffer.current && !isProcessing.current) {
+                    isProcessing.current = true;
+                    onScan(scannerBuffer.current);
+                    scannerBuffer.current = "";
+                    isProcessing.current = false;
                 }
                 return;
             }
 
-            // Clear the buffer if it's been too long since the last keypress
+            const currentTime = Date.now();
+            // If more than 100ms have passed since the last key, clear the buffer
+            if (currentTime - lastKeyTime.current > 100) {
+                scannerBuffer.current = "";
+            }
+            lastKeyTime.current = currentTime;
+
+            // Clear any existing timeout
             if (timeout.current) {
                 clearTimeout(timeout.current);
             }
 
-            // Add the character to the buffer
-            buffer.current += event.key;
+            // Add the character to the scanner buffer
+            scannerBuffer.current += event.key;
 
             // Set a timeout to clear the buffer if no more characters are received
             timeout.current = setTimeout(() => {
-                if (buffer.current) {
-                    onScan(buffer.current);
-                    buffer.current = "";
+                if (scannerBuffer.current && !isProcessing.current) {
+                    isProcessing.current = true;
+                    onScan(scannerBuffer.current);
+                    scannerBuffer.current = "";
+                    isProcessing.current = false;
                 }
             }, 100);
         };

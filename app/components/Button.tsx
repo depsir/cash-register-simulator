@@ -1,9 +1,9 @@
 import React from "react";
 
 export enum Variant {
-    BASE,
-    SQUARE,
-    FULL
+    BASE = "BASE",
+    FULL = "FULL",
+    SQUARE = "SQUARE"
 }
 
 const variantMap = {
@@ -47,18 +47,30 @@ type Props = {
     variant?: Variant,
     onClick?: () => void
     icon?: keyof typeof iconMap
+    children?: React.ReactNode
 }
 
-const Button: React.FC<React.PropsWithChildren<Props>> = ({children, onClick, variant=Variant.BASE, icon}) => {
-  return (
-      <button 
-          onClick={onClick}
-          className={"cursor-pointer p-[1ex] border-2 text-center m-2 uppercase drop-shadow bg-gray-300 flex justify-center gap-2 " + variantMap[variant]}
-      >
-          {icon && <span className={"material-symbols-outlined lg:!text-5xl mr-2"}>{iconMap[icon]}</span>}
-          {children}
-      </button>
-  );
-};
+const Button: React.FC<Props> = ({variant = Variant.BASE, onClick, icon, children}) => {
+    const handleClick = (e: React.MouseEvent) => {
+        e.preventDefault();
+        if (onClick) {
+            onClick();
+        }
+        // Rimuovi il focus dal pulsante dopo il click
+        if (e.currentTarget instanceof HTMLElement) {
+            e.currentTarget.blur();
+        }
+    }
+
+    return (
+        <button
+            className={"cursor-pointer p-[1ex] border-2 text-center m-2 uppercase drop-shadow bg-gray-300 flex justify-center gap-2 " + variantMap[variant]}
+            onClick={handleClick}
+        >
+            {icon && <span className={"material-symbols-outlined lg:!text-5xl mr-2"}>{iconMap[icon]}</span>}
+            {children}
+        </button>
+    )
+}
 
 export default Button;
