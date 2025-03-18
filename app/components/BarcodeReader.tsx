@@ -2,13 +2,22 @@ import React, { useEffect, useRef } from "react";
 
 type Props = {
     onScan: (barcode: string) => void
+    active?: boolean
 }
 
-const BarcodeReader: React.FC<Props> = ({onScan}) => {
+const BarcodeReader: React.FC<Props> = ({onScan, active = true}) => {
     const buffer = useRef("");
     const timeout = useRef<NodeJS.Timeout>();
 
     useEffect(() => {
+        if (!active) {
+            buffer.current = "";
+            if (timeout.current) {
+                clearTimeout(timeout.current);
+            }
+            return;
+        }
+
         const handleKeyPress = (event: KeyboardEvent) => {
             // Ignore Enter key
             if (event.key === "Enter") {
@@ -43,7 +52,7 @@ const BarcodeReader: React.FC<Props> = ({onScan}) => {
                 clearTimeout(timeout.current);
             }
         };
-    }, [onScan]);
+    }, [onScan, active]);
 
     return null;
 }

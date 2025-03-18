@@ -26,7 +26,7 @@ const store = () => {
 
     const onCustomerCard = async (cardNumber: string) => {
         if (/^[0-9]+$/.test(cardNumber)) {
-            cardNumber = `CRS'CUSTOMER'${String(cardNumber).padStart(3, '0')}`;
+            cardNumber = `CRS-CUSTOMER-${String(cardNumber).padStart(3, '0')}`;
         }
         console.log("cardNumber", cardNumber)
         await fetchCustomerCard(cardNumber)
@@ -34,10 +34,10 @@ const store = () => {
     }
 
     const onCheckout = async () => {
-        if (customerCard.objectId) {
-            await updatePoints(customerCard.objectId, earnedPoints)
-            clearCustomerCard();
+        if (customerCard.id) {
+            await updatePoints(customerCard.id, earnedPoints)
         }
+        clearCustomerCard();
         emptyCart();
         setSubpage("")
     }
@@ -49,22 +49,23 @@ const store = () => {
                     <CartList/>
                 </div>
                 <div className={"flex-none mt-2"}>
-                    {customerCard.objectId && <div className={"mb-2"}>
+                    <MultiElementTextBox>
+                        <div>Totale</div>
+                        <div>{total.toFixed(2)}</div>
+                    </MultiElementTextBox>
+                    {customerCard.id && <div className={"mt-2"}>
                         <MultiElementTextBox>
                             <div>cliente: {customerCard.name}</div>
                             <div>punti attuali {customerCard.points} - nuovi {earnedPoints} </div>
                         </MultiElementTextBox>
                     </div>}
-                    <MultiElementTextBox>
-                        <div>Totale</div>
-                        <div>{total.toFixed(2)}</div>
-                    </MultiElementTextBox>
                 </div>
             </div>
             <div className={"flex flex-col h-full overflow-auto"}>
                 {(!subpage) && <>
                     <BarcodeReader
                         onScan={addProduct}
+                        active={!subpage}
                     />
 
                     <Button onClick={() => setSubpage("manual-barcode")} icon={"barcode-scanner"}>barcode
