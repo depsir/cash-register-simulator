@@ -14,6 +14,7 @@ import useCustomerCard from "~/hooks/useCustomerCard";
 export let loader: LoaderFunction = async () => {
     return loadCatalog()
 }
+export const config = { runtime: "nodejs", regions: ["fra1"] };
 
 const store = () => {
     let catalog = useLoaderData();
