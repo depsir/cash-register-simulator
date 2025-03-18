@@ -11,106 +11,74 @@ import { formatNumber } from "~/utils/utils";
 import ConfirmPopup from '~/components/ConfirmPopup';
 import PopupMessage from '~/components/PopupMessage';
 import { useMessages } from '~/hooks/useMessages';
-
-interface ProductsProps {
-    subpage: string,
-    onBarcode: (data: any) => void,
-    exitFromProductPage: () => void,
-    catalog: Array<any>,
-    onDelete: (id: string) => void,
-    product: any,
-    onSave: () => void,
-    onKeyboardDigit: (digit: string) => void,
-    onNumberPadDigit: (digit: string) => void,
-}
+import { supabase } from "~/lib/supabase.server";
 
 export let loader: LoaderFunction = async () => {
     return loadCatalog()
 }
+
 export let action: ActionFunction = async ({ request }) => {
     const formData = new URLSearchParams(await request.text());
     const actionType = formData.get("actionType");
 
-    switch (actionType) {
-        case "add": {
-            const newProduct = {
-                barcode: formData.get("barcode"),
-                name: formData.get("name"),
-                price: parseFloat(formData.get("price") || "0"),
-            };
-            await fetch("https://parseapi.back4app.com/classes/products", {
-                method: "POST",
-                headers: {
-                    "X-Parse-Application-Id": "LDZJihElZqMmwIGNwGQwTQMxm2SJUsyHVvw6bOuh",
-                    "X-Parse-REST-API-Key": "RTKD5XQ8HBJRtGHLD3MBL7TyekcdomBc7s4Tu503",
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(newProduct)
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Success:", data);
-                })
-                .catch((error) => {
-                    console.error("Error:", error);
-                });
-            break;
+    try {
+        switch (actionType) {
+            case "add": {
+                const newProduct = {
+                    barcode: formData.get("barcode"),
+                    name: formData.get("name"),
+                    price: parseFloat(formData.get("price") || "0"),
+                };
+                const { error } = await supabase
+                    .from('products')
+                    .insert([newProduct]);
+                
+                if (error) throw error;
+                break;
+            }
+            case "update": {
+                const productToUpdate = {
+                    barcode: formData.get("barcode"),
+                    name: formData.get("name"),
+                    price: parseFloat(formData.get("price") || "0"),
+                };
+                const { error } = await supabase
+                    .from('products')
+                    .update(productToUpdate)
+                    .eq('id', formData.get("id"));
+                
+                if (error) throw error;
+                break;
+            }
+            case "delete": {
+                const productId = formData.get("productId");
+                const { error } = await supabase
+                    .from('products')
+                    .delete()
+                    .eq('id', productId);
+                
+                if (error) throw error;
+                break;
+            }
+            default:
+                break;
         }
-        case "update": {
-            const productToUpdate = {
-                barcode: formData.get("barcode"),
-                name: formData.get("name"),
-                price: parseFloat(formData.get("price") || "0"),
-                id: formData.get("id")
-            };
-            await fetch(`https://parseapi.back4app.com/classes/products/${formData.get("id")}`, {
-                method: "PUT",
-                headers: {
-                    "X-Parse-Application-Id": "LDZJihElZqMmwIGNwGQwTQMxm2SJUsyHVvw6bOuh",
-                    "X-Parse-REST-API-Key": "RTKD5XQ8HBJRtGHLD3MBL7TyekcdomBc7s4Tu503",
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(productToUpdate)
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Success:", data);
-                })
-                .catch((error) => {
-                    console.error("Error:", error);
-                });
-            break;
-        }
-        case "delete": {
-            const productIdToDelete = formData.get("productId");
-            await fetch(`https://parseapi.back4app.com/classes/products/${productIdToDelete}`, {
-                method: "DELETE",
-                headers: {
-                    "X-Parse-Application-Id": "LDZJihElZqMmwIGNwGQwTQMxm2SJUsyHVvw6bOuh",
-                    "X-Parse-REST-API-Key": "RTKD5XQ8HBJRtGHLD3MBL7TyekcdomBc7s4Tu503",
-                },
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Success:", data);
-                })
-                .catch((error) => {
-                    console.error("Error:", error);
-                });
-            break;
-        }
-        default:
-            break;
-    }
 
-    return json({ ok: true });
+        return loadCatalog();
+    } catch (error) {
+        console.error("Database error:", error);
+        return json({ error: "Errore durante l'operazione" }, { status: 500 });
+    }
 };
 
-
-const Products: React.FC<ProductsProps> = () => {
+const Products: React.FC = () => {
     const catalog: Catalog = useLoaderData();
     const [filteredCatalog, setFilteredCatalog] = React.useState(catalog)
     const fetcher = useFetcher();
+
+    useEffect(() => {
+        setFilteredCatalog(catalog);
+    }, [catalog]);
 
     const [keyboardVisible, setKeyboardVisible] = React.useState(false);
     const [confirmDelete, setConfirmDelete] = React.useState<string | null>(null);
@@ -126,14 +94,22 @@ const Products: React.FC<ProductsProps> = () => {
     const { product, onBarcode, onName, onKeyboardDigit, onNumberPadDigit, onClear, onNumberPadBackspace, onKeyboardBackspace, onId, onPrice } = useProductForm();
     const onDelete = (id: string) => {
         fetcher.submit(
-            { actionType: 'delete', productId: id }, { method: 'post' }
+            { actionType: 'delete', productId: id }, 
+            { method: 'post' }
         )
         setConfirmDelete(null)
     }
 
     const onSave = () => {
         fetcher.submit(
-            { actionType: product.id ? 'update' : 'add', barcode: product.barcode, name: product.name, price: product.price, id: product.id }, { method: 'post' }
+            { 
+                actionType: product.id ? 'update' : 'add', 
+                barcode: product.barcode, 
+                name: product.name, 
+                price: product.price, 
+                id: product.id 
+            }, 
+            { method: 'post' }
         )
         onClear();
     }
@@ -165,13 +141,13 @@ const Products: React.FC<ProductsProps> = () => {
     }
 
     const onEditMode = (id: string) => {
-        const productToEdit = catalog.find((product: any) => product.objectId === id)
+        const productToEdit = catalog.find((product: any) => product.id === id)
         if (productToEdit) {
             setMode("edit")
             onBarcode(productToEdit.barcode)
             onName(productToEdit.name)
             onPrice(productToEdit.price.toString())
-            onId(productToEdit.objectId)
+            onId(productToEdit.id)
             setKeyboardVisible(true)
         }
     }
@@ -194,7 +170,6 @@ const Products: React.FC<ProductsProps> = () => {
             setFilteredCatalog(catalog)
         }
     }, [productFilter, productFilter?.name, productFilter?.barcode, catalog])
-
 
     useEffect(() => {
         if (mode === "add") {
@@ -232,12 +207,12 @@ const Products: React.FC<ProductsProps> = () => {
                     <div className={"mb-2 pb-2 border-b-4"}></div>
                     <div className={"mb-2 pb-2 border-b-4"}></div>
                     {filteredCatalog.map((product: any) => {
-                        return <React.Fragment key={product.objectId}>
+                        return <React.Fragment key={product.id}>
                             <div>{product.barcode}</div>
                             <div>{product.name}</div>
                             <div className={"text-right"}>{formatNumber(product.price)}</div>
-                            <div><Button onClick={() => onEditMode(product.objectId)} icon={"edit"}></Button></div>
-                            <div><Button onClick={() => onDeleteRequest(product.objectId)} icon={"delete"}></Button></div>
+                            <div><Button onClick={() => onEditMode(product.id)} icon={"edit"}></Button></div>
+                            <div><Button onClick={() => onDeleteRequest(product.id)} icon={"delete"}></Button></div>
                         </React.Fragment>
                     })}
                 </div>

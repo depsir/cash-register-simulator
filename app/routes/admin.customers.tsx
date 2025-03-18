@@ -7,11 +7,12 @@ import BarcodeReader from "~/components/BarcodeReader";
 import {loadCustomers} from "~/loaders/customerLoader";
 import {ActionFunction, json} from "@remix-run/node";
 import ConfirmPopup from '~/components/ConfirmPopup';
+import { supabase } from "~/lib/supabase.server";
 
 interface Customer {
-    objectId: string;
+    id: string;
     name: string;
-    cardNumber: string;
+    card_number: string;
     points: number;
 }
 
@@ -26,52 +27,39 @@ export let action: ActionFunction = async ({request}) => {
     switch (actionType) {
         case "add": {
             const newCustomer = {
-                cardNumber: formData.get("cardNumber"),
+                card_number: formData.get("cardNumber"),
                 name: formData.get("name"),
+                points: 0
             };
-            await fetch("https://parseapi.back4app.com/classes/customers", {
-                method: "POST",
-                headers: {
-                    "X-Parse-Application-Id": "LDZJihElZqMmwIGNwGQwTQMxm2SJUsyHVvw6bOuh",
-                    "X-Parse-REST-API-Key": "RTKD5XQ8HBJRtGHLD3MBL7TyekcdomBc7s4Tu503",
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(newCustomer)
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Success:", data);
-                })
-                .catch((error) => {
-                    console.error("Error:", error);
-                });
+            const { error } = await supabase
+                .from('customers')
+                .insert([newCustomer]);
+            
+            if (error) {
+                console.error("Error adding customer:", error);
+                return json({ error: "Errore durante l'aggiunta del cliente" }, { status: 500 });
+            }
             break;
         }
         case "delete": {
-            const customerToDelete = formData.get("customerId");
-            await fetch(`https://parseapi.back4app.com/classes/customers/${customerToDelete}`, {
-                method: "DELETE",
-                headers: {
-                    "X-Parse-Application-Id": "LDZJihElZqMmwIGNwGQwTQMxm2SJUsyHVvw6bOuh",
-                    "X-Parse-REST-API-Key": "RTKD5XQ8HBJRtGHLD3MBL7TyekcdomBc7s4Tu503",
-                },
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Success:", data);
-                })
-                .catch((error) => {
-                    console.error("Error:", error);
-                });
+            const customerId = formData.get("customerId");
+            const { error } = await supabase
+                .from('customers')
+                .delete()
+                .eq('id', customerId);
+            
+            if (error) {
+                console.error("Error deleting customer:", error);
+                return json({ error: "Errore durante l'eliminazione del cliente" }, { status: 500 });
+            }
             break;
         }
         default:
             break;
     }
 
-    return json({ok: true});
+    return loadCustomers();
 };
-
 
 const CustomerManagement: React.FC = () => {
     const [error, setError] = useState("");
@@ -99,36 +87,19 @@ const CustomerManagement: React.FC = () => {
 
     const onDelete = (customerId: string) => {
         fetcher.submit(
-            {actionType: 'delete', customerId: customerId}, {method: 'post'}
+            {actionType: 'delete', customerId: customerId}, 
+            {method: 'post'}
         )
         setConfirmDelete(null)
     }
+
     const onSave = () => {
         fetcher.submit(
-            {actionType: 'add', cardNumber: customer.cardNumber, name: customer.name}, {method: 'post'}
+            {actionType: 'add', cardNumber: customer.cardNumber, name: customer.name}, 
+            {method: 'post'}
         )
         onClear()
     }
-
-    const updateProduct = async (id: string, barcode: string, name: string, price: number) => {
-            const updatedProduct = {name, barcode, price}
-            return fetch("https://parseapi.back4app.com/classes/products/"+id, {
-                method: "PUT",
-                headers: {
-                    "X-Parse-Application-Id": "LDZJihElZqMmwIGNwGQwTQMxm2SJUsyHVvw6bOuh",
-                    "X-Parse-REST-API-Key": "RTKD5XQ8HBJRtGHLD3MBL7TyekcdomBc7s4Tu503",
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(updatedProduct)
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Success:", data);
-                })
-                .catch((error) => {
-                    console.error("Error:", error);
-                });
-        }
 
     return (
         <div className={"flex flex-col h-full w-full"}>
@@ -146,11 +117,11 @@ const CustomerManagement: React.FC = () => {
                     <div className={"mb-2 pb-2 border-b-4"}></div>
 
                     {customers.map(customer => (
-                        <React.Fragment key={customer.objectId}>
-                            <div>{customer.cardNumber}</div>
+                        <React.Fragment key={customer.id}>
+                            <div>{customer.card_number}</div>
                             <div>{customer.name}</div>
                             <div>{customer.points}</div>
-                            <div><Button onClick={() => onDeleteRequest(customer.objectId)} icon={"delete"}></Button>
+                            <div><Button onClick={() => onDeleteRequest(customer.id)} icon={"delete"}></Button>
                             </div>
                         </React.Fragment>
                     ))}
@@ -183,4 +154,5 @@ const CustomerManagement: React.FC = () => {
         </div>
     );
 }
+
 export default CustomerManagement;

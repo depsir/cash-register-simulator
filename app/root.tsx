@@ -4,8 +4,9 @@ import {
     Meta,
     Scripts,
     ScrollRestoration,
+    useLoaderData,
 } from "@remix-run/react";
-import type {LinksFunction} from "@remix-run/node"; // or cloudflare/deno
+import type {LinksFunction, LoaderFunction} from "@remix-run/node";
 
 import styles from "./styles/tailwind.css";
 import App from "~/App";
@@ -18,6 +19,10 @@ export const links: LinksFunction = () => [
         href: "https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
     }
 ];
+
+export const loader: LoaderFunction = async () => {
+  return {};
+};
 
 export default function Root() {
     return (

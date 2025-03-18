@@ -1,20 +1,23 @@
 import {json} from "@remix-run/node";
+import { supabase } from "~/lib/supabase.server";
+
+export type Customer = {
+    id: string;
+    name: string;
+    card_number: string;
+    points: number;
+}
 
 export const loadCustomers = async () => {
-    return fetch("https://parseapi.back4app.com/classes/customers", {
-        method: "GET",
-        headers: {
-            "X-Parse-Application-Id": "LDZJihElZqMmwIGNwGQwTQMxm2SJUsyHVvw6bOuh",
-            "X-Parse-REST-API-Key": "RTKD5XQ8HBJRtGHLD3MBL7TyekcdomBc7s4Tu503"
-        }
-    })
-        .then(response => response.json())
-        .then(data => {
-            console.log("Success:", data);
-            return json(data.results)
-        })
-        .catch((error) => {
-            console.error("Error:", error);
-        });
+    const { data, error } = await supabase
+        .from('customers')
+        .select('*')
+        .order('name');
 
+    if (error) {
+        console.error("Error loading customers:", error);
+        return json([]);
+    }
+
+    return json(data || []);
 }
