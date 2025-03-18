@@ -51,11 +51,13 @@ type Props = {
 
 const Button: React.FC<React.PropsWithChildren<Props>> = ({children, onClick, variant=Variant.BASE, icon}) => {
   return (
-      <div onClick={onClick}
-           className={"cursor-pointer p-[1ex] border-2 text-center m-2 uppercase drop-shadow bg-gray-300 flex justify-center gap-2 " + variantMap[variant]}>
-          {icon && <span  className={"material-symbols-outlined lg:!text-5xl mr-2"}>{iconMap[icon]}</span>}
+      <button 
+          onClick={onClick}
+          className={"cursor-pointer p-[1ex] border-2 text-center m-2 uppercase drop-shadow bg-gray-300 flex justify-center gap-2 " + variantMap[variant]}
+      >
+          {icon && <span className={"material-symbols-outlined lg:!text-5xl mr-2"}>{iconMap[icon]}</span>}
           {children}
-      </div>
+      </button>
   );
 };
 
