@@ -11,6 +11,7 @@ export type Product = {
 export type Catalog = Product[];
 
 export const loadCatalog = async () => {
+    console.log("loadCatalog")
     const { data, error } = await supabase
         .from('products')
         .select('*')
