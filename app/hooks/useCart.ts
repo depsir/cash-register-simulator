@@ -13,8 +13,11 @@ const useCart = (catalog: any) => {
         } else {
             const product = catalog.find((item: any) => item.barcode === barcode)
             if (product === undefined) {
-                addMessage({type: 'error', message: 'Prodotto non trovato'})
-                return console.log('Product not found')
+                addMessage({
+                    type: 'error', 
+                    message: `Prodotto non trovato nel catalogo\nBarcode: ${barcode}\nAggiungi il prodotto nel catalogo se necessario.`
+                })
+                return console.log('Product not found in catalog:', barcode)
             }
 
             newCart.push({

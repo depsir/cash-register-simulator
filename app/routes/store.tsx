@@ -3,7 +3,7 @@ import CartList from "~/components/CartList";
 import MultiElementTextBox from "~/components/MultiElementTextBox";
 import Button from "~/components/Button";
 import useCart from "~/hooks/useCart";
-import {useLoaderData, useNavigate} from '@remix-run/react'
+import {useLoaderData, useNavigate, useFetcher} from '@remix-run/react'
 import {LoaderFunction} from "@remix-run/node";
 import {loadCatalog} from "~/loaders/catalogLoader";
 import BarcodeReader from "~/components/BarcodeReader";
@@ -23,6 +23,7 @@ const store = () => {
     const [subpage, setSubpage] = React.useState("")
     const navigate = useNavigate();
     const earnedPoints = Math.floor(total)
+    const fetcher = useFetcher();
 
     const onCustomerCard = async (cardNumber: string) => {
         if (/^[0-9]+$/.test(cardNumber)) {
@@ -41,6 +42,22 @@ const store = () => {
         emptyCart();
         setSubpage("")
     }
+
+    const onNavigateToAdmin = () => {
+        navigate("/admin", { state: { from: "/store" } });
+    }
+
+    // Ricarica il catalogo quando torni alla pagina store
+    React.useEffect(() => {
+        const handlePopState = () => {
+            if (window.history.state?.from === "/admin") {
+                fetcher.load("/store");
+            }
+        };
+
+        window.addEventListener('popstate', handlePopState);
+        return () => window.removeEventListener('popstate', handlePopState);
+    }, [fetcher]);
 
     return (
         <div className={"grid lg:grid-cols-[1fr_600px] grid-cols-[1fr_1fr] gap-2 w-full h-full"}>
@@ -76,7 +93,7 @@ const store = () => {
                     <Button onClick={() => addProduct("1")} icon={"shopping-bag"}>sacchetto</Button>
                     <Button onClick={() => setSubpage("checkout")} icon={"checkout"}>checkout</Button>
                     <Button onClick={() => setSubpage("customer-card")} icon={"membership-card"}>carta fedeltà</Button>
-                    <Button onClick={() => navigate("/admin", { state: { from: "/store" } })} icon={"settings"}>admin</Button>
+                    <Button onClick={onNavigateToAdmin} icon={"settings"}>admin</Button>
                 </>}
                 {subpage == "manual-barcode" && <>
                     <ManualNumber onEnter={addProduct} onClear={() => setSubpage("")}/>
