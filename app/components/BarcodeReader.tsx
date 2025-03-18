@@ -1,66 +1,51 @@
-import React, { useState, useEffect } from 'react';
-// import BarcodeReader from 'react-barcode-reader';
+import React, { useEffect, useRef } from "react";
 
-interface BarcodeReaderProps {
-  onBarcodeDetected: (barcode: string) => void;
+type Props = {
+    onScan: (barcode: string) => void
 }
 
-const BarcodeReader: React.FC<BarcodeReaderProps> = ({ onBarcodeDetected }) => {
-  const [isScanning, setIsScanning] = useState(false);
+const BarcodeReader: React.FC<Props> = ({onScan}) => {
+    const buffer = useRef("");
+    const timeout = useRef<NodeJS.Timeout>();
 
-  // Temporarily disabled barcode reader
-  /*
-  useEffect(() => {
-    const reader = new BarcodeReader({
-      onScan: (data: string) => {
-        onBarcodeDetected(data);
-      },
-      onError: (err: Error) => {
-        console.error('Error scanning barcode:', err);
-      }
-    });
+    useEffect(() => {
+        const handleKeyPress = (event: KeyboardEvent) => {
+            // Ignore Enter key
+            if (event.key === "Enter") {
+                if (buffer.current) {
+                    onScan(buffer.current);
+                    buffer.current = "";
+                }
+                return;
+            }
 
-    if (isScanning) {
-      reader.start();
-    } else {
-      reader.stop();
-    }
+            // Clear the buffer if it's been too long since the last keypress
+            if (timeout.current) {
+                clearTimeout(timeout.current);
+            }
 
-    return () => {
-      reader.stop();
-    };
-  }, [isScanning, onBarcodeDetected]);
-  */
+            // Add the character to the buffer
+            buffer.current += event.key;
 
-  // Temporary manual input for testing
-  const handleManualInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    if (value) {
-      onBarcodeDetected(value);
-      event.target.value = ''; // Clear input after detection
-    }
-  };
+            // Set a timeout to clear the buffer if no more characters are received
+            timeout.current = setTimeout(() => {
+                if (buffer.current) {
+                    onScan(buffer.current);
+                    buffer.current = "";
+                }
+            }, 100);
+        };
 
-  return (
-    <div className="flex flex-col items-center gap-4">
-      {/* Temporarily disabled button
-      <button
-        onClick={() => setIsScanning(!isScanning)}
-        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-      >
-        {isScanning ? 'Stop Scanning' : 'Start Scanning'}
-      </button>
-      */}
-      
-      {/* Temporary manual input */}
-      <input
-        type="text"
-        placeholder="Enter barcode manually"
-        onChange={handleManualInput}
-        className="px-4 py-2 border rounded"
-      />
-    </div>
-  );
-};
+        window.addEventListener("keypress", handleKeyPress);
+        return () => {
+            window.removeEventListener("keypress", handleKeyPress);
+            if (timeout.current) {
+                clearTimeout(timeout.current);
+            }
+        };
+    }, [onScan]);
+
+    return null;
+}
 
 export default BarcodeReader;
