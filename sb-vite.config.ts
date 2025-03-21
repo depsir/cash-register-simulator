@@ -7,6 +7,16 @@ export default defineConfig(({ mode }) => {
 
   return {
     // no Remix Vite plugin here
-    plugins: [tsconfigPaths()],
+    plugins: [
+      tsconfigPaths(),
+    ],
+    css: {
+      postcss: {
+        plugins: [
+          require('tailwindcss'),
+          require('autoprefixer'),
+        ],
+      },
+    },
   }
 }) 
