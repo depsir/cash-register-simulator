@@ -67,7 +67,8 @@ const Button: React.FC<Props> = ({variant = Variant.BASE, onClick, icon, childre
             className={"cursor-pointer p-[1ex] border-2 text-center m-2 uppercase drop-shadow bg-gray-300 flex justify-center gap-2 " + variantMap[variant]}
             onClick={handleClick}
         >
-            {icon && <span className={"material-symbols-outlined text-[1em] mr-2"}>{iconMap[icon]}</span>}
+            {icon && <span className={`material-symbols-outlined text-[1em] ${variant === Variant.SQUARE ? '' : 'mr-2'} flex items-center`}>{iconMap[icon]}</span>}
+            
             {children}
         </button>
     )
