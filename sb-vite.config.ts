@@ -11,12 +11,10 @@ export default defineConfig(({ mode }) => {
       tsconfigPaths(),
     ],
     css: {
-      postcss: {
-        plugins: [
-          require('tailwindcss'),
-          require('autoprefixer'),
-        ],
-      },
-    },
+        postcss: './postcss.config.js',
+        modules: {
+          localsConvention: 'camelCase'
+        }
+    }
   }
 }) 
