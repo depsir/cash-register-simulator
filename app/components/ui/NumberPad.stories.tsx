@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import NumberPad from '../app/components/NumberPad';
+import NumberPad from './NumberPad';
 
 const meta = {
     title: 'Components/NumberPad',

@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import TextBox from '../app/components/TextBox';
+import MultiElementTextBox from './MultiElementTextBox';
 
-const meta: Meta<typeof TextBox> = {
-  title: 'Components/TextBox',
-  component: TextBox,
+const meta: Meta<typeof MultiElementTextBox> = {
+  title: 'Components/MultiElementTextBox',
+  component: MultiElementTextBox,
   parameters: {
     layout: 'centered',
   },
@@ -22,12 +22,12 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    children: <div>Default Child Text</div>,
+    children: <div>Default MultiElement Child Text</div>,
   },
 };
 
-export const WithInitialValue: Story = {
+export const WithCustomChildren: Story = {
   args: {
-    children: <div>Initial Child Text</div>,
+    children: <div>Custom MultiElement Child Text</div>,
   },
 };

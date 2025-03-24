@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import PurePopupMessage, { PurePopupMessageProps } from '../app/components/PurePopupMessage';
+import PurePopupMessage, { PurePopupMessageProps } from './PurePopupMessage';
 
 const meta: Meta<typeof PurePopupMessage> = {
   title: 'Components/PurePopupMessage',

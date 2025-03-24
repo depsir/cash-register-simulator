@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import Keyboard from '../app/components/Keyboard';
+import Keyboard from './Keyboard';
 
 const meta: Meta<typeof Keyboard> = {
   title: 'Components/Keyboard',

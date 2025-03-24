@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import useProductForm from "~/hooks/useProductForm";
 import { useFetcher, useLoaderData, useNavigate } from "@remix-run/react";
-import Button, { Variant } from "~/components/Button";
-import Keyboard from "~/components/Keyboard";
-import NumberPad from "~/components/NumberPad";
+import Button, { Variant } from "~/components/ui/Button";
+import Keyboard from "~/components/ui/Keyboard";
+import NumberPad from "~/components/ui/NumberPad";
 import { ActionFunction, json, LoaderFunction } from "@remix-run/node";
 import { Catalog, loadCatalog } from "~/loaders/catalogLoader";
 import BarcodeReader from "~/components/BarcodeReader";
 import { formatNumber } from "~/utils/utils";
-import ConfirmPopup from '~/components/ConfirmPopup';
+import ConfirmPopup from '~/components/ui/ConfirmPopup';
 import PopupMessage from '~/components/PopupMessage';
 import { useMessages } from '~/hooks/useMessages';
 import { supabase } from "~/lib/supabase.server";

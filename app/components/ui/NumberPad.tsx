@@ -1,5 +1,5 @@
 import React from 'react'
-import Button, {Variant} from "~/components/Button";
+import Button, {Variant} from "~/components/ui/Button";
 
 type Props = {
     onDigit: (digit: string) => void

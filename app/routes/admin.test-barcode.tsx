@@ -1,6 +1,6 @@
 import React from 'react';
 import {useNavigate} from "@remix-run/react";
-import Button from "~/components/Button";
+import Button from "~/components/ui/Button";
 import BarcodeReader from "~/components/BarcodeReader";
 
 export default function TestBarcode() {

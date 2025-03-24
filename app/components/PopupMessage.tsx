@@ -1,6 +1,6 @@
 import React from 'react';
 import { useMessages } from '~/hooks/useMessages';
-import PurePopupMessage from './PurePopupMessage';
+import PurePopupMessage from './ui/PurePopupMessage';
 
 const PopupMessage: React.FC = () => {
   const { messages, deleteFirstMessage } = useMessages();

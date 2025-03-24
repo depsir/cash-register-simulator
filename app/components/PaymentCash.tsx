@@ -1,7 +1,7 @@
 import useNumpad from "~/hooks/useNumpad";
 import MultiElementTextBox from "~/components/MultiElementTextBox";
-import NumberPad from "~/components/NumberPad";
-import Button from "~/components/Button";
+import NumberPad from "~/components/ui/NumberPad";
+import Button from "~/components/ui/Button";
 import React from "react";
 import useCart from "~/hooks/useCart";
 

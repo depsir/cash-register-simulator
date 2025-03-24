@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
-import Button, {Variant} from "~/components/Button";
+import Button, {Variant} from "~/components/ui/Button";
 import {useFetcher, useLoaderData, useNavigate} from "@remix-run/react";
-import Keyboard from "~/components/Keyboard";
+import Keyboard from "~/components/ui/Keyboard";
 import usesCustomerForm from "~/hooks/usesCustomerForm";
 import BarcodeReader from "~/components/BarcodeReader";
 import {loadCustomers} from "~/loaders/customerLoader";
 import {ActionFunction, json} from "@remix-run/node";
-import ConfirmPopup from '~/components/ConfirmPopup';
+import ConfirmPopup from '~/components/ui/ConfirmPopup';
 import { supabase } from "~/lib/supabase.server";
 
 interface Customer {

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useNavigate} from '@remix-run/react';
-import Button from '~/components/Button';
+import Button from '~/components/ui/Button';
 import Barcode from 'react-barcode';
 
 interface BarcodeOption {

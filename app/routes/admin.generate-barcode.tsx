@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Barcode from 'react-barcode';
-import Button from "~/components/Button";
+import Button from "~/components/ui/Button";
 import {useNavigate} from "@remix-run/react";
 
 const BarcodeGenerator = () => {

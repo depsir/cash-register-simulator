@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
-import Button, { Variant } from '../app/components/Button';
-import '../app/styles/tailwind.css';
+import Button, { Variant } from './Button';
+import '../../styles/tailwind.css';
 
 const meta: Meta<typeof Button> = {
   title: 'Components/Button',
@@ -66,4 +66,4 @@ export const AllVariants: Story = {
       <Button variant={Variant.SQUARE} icon="settings" />
     </div>
   ),
-}; 
+};

@@ -1,7 +1,7 @@
 import useNumpad from "~/hooks/useNumpad";
-import TextBox from "~/components/TextBox";
-import NumberPad from "~/components/NumberPad";
-import Button from "~/components/Button";
+import TextBox from "~/components/ui/TextBox";
+import NumberPad from "~/components/ui/NumberPad";
+import Button from "~/components/ui/Button";
 import React from "react";
 import BarcodeReader from "~/components/BarcodeReader";
 

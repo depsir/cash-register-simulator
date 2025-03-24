@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "~/components/Button";
+import Button from "~/components/ui/Button";
 import useCart from "~/hooks/useCart";
 import useLocalServerIntegration from "~/hooks/useLocalServerIntegration";
 import {useNavigate, useLocation} from "@remix-run/react";
