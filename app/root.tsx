@@ -19,27 +19,36 @@ export const links: LinksFunction = () => [
 ];
 
 export const loader: LoaderFunction = async () => {
-  return {};
+  return {
+    SUPABASE_URL: process.env.SUPABASE_URL,
+    SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
+  };
 };
 
 export default function Root() {
-    return (
-        <html lang="en" className="h-full">
-            <head>
-                <meta charSet="utf-8"/>
-                <meta name="viewport" content="width=device-width, initial-scale=1"/>
-                <title>Cash register simulator</title>
-                <Meta/>
-                <Links/>
-            </head>
-            <body className="h-full bg-gray-100">
-                <ApplicationStateProvider>
-                    <App/>
-                </ApplicationStateProvider>
+  const env = useLoaderData();
 
-                <ScrollRestoration/>
-                <Scripts/>
-            </body>
-        </html>
-    );
+  return (
+    <html lang="en" className="h-full">
+      <head>
+        <meta charSet="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title>Cash register simulator</title>
+        <Meta/>
+        <Links/>
+      </head>
+      <body className="h-full bg-gray-100">
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.ENV = ${JSON.stringify(env)}`,
+          }}
+        />
+        <ApplicationStateProvider>
+          <App />
+        </ApplicationStateProvider>
+        <ScrollRestoration />
+        <Scripts />
+      </body>
+    </html>
+  );
 }
