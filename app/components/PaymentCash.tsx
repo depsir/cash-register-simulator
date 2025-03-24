@@ -1,5 +1,5 @@
 import useNumpad from "~/hooks/useNumpad";
-import MultiElementTextBox from "~/components/MultiElementTextBox";
+import MultiElementTextBox from "~/components/ui/MultiElementTextBox";
 import NumberPad from "~/components/ui/NumberPad";
 import Button from "~/components/ui/Button";
 import React from "react";

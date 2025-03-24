@@ -1,6 +1,6 @@
 import React from "react";
 import CartList from "~/components/CartList";
-import MultiElementTextBox from "~/components/MultiElementTextBox";
+import MultiElementTextBox from "~/components/ui/MultiElementTextBox";
 import Button from "~/components/ui/Button";
 import useCart from "~/hooks/useCart";
 import {useLoaderData, useNavigate, useFetcher} from '@remix-run/react'
