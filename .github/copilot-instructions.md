@@ -8,6 +8,7 @@
    - Place components in `app/components/`.
    - Stories should be in `stories/` with the `.stories.tsx` extension.
 5. **Comments**: Use comments sparingly and only when the code is not self-explanatory.
+6. **Component Naming**: React components must start with an uppercase letter.
 
 ## Technologies
 1. **React**: Use React for UI components.
