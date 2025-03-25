@@ -36,7 +36,7 @@ const ReceiveMessages: React.FC<ReceiveMessagesProps> = ({ channelId, amount, is
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setClientUrl(`${window.location.origin}/checkout/${channelId}/sender`);
+      setClientUrl(`${window.location.origin}/payment/${channelId}`);
     }
   }, [channelId]);
 

@@ -11,6 +11,8 @@ import ManualNumber from "~/components/ManualNumber";
 import PaymentCash from "~/components/PaymentCash";
 import useCustomerCard from "~/hooks/useCustomerCard";
 import Menu from '~/components/ui/Menu';
+import ReceiveMessages from "~/components/cashlessPayment/ReceivePayment";
+import ReceiveMessagesWrapper from "~/components/cashlessPayment/ReceiveMessagesWrapper";
 
 export let loader: LoaderFunction = async () => {
     return loadCatalog();
@@ -90,7 +92,12 @@ const store = () => {
                 {
                     label: 'Contanti',
                     icon: 'payment-cash',
-                    component: (props) => <PaymentCash {...props} onClear={props.onBack} onEnter={onCheckout} />,
+                    component: (props) => <PaymentCash {...props} onClear={props.onReset} onEnter={onCheckout} />,
+                },
+                {
+                    label: 'Cellulare',
+                    icon: 'payment-cash',
+                    component: (props) => <ReceiveMessagesWrapper {...props} amount={total} onClear={props.onReset} onEnter={onCheckout} />,
                 },
             ],
         },
