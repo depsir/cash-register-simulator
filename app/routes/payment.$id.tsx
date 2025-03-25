@@ -1,13 +1,13 @@
 import React from 'react';
 import { useParams, Link, useSearchParams } from '@remix-run/react';
-import ReceiveMessages from '~/components/cashlessPayment/ReceivePayment';
+import SendMessage from '~/components/cashlessPayment/SendPayment';
 
-interface PaymentParams {
+interface CheckoutSendParams {
   id: string;
 }
 
-const PaymentPage: React.FC = () => {
-  const { id } = useParams<keyof PaymentParams>() as PaymentParams;
+const CheckoutSenderPage: React.FC = () => {
+  const { id } = useParams<keyof CheckoutSendParams>() as CheckoutSendParams;
   const [searchParams] = useSearchParams();
 
   const isDebugMode = searchParams.get('debug') === 'true';
@@ -15,20 +15,15 @@ const PaymentPage: React.FC = () => {
   return (
     <div className="container mx-auto p-4">
       <div className="mb-4 flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Pagamento: {id}</h1>
-        <Link 
-          to={`/checkout/${id}/sender`} 
-          className="bg-gray-100 hover:bg-gray-200 text-gray-800 py-2 px-4 rounded-lg transition-colors"
-        >
-          Visualizza pagina cliente
-        </Link>
+        <h1 className="text-2xl font-bold">Checkout Session: {id}</h1>
       </div>
       
       <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
-        <ReceiveMessages channelId={id} amount={23} isDebugMode={isDebugMode} />
+        
+        <SendMessage channelId={id} isDebugMode={isDebugMode} />
       </div>
     </div>
   );
 };
 
-export default PaymentPage;
+export default CheckoutSenderPage;
