@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, useMemo } from "react";
 import { supabase } from "~/lib/supabase";
 
-interface PresenceUser {
+export interface PresenceUser {
   user: string;
   typing?: boolean;
   messagePreview?: string;
@@ -10,7 +10,7 @@ interface PresenceUser {
   amount?: number;
 }
 
-const usePaymentPresence = (channelId: string) => {
+const usePaymentPresence = (channelId: string, userStatus: PresenceUser) => {
   const [presenceState, setPresenceState] = useState<Record<string, unknown>>({});
   const presenceChannelRef = useRef<any>(null);
 
@@ -44,12 +44,6 @@ const usePaymentPresence = (channelId: string) => {
         });
       });
 
-    const userStatus: PresenceUser = {
-      user: `receiver-${channelId}`,
-      role: 'receiver',
-      amount: 42.42,
-    };
-
     presenceChannel.subscribe(async (status) => {
       if (status === 'SUBSCRIBED') {
         await presenceChannel.track(userStatus);
@@ -59,7 +53,7 @@ const usePaymentPresence = (channelId: string) => {
     return () => {
       presenceChannel.unsubscribe();
     };
-  }, [channelId]);
+  }, [channelId, userStatus]);
 
   const hasAnyUserPaid = useMemo(() => {
     return Object.values(presenceState).some((users: any) => {
@@ -70,7 +64,21 @@ const usePaymentPresence = (channelId: string) => {
     });
   }, [presenceState]);
 
-  return { presenceState, hasAnyUserPaid };
+  const amount = useMemo(() => {
+    const users = presenceState[channelId] as PresenceUser[];
+    const receiver = users?.find((user) => user.role === 'receiver');
+    return receiver?.amount ?? null;
+  }
+  , [presenceState, channelId]);
+  const trackPresenceUpdate = async (update: Partial<PresenceUser>) => {
+    if (presenceChannelRef.current) {
+      await presenceChannelRef.current.track(update);
+    } else {
+      console.error('Presence channel is not initialized.');
+    }
+  };
+  
+  return { presenceState, hasAnyUserPaid, amount,trackPresenceUpdate };
 };
 
 export default usePaymentPresence;

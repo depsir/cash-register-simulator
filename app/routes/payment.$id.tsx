@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, Link } from '@remix-run/react';
+import { useParams, Link, useSearchParams } from '@remix-run/react';
 import ReceiveMessages from '~/components/cashlessPayment/ReceivePayment';
 
 interface PaymentParams {
@@ -8,6 +8,9 @@ interface PaymentParams {
 
 const PaymentPage: React.FC = () => {
   const { id } = useParams<keyof PaymentParams>() as PaymentParams;
+  const [searchParams] = useSearchParams();
+
+  const isDebugMode = searchParams.get('debug') === 'true';
 
   return (
     <div className="container mx-auto p-4">
@@ -22,8 +25,7 @@ const PaymentPage: React.FC = () => {
       </div>
       
       <div className="bg-white rounded-lg shadow-lg p-6 border border-gray-200">
-      
-        <ReceiveMessages channelId={id} />
+        <ReceiveMessages channelId={id} amount={23} isDebugMode={isDebugMode} />
       </div>
     </div>
   );

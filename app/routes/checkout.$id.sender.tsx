@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, Link } from '@remix-run/react';
+import { useParams, Link, useSearchParams } from '@remix-run/react';
 import SendMessage from '~/components/cashlessPayment/SendPayment';
 
 interface CheckoutSendParams {
@@ -8,6 +8,9 @@ interface CheckoutSendParams {
 
 const CheckoutSenderPage: React.FC = () => {
   const { id } = useParams<keyof CheckoutSendParams>() as CheckoutSendParams;
+  const [searchParams] = useSearchParams();
+
+  const isDebugMode = searchParams.get('debug') === 'true';
 
   return (
     <div className="container mx-auto p-4">
@@ -37,7 +40,7 @@ const CheckoutSenderPage: React.FC = () => {
           </div>
         </div>
         
-        <SendMessage channelId={id} />
+        <SendMessage channelId={id} isDebugMode={isDebugMode} />
       </div>
     </div>
   );
