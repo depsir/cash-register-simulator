@@ -1,5 +1,5 @@
 import React from 'react';
-import ReceiveMessages from 'app/components/ReceiveMessages';
+import ReceiveMessages from '~/components/cashlessPayment/ReceivePayment';
 
 const ReceiveMessagesPage: React.FC = () => {
   return <ReceiveMessages />;
