@@ -3,49 +3,48 @@ import CartList from "~/components/CartList";
 import MultiElementTextBox from "~/components/ui/MultiElementTextBox";
 import Button from "~/components/ui/Button";
 import useCart from "~/hooks/useCart";
-import {useLoaderData, useNavigate, useFetcher} from '@remix-run/react'
+import {useLoaderData, useNavigate, useFetcher} from '@remix-run/react';
 import {LoaderFunction} from "@remix-run/node";
 import {loadCatalog} from "~/loaders/catalogLoader";
 import BarcodeReader from "~/components/BarcodeReader";
 import ManualNumber from "~/components/ManualNumber";
 import PaymentCash from "~/components/PaymentCash";
 import useCustomerCard from "~/hooks/useCustomerCard";
+import Menu from '~/components/ui/Menu';
 
 export let loader: LoaderFunction = async () => {
-    return loadCatalog()
-}
+    return loadCatalog();
+};
 export const config = { runtime: "nodejs", regions: ["fra1"], maxDuration: 30 };
 
 const store = () => {
     let catalog = useLoaderData();
-    const {addProduct, total, emptyCart, addManualPrice, removeProduct} = useCart(catalog)
+    const {addProduct, total, emptyCart, addManualPrice, removeProduct} = useCart(catalog);
     const {customerCard, fetchCustomerCard, updatePoints, clearCustomerCard} = useCustomerCard();
-    const [subpage, setSubpage] = React.useState("")
+    const [subpage, setSubpage] = React.useState("");
     const navigate = useNavigate();
-    const earnedPoints = Math.floor(total)
+    const earnedPoints = Math.floor(total);
     const fetcher = useFetcher();
 
     const onCustomerCard = async (cardNumber: string) => {
         if (/^[0-9]+$/.test(cardNumber)) {
             cardNumber = `CRS-CUSTOMER-${String(cardNumber).padStart(3, '0')}`;
         }
-        console.log("cardNumber", cardNumber)
-        await fetchCustomerCard(cardNumber)
-        setSubpage("")
-    }
+        console.log("cardNumber", cardNumber);
+        await fetchCustomerCard(cardNumber);
+    };
 
     const onCheckout = async () => {
         if (customerCard.id) {
-            await updatePoints(customerCard.id, earnedPoints)
+            await updatePoints(customerCard.id, earnedPoints);
         }
         clearCustomerCard();
         emptyCart();
-        setSubpage("")
-    }
+    };
 
     const onNavigateToAdmin = () => {
         navigate("/admin", { state: { from: "/store" } });
-    }
+    };
 
     // Ricarica il catalogo quando torni alla pagina store
     React.useEffect(() => {
@@ -58,6 +57,54 @@ const store = () => {
         window.addEventListener('popstate', handlePopState);
         return () => window.removeEventListener('popstate', handlePopState);
     }, [fetcher]);
+
+    const menuConfig = [
+        {
+            customElement:  <BarcodeReader onScan={addProduct} active={true} />,
+        },
+     
+        {
+            label: 'Barcode Manuale',
+            icon: 'barcode-scanner',
+            component: (props) => <ManualNumber {...props} onClear={props.onBack} onEnter={(value) => addProduct(value)} />,
+        },
+        {
+            label: 'Rimuovi Prodotto',
+            icon: 'remove-product',
+            component: (props) => <ManualNumber {...props} onClear={props.onBack} allowBarcode={true} onEnter={(value) => removeProduct(value)} />,
+        },
+{
+            label: 'Prezzo Manuale',
+            icon: 'euro',
+            component: (props) => <ManualNumber {...props} onClear={props.onBack} onEnter={(value) => addManualPrice(parseFloat(value))} />,
+        },
+        {
+            label: 'Sacchetto',
+            icon: 'shopping-bag',
+            action: () => addProduct('1'),
+        },
+        {
+            label: 'Checkout',
+            icon: 'checkout',
+            children: [
+                {
+                    label: 'Contanti',
+                    icon: 'payment-cash',
+                    component: (props) => <PaymentCash {...props} onClear={props.onBack} onEnter={onCheckout} />,
+                },
+            ],
+        },
+        {
+            label: 'Carta Fedeltà',
+            icon: 'membership-card',
+            component: (props) => <ManualNumber {...props} onClear={props.onBack} onEnter={(value) => onCustomerCard(value)} />,
+        },
+        {
+            label: 'Admin',
+            icon: 'settings',
+            action: onNavigateToAdmin,
+        },
+    ];
 
     return (
         <div className={"grid lg:grid-cols-[1fr_600px] grid-cols-[1fr_1fr] gap-2 w-full h-full"}>
@@ -79,45 +126,11 @@ const store = () => {
                 </div>
             </div>
             <div className={"flex flex-col h-full overflow-auto"}>
-                {(!subpage) && <>
-                    <BarcodeReader
-                        onScan={addProduct}
-                        active={!subpage}
-                    />
-
-                    <Button onClick={() => setSubpage("manual-barcode")} icon={"barcode-scanner"}>barcode
-                        manuale</Button>
-                    <Button onClick={() => setSubpage("remove-product")} icon={"remove-product"}>rimuovi
-                        prodotto</Button>
-                    <Button onClick={() => setSubpage("manual-price")} icon={"euro"}>prezzo manuale</Button>
-                    <Button onClick={() => addProduct("1")} icon={"shopping-bag"}>sacchetto</Button>
-                    <Button onClick={() => setSubpage("checkout")} icon={"checkout"}>checkout</Button>
-                    <Button onClick={() => setSubpage("customer-card")} icon={"membership-card"}>carta fedeltà</Button>
-                    <Button onClick={onNavigateToAdmin} icon={"settings"}>admin</Button>
-                </>}
-                {subpage == "manual-barcode" && <>
-                    <ManualNumber onEnter={addProduct} onClear={() => setSubpage("")}/>
-                </>}
-                {subpage == "manual-price" && <>
-                    <ManualNumber onEnter={(number) => addManualPrice(parseFloat(number))}
-                                  onClear={() => setSubpage("")}/>
-                </>}
-                {subpage == "remove-product" && <>
-                    <ManualNumber onEnter={removeProduct} onClear={() => setSubpage("")} allowBarcode={true}/>
-                </>}
-                {subpage == "checkout" && <>
-                    <Button onClick={() => setSubpage("payment-cash")} icon={"payment-cash"}>contanti</Button>
-                    <Button onClick={() => setSubpage("")} icon={"back"}>indietro</Button>
-                </>}
-                {subpage == "payment-cash" && <>
-                    <PaymentCash onEnter={onCheckout} onClear={() => setSubpage("")}/>
-                </>}
-                {subpage == "customer-card" && <>
-                    <ManualNumber onEnter={onCustomerCard} onClear={() => setSubpage("")} allowBarcode={true}/>
-                </>}
+               
+                <Menu config={menuConfig} />
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default store 
+export default store;

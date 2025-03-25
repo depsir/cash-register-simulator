@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import Button from '~/components/ui/Button';
 
 interface MenuConfig {
-  label: string;
-  icon: string;
+  label?: string;
+  icon?: string;
   action?: () => void;
   component?: React.ComponentType<{ onBack: () => void; onReset: () => void }>;
+  customElement?: React.ReactNode; // New property for directly rendering a custom element
   children?: MenuConfig[];
 }
 
@@ -16,18 +17,18 @@ interface MenuProps {
 }
 
 const Menu: React.FC<MenuProps> = ({ config, onBack, onReset }) => {
-  const [currentMenu, setCurrentMenu] = useState<MenuConfig[] | null>(config);
-  const [previousMenus, setPreviousMenus] = useState<MenuConfig[][]>([]);
+  const [menuPath, setMenuPath] = useState<number[]>([]);
   const [ActiveComponent, setActiveComponent] = useState<React.ComponentType<{ onBack: () => void; onReset: () => void }> | null>(null);
 
-  const handleNavigate = (menu: MenuConfig) => {
+  const getCurrentMenu = (): MenuConfig[] => {
+    return menuPath.reduce((currentMenu, index) => currentMenu[index].children || [], config);
+  };
+
+  const handleNavigate = (menu: MenuConfig, index: number) => {
     if (menu.component) {
-      setPreviousMenus([...previousMenus, currentMenu!]);
-      setCurrentMenu(null);
       setActiveComponent(() => menu.component);
     } else if (menu.children) {
-      setPreviousMenus([...previousMenus, currentMenu!]);
-      setCurrentMenu(menu.children);
+      setMenuPath([...menuPath, index]);
     } else if (menu.action) {
       menu.action();
     }
@@ -36,13 +37,8 @@ const Menu: React.FC<MenuProps> = ({ config, onBack, onReset }) => {
   const handleBack = () => {
     if (ActiveComponent) {
       setActiveComponent(null);
-      const lastMenu = previousMenus.pop();
-      setCurrentMenu(lastMenu || null);
-      setPreviousMenus([...previousMenus]);
-    } else if (previousMenus.length > 0) {
-      const lastMenu = previousMenus.pop();
-      setCurrentMenu(lastMenu || null);
-      setPreviousMenus([...previousMenus]);
+    } else if (menuPath.length > 0) {
+      setMenuPath(menuPath.slice(0, -1));
     } else if (onBack) {
       onBack();
     }
@@ -50,8 +46,7 @@ const Menu: React.FC<MenuProps> = ({ config, onBack, onReset }) => {
 
   const handleReset = () => {
     setActiveComponent(null);
-    setCurrentMenu(config);
-    setPreviousMenus([]);
+    setMenuPath([]);
     if (onReset) {
       onReset();
     }
@@ -66,21 +61,25 @@ const Menu: React.FC<MenuProps> = ({ config, onBack, onReset }) => {
       ) : (
         <div>
           <div className="menu-header">
-            {previousMenus.length > 0 && (
+            {menuPath.length > 0 && (
               <Button onClick={handleBack} icon="back">
                 Indietro
               </Button>
             )}
           </div>
           <div className="menu-content">
-            {currentMenu?.map((item, index) => (
+            {getCurrentMenu().map((item, index) => (
               <div key={index}>
-                <Button
-                  onClick={() => handleNavigate(item)}
-                  icon={item.icon}
-                >
-                  {item.label}
-                </Button>
+                {item.customElement ? (
+                  <div>{item.customElement}</div> // Render the custom element directly
+                ) : (
+                  <Button
+                    onClick={() => handleNavigate(item, index)}
+                    icon={item.icon}
+                  >
+                    {item.label}
+                  </Button>
+                )}
               </div>
             ))}
           </div>

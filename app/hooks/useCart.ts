@@ -26,6 +26,7 @@ const useCart = (catalog: any) => {
                 id: product.id // Assicuriamoci di includere l'id di Supabase
             })
         }
+        console.log("updating cart", cart, newCart)
         setCart(newCart)
     }
 
@@ -63,6 +64,8 @@ const useCart = (catalog: any) => {
             price: price
         }
         newCart.push({...product, quantity: 1})
+        console.log("updatingi manual cart", cart, newCart)
+
         setCart(newCart)
     }
 

@@ -17,8 +17,7 @@ export const loadCatalog = async () => {
         const { data, error } = await supabase
             .from('products')
             .select('id, barcode, name, price')
-            .order('name')
-            .limit(100);
+            .order('name');
 
         if (error) {
             console.error("[Catalog Loader] Error loading catalog:", error);
