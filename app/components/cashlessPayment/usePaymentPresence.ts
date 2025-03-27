@@ -45,6 +45,7 @@ const usePaymentPresence = (channelId: string, userStatus: PresenceUser) => {
       });
 
     presenceChannel.subscribe(async (status) => {
+      console.error('Subscribe status update:', status);
       if (status === 'SUBSCRIBED') {
         await presenceChannel.track(userStatus);
       }

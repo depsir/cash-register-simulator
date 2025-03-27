@@ -31,7 +31,7 @@ const ReceiveMessages: React.FC<ReceiveMessagesProps> = ({ channelId, amount, is
     amount,
   }), [channelId, amount]);
 
-  const { presenceState, hasAnyUserPaid } = usePaymentPresence(channelId, userStatus);
+  const { presenceState, hasAnyUserPaid, amount: expectedAmount } = usePaymentPresence(channelId, userStatus);
   const [clientUrl, setClientUrl] = useState<string>('');
 
   useEffect(() => {
@@ -40,12 +40,14 @@ const ReceiveMessages: React.FC<ReceiveMessagesProps> = ({ channelId, amount, is
     }
   }, [channelId]);
 
+  const isConnecting = expectedAmount !== amount;
+
   return (
     <div className="p-4">
 
       <PaymentAmountDisplay amount={amount} />
       
-      {clientUrl && (
+      {!isConnecting && clientUrl && (
         <div className="flex flex-col items-center space-y-4 p-4 bg-white border border-gray-200 rounded-lg shadow-sm">
           <h2 className="text-lg font-semibold">Scansiona per pagare</h2>
           <QRCodeSVG 
@@ -67,7 +69,11 @@ const ReceiveMessages: React.FC<ReceiveMessagesProps> = ({ channelId, amount, is
         </div>
       )}
       
-      {hasAnyUserPaid ? (
+      {isConnecting ? (
+        <div className="mb-4 p-3 bg-blue-100 border border-blue-400 rounded text-blue-700">
+          <span className="font-bold">⌛ Connecting...</span>
+        </div>
+      ) : hasAnyUserPaid ? (
         <div className="mb-4 p-3 bg-green-100 border border-green-400 rounded text-green-700">
           <span className="font-bold">✅ Pagamento completato!</span>
         </div>
