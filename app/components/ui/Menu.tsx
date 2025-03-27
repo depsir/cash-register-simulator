@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Button from '~/components/ui/Button';
+import Button, { Variant } from '~/components/ui/Button';
 
 interface MenuConfig {
   label?: string;
@@ -62,18 +62,19 @@ const Menu: React.FC<MenuProps> = ({ config, onBack, onReset }) => {
         <div>
           <div className="menu-header">
             {menuPath.length > 0 && (
-              <Button onClick={handleBack} icon="back">
+              <Button variant={Variant.FULL} onClick={handleBack} icon="back">
                 Indietro
               </Button>
             )}
           </div>
-          <div className="menu-content">
+          <div className="flex flex-col h-full overflow-auto gap-1">
             {getCurrentMenu().map((item, index) => (
               <div key={index}>
                 {item.customElement ? (
                   <div>{item.customElement}</div> // Render the custom element directly
                 ) : (
                   <Button
+                    variant={Variant.FULL}
                     onClick={() => handleNavigate(item, index)}
                     icon={item.icon}
                   >

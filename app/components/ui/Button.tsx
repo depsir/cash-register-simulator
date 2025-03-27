@@ -8,7 +8,7 @@ export enum Variant {
 
 const variantMap = {
     [Variant.BASE]: "",
-    [Variant.FULL]: "flex-grow basis-0",
+    [Variant.FULL]: "w-full flex-grow basis-0",
     [Variant.SQUARE]: "w-[3em] h-[3em] lg:w-[2em] lg:h-[2em]"
 }
 
@@ -60,18 +60,17 @@ const Button: React.FC<Props> = ({variant = Variant.BASE, onClick, icon, childre
         if (e.currentTarget instanceof HTMLElement) {
             e.currentTarget.blur();
         }
-    }
+    };
 
     return (
         <button
-            className={"cursor-pointer p-[1ex] border-2 text-center m-2 uppercase drop-shadow bg-gray-300 flex justify-center gap-2 " + variantMap[variant]}
+            className={"cursor-pointer p-[1ex] border-2 text-center uppercase drop-shadow bg-gray-300 flex justify-center gap-2 " + variantMap[variant]}
             onClick={handleClick}
         >
             {icon && <span className={`material-symbols-outlined text-[1em] ${children && variant !== Variant.SQUARE ? 'mr-2' : ''} flex items-center`}>{iconMap[icon]}</span>}
-            
             {children}
         </button>
-    )
-}
+    );
+};
 
 export default Button;
