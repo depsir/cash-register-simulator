@@ -6,6 +6,7 @@ import { useNavigate } from '@remix-run/react';
 import PaymentCash from '~/components/PaymentCash';
 import Menu from '~/components/ui/Menu';
 import ReceiveMessagesWrapper from '~/components/cashlessPayment/ReceiveMessagesWrapper';
+import ManualNumber from '~/components/ManualNumber';
 
 const Bar: React.FC = () => {
   const { addManualPrice, total, emptyCart } = useCart([]);
@@ -48,7 +49,13 @@ const Bar: React.FC = () => {
         { label: 'Panino', action: () => addManualPrice(5, 'Panino') },
         { label: 'Biscotti', action: () => addManualPrice(2.8, 'Biscotti') },
       ],
-    },   {
+    }, 
+  {  
+    label: 'Prezzo Manuale',
+    icon: 'euro',
+    component: (props) => <ManualNumber {...props} onClear={props.onBack} onEnter={(value) => addManualPrice(parseFloat(value))} />,
+}, 
+     {
       label: 'Checkout',
       icon: 'checkout',
       children: [
