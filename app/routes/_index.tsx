@@ -1,26 +1,33 @@
-import React from "react";
-import Button from "~/components/ui/Button";
-import {useNavigate} from '@remix-run/react'
-import useCart from "~/hooks/useCart";
-import useCustomerCard from "~/hooks/useCustomerCard";
+import React from 'react';
+import Menu from '~/components/ui/Menu';
+import { useNavigate } from '@remix-run/react';
+import useCart from '~/hooks/useCart';
+import useCustomerCard from '~/hooks/useCustomerCard';
 
-const Index = () => {
-    const navigate = useNavigate();
-    const {emptyCart} = useCart([]);
-    const {clearCustomerCard} = useCustomerCard();
+const Index: React.FC = () => {
+  const navigate = useNavigate();
+  const { emptyCart } = useCart([]);
+  const { clearCustomerCard } = useCustomerCard();
 
-    const navigateToMode = (path: string) => {
-        emptyCart();
-        clearCustomerCard();
-        navigate(path);
-    }
+  const navigateToMode = (path: string) => {
+    emptyCart();
+    clearCustomerCard();
+    navigate(path);
+  };
 
-    return (
-        <div className={"flex flex-col items-center justify-center h-screen"}>
-            <Button onClick={() => navigateToMode("/store")} icon={"shopping-bag"}>negozio</Button>
-            <Button onClick={() => navigateToMode("/bar")} icon={"coffee"}>bar</Button>
-        </div>
-    )
-}
+  const menuConfig = [
+    { label: 'Negozio', icon: 'shopping-bag', action: () => navigateToMode('/store') },
+    { label: 'Bar', icon: 'coffee', action: () => navigateToMode('/bar') },
+    { label: 'Admin', icon: 'user-cog', action: () => navigateToMode('/admin') },
+  ];
 
-export default Index
+  return (
+    <div className="flex items-center justify-center h-screen bg-gray-100">
+      <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
+        <Menu config={menuConfig} />
+      </div>
+    </div>
+  );
+};
+
+export default Index;
