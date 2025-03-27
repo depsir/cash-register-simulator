@@ -119,17 +119,18 @@ const store = () => {
                 <div className={"bg-white flex-1 p-2 drop-shadow overflow-auto"}>
                     <CartList/>
                 </div>
-                <div className={"flex-none mt-2"}>
-                    <MultiElementTextBox>
-                        <div>Totale</div>
-                        <div>{total.toFixed(2)}</div>
-                    </MultiElementTextBox>
                     {customerCard.id && <div className={"mt-2"}>
                         <MultiElementTextBox>
                             <div>cliente: {customerCard.name}</div>
                             <div>punti attuali {customerCard.points} - nuovi {earnedPoints} </div>
                         </MultiElementTextBox>
                     </div>}
+                <div className={"flex-none mt-2"}>
+                    <MultiElementTextBox>
+                        <div>Totale</div>
+                        <div>{total.toFixed(2)}</div>
+                    </MultiElementTextBox>
+
                 </div>
             </div>
             <div className={"flex flex-col h-full overflow-auto"}>
