@@ -18,7 +18,7 @@ const Index: React.FC = () => {
   const menuConfig = [
     { label: 'Negozio', icon: 'shopping-bag', action: () => navigateToMode('/store') },
     { label: 'Bar', icon: 'coffee', action: () => navigateToMode('/bar') },
-    { label: 'Admin', icon: 'user-cog', action: () => navigateToMode('/admin') },
+    { label: 'Admin', icon: 'settings', action: () => navigateToMode('/admin') },
   ];
 
   return (
