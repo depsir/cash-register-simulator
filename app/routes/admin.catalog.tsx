@@ -161,8 +161,8 @@ const Products: React.FC = () => {
     useEffect(() => {
         if (hasFilter) {
             const filteredCatalog2 = catalog.filter((product1: any) => {
-                const barcodeMatch = !productFilter.barcode || product1.barcode.includes(productFilter.barcode)
-                const nameMatch = !productFilter.name || product1.name.toLowerCase().includes(productFilter.name.toLowerCase())
+                const barcodeMatch = !productFilter.barcode || (product1.barcode ?? "").includes(productFilter.barcode)
+                const nameMatch = !productFilter.name || (product1.name ?? "").toLowerCase().includes(productFilter.name.toLowerCase())
                 return barcodeMatch && nameMatch
             })
             setFilteredCatalog(filteredCatalog2)
