@@ -42,22 +42,33 @@ export let action: ActionFunction = async ({ request }) => {
                     name: formData.get("name"),
                     price: parseFloat(formData.get("price") || "0"),
                 };
-                const { error } = await supabase
+                const { data, error } = await supabase
                     .from('products')
                     .update(productToUpdate)
-                    .eq('id', formData.get("id"));
-                
+                    .eq('id', formData.get("id"))
+                    .select('id');
+
                 if (error) throw error;
+                // Senza righe modificate la update e' stata rifiutata (RLS o id
+                // inesistente): Supabase non torna errore, lo segnaliamo noi.
+                if (!data || data.length === 0) {
+                    return json({ error: "Prodotto non modificato" }, { status: 409 });
+                }
                 break;
             }
             case "delete": {
                 const productId = formData.get("productId");
-                const { error } = await supabase
+                const { data, error } = await supabase
                     .from('products')
                     .delete()
-                    .eq('id', productId);
-                
+                    .eq('id', productId)
+                    .select('id');
+
                 if (error) throw error;
+                // Idem per la delete: 0 righe cancellate significa fallimento silenzioso.
+                if (!data || data.length === 0) {
+                    return json({ error: "Prodotto non eliminato" }, { status: 409 });
+                }
                 break;
             }
             default:
@@ -180,6 +191,15 @@ const Products: React.FC = () => {
             }
         }
     }, [product.barcode, mode])
+
+    // L'action torna { error } quando add/update/delete non vanno a buon fine:
+    // senza questo il fallimento e' invisibile al cassiere.
+    useEffect(() => {
+        const data = fetcher.data as { error?: string } | undefined;
+        if (data?.error) {
+            addMessage({ message: data.error, type: "error" });
+        }
+    }, [fetcher.data])
 
     function onFilterReset() {
        setProductFilter(undefined);

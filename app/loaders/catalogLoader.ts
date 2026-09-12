@@ -29,9 +29,12 @@ export const loadCatalog = async () => {
 
         console.log(`[Catalog Loader] Successfully loaded ${data?.length || 0} products`);
         
+        // Niente cache HTTP: il catalogo cambia da /admin/catalog e le richieste
+        // dati di Remix finirebbero nella cache del browser (una delete andata a
+        // buon fine continuerebbe a mostrare il prodotto fino alla scadenza).
         return json(data || [], {
             headers: {
-                "Cache-Control": "public, max-age=300", // Cache per 5 minuti
+                "Cache-Control": "no-store",
             },
         });
     } catch (error) {
