@@ -1,10 +1,11 @@
 import { useState } from 'react';
+import { normalizeCardNumber } from '~/utils/utils';
 
 const useProductForm = () => {
     const [customer, setCustomer] = useState({ cardNumber: "", name: ""});
 
     const onBarcode = (barcode: string) => {
-        setCustomer({...customer, cardNumber: barcode});
+        setCustomer({...customer, cardNumber: normalizeCardNumber(barcode)});
     }
 
     const onKeyboardDigit = (digit: string) => {

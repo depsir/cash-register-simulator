@@ -8,6 +8,7 @@ import {loadCustomers} from "~/loaders/customerLoader";
 import {ActionFunction, json} from "@remix-run/node";
 import ConfirmPopup from '~/components/ui/ConfirmPopup';
 import { supabase } from "~/lib/supabase.server";
+import { normalizeCardNumber } from "~/utils/utils";
 
 interface Customer {
     id: string;
@@ -27,7 +28,7 @@ export let action: ActionFunction = async ({request}) => {
     switch (actionType) {
         case "add": {
             const newCustomer = {
-                card_number: formData.get("cardNumber"),
+                card_number: normalizeCardNumber(formData.get("cardNumber") || ""),
                 name: formData.get("name"),
                 points: 0
             };

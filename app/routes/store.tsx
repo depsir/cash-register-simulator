@@ -13,6 +13,7 @@ import useCustomerCard from "~/hooks/useCustomerCard";
 import Menu from '~/components/ui/Menu';
 import ReceiveMessages from "~/components/cashlessPayment/ReceivePayment";
 import ReceiveMessagesWrapper from "~/components/cashlessPayment/ReceiveMessagesWrapper";
+import {normalizeCardNumber} from "~/utils/utils";
 
 export let loader: LoaderFunction = async () => {
     return loadCatalog();
@@ -29,11 +30,7 @@ const store = () => {
     const fetcher = useFetcher();
 
     const onCustomerCard = async (cardNumber: string) => {
-        if (/^[0-9]+$/.test(cardNumber)) {
-            cardNumber = `CRS-CUSTOMER-${String(cardNumber).padStart(3, '0')}`;
-        }
-        console.log("cardNumber", cardNumber);
-        await fetchCustomerCard(cardNumber);
+        await fetchCustomerCard(normalizeCardNumber(cardNumber));
     };
 
     const onCheckout = async () => {

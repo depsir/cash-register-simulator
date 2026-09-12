@@ -11,11 +11,22 @@ const Admin_index: React.FC = () => {
     const { clearCustomerCard } = useCustomerCard();
     const location = useLocation();
     const navigate = useNavigate();
-    const previousPath = location.state?.from || document.referrer || '/';
-
     const { exit, shutdown } = useLocalServerIntegration();
 
-    const goBackToPrevious = () => navigate(previousPath);
+    // `document` non esiste durante il render sul server: il referrer va letto
+    // solo quando il bottone viene premuto, cioe' gia' nel browser.
+    const goBackToPrevious = () => {
+        if (location.state?.from) {
+            navigate(location.state.from);
+            return;
+        }
+        const referrer = document.referrer ? new URL(document.referrer) : null;
+        const samePage = referrer?.origin === window.location.origin
+            && referrer.pathname === window.location.pathname;
+        navigate(referrer && referrer.origin === window.location.origin && !samePage
+            ? referrer.pathname
+            : '/');
+    };
 
     const emptyCartAction = () => {
         emptyCart();
